@@ -658,7 +658,7 @@ echo -e "ndk-build vlc"
 
 touch $VLC_OUT_PATH/dummy.cpp
 
-$NDK_BUILD -C libvlc \
+$NDK_BUILD -C libvlcjni/libvlc \
     APP_STL="c++_shared" \
     APP_CPPFLAGS="-frtti -fexceptions" \
     VLC_SRC_DIR="$VLC_SRC_DIR" \
