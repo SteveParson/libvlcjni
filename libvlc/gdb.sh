@@ -33,7 +33,6 @@ DEST=obj/local/$ABI
 mkdir -p "$TMP_PATH/$DEST"
 
 cp -r "$SCRIPT_PATH"/../libvlc/jni/$DEST/*.so "$TMP_PATH/$DEST"
-cp -r "$SCRIPT_PATH"/../vlc/build-android-*linux-android*/ndk/$DEST/*.so "$TMP_PATH/$DEST"
 cp -r "$SCRIPT_PATH"/../medialibrary/jni/$DEST/*.so "$TMP_PATH/$DEST"
 
 
