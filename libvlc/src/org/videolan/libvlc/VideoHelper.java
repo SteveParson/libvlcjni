@@ -260,7 +260,9 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
         }
 
         double dw = sw, dh = sh;
-        final boolean isPortrait = isPrimary && mVideoSurfaceFrame.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+        boolean consideredPortrait = mVideoSurfaceFrame.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+        if (mMediaPlayer.useOrientationFromBounds()) consideredPortrait = sh > sw;
+        final boolean isPortrait = isPrimary && consideredPortrait;
 
         if (sw > sh && isPortrait || sw < sh && !isPortrait) {
             dw = sh;

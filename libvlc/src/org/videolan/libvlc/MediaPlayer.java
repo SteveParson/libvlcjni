@@ -34,9 +34,9 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
-import android.util.SparseArray;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,6 +56,12 @@ import java.io.IOException;
 
 @SuppressWarnings("unused, JniMissingFunction")
 public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
+
+    /**
+     * Useful when we want to resize the VideoLayout and avoid using the
+     * context orientation to calculate the surface views bounds
+     */
+    private Boolean mUseOrientationFromBounds = false;
 
     public static class Event extends AbstractVLCEvent {
         public static final int MediaChanged        = 0x100;
@@ -997,6 +1003,14 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
             registerAudioPlug(true);
 
         return ret;
+    }
+
+    public void setUseOrientationFromBounds(Boolean mUseOrientationFromBounds) {
+        this.mUseOrientationFromBounds = mUseOrientationFromBounds;
+    }
+
+    public Boolean useOrientationFromBounds() {
+        return mUseOrientationFromBounds;
     }
 
     /**
