@@ -210,7 +210,8 @@ Java_org_videolan_libvlc_MediaPlayer_nativeNewFromMedia(JNIEnv *env,
     p_obj = VLCJniObject_newFromLibVlc(env, thiz, p_m_obj->p_libvlc);
     if (!p_obj)
         return;
-    p_obj->u.p_mp = libvlc_media_player_new_from_media(p_m_obj->u.p_m);
+    p_obj->u.p_mp = libvlc_media_player_new_from_media(p_m_obj->p_libvlc,
+                                                       p_m_obj->u.p_m);
     MediaPlayer_newCommon(env, thiz, p_obj, jwindow);
 }
 

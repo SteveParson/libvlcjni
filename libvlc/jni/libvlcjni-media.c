@@ -134,7 +134,7 @@ Media_nativeNewCommon(JNIEnv *env, jobject thiz, vlcjni_object *p_obj)
 
 static void
 Media_nativeNewFromCb(JNIEnv *env, jobject thiz, jobject libVlc, jstring jmrl,
-                      libvlc_media_t *(*pf)(libvlc_instance_t*, const char *))
+                      libvlc_media_t *(*pf)(const char *))
 {
     vlcjni_object *p_obj;
     const char* p_mrl;
@@ -152,7 +152,7 @@ Media_nativeNewFromCb(JNIEnv *env, jobject thiz, jobject libVlc, jstring jmrl,
         return;
     }
 
-    p_obj->u.p_m = pf(p_obj->p_libvlc, p_mrl);
+    p_obj->u.p_m = pf(p_mrl);
 
     (*env)->ReleaseStringUTFChars(env, jmrl, p_mrl);
 
@@ -206,7 +206,7 @@ Java_org_videolan_libvlc_Media_nativeNewFromFd(JNIEnv *env, jobject thiz,
     if (!p_obj)
         return;
 
-    p_obj->u.p_m = libvlc_media_new_fd(p_obj->p_libvlc, fd);
+    p_obj->u.p_m = libvlc_media_new_fd(fd);
 
     Media_nativeNewCommon(env, thiz, p_obj);
 }
@@ -293,8 +293,7 @@ Java_org_videolan_libvlc_Media_nativeNewFromFdWithOffsetLength(
         return;
 
     p_obj->u.p_m =
-        libvlc_media_new_callbacks(p_obj->p_libvlc,
-                                   media_cb_open,
+        libvlc_media_new_callbacks(media_cb_open,
                                    media_cb_read,
                                    media_cb_seek,
                                    media_cb_close,
