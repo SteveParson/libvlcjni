@@ -174,7 +174,6 @@ update_progress_cb(void *p_data, libvlc_dialog_id *p_id, float f_position,
 }
 
 static const libvlc_dialog_cbs dialog_cbs = {
-    .pf_display_error = display_error_cb,
     .pf_display_login = display_login_cb,
     .pf_display_question = display_question_cb,
     .pf_display_progress = display_progress_cb,
@@ -190,9 +189,15 @@ Java_org_videolan_libvlc_Dialog_nativeSetCallbacks(
     libvlc_instance_t *p_libvlc = p_lib_obj->u.p_libvlc;
 
     if (b_enabled)
+    {
+        libvlc_dialog_set_error_callback(p_libvlc, display_error_cb, NULL);
         libvlc_dialog_set_callbacks(p_libvlc, &dialog_cbs, NULL);
+    }
     else
+    {
         libvlc_dialog_set_callbacks(p_libvlc, NULL, NULL);
+        libvlc_dialog_set_error_callback(p_libvlc, NULL, NULL);
+    }
 }
 
 static libvlc_dialog_id *
