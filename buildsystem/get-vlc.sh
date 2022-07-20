@@ -69,7 +69,7 @@ done
 
 VLC_TESTED_HASH=d7d51df095b1883d40856c5c315280dec495ea7a
 VLC_REPOSITORY=https://code.videolan.org/videolan/vlc.git
-VLC_BRANCH=4.0.x
+VLC_BRANCH=master
 if [ ! -d "vlc" ]; then
     diagnostic "VLC sources: not found, cloning"
     git clone "${VLC_REPOSITORY}" vlc -b ${VLC_BRANCH} --single-branch || fail "VLC sources: git clone failed"
