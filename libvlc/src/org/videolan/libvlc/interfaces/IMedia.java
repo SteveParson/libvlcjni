@@ -9,7 +9,7 @@ public interface IMedia extends IVLCObject<IMedia.Event> {
         public static final int DurationChanged = 2;
         public static final int ParsedChanged = 3;
         //public static final int Freed                      = 4;
-        public static final int StateChanged = 5;
+        //public static final int StateChanged = 5;
         public static final int SubItemTreeAdded = 6;
 
         public Event(int type) {
@@ -339,8 +339,6 @@ public interface IMedia extends IVLCObject<IMedia.Event> {
     }
 
     long getDuration();
-
-    int getState();
 
     IMediaList subItems();
 

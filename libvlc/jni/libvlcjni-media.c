@@ -52,7 +52,6 @@ static const libvlc_event_type_t m_events[] = {
     libvlc_MediaSubItemAdded,
     //libvlc_MediaFreed,
     libvlc_MediaDurationChanged,
-    libvlc_MediaStateChanged,
     libvlc_MediaParsedChanged,
     libvlc_MediaSubItemTreeAdded,
     -1,
@@ -101,8 +100,6 @@ Media_event_cb(vlcjni_object *p_obj, const libvlc_event_t *p_ev,
         case libvlc_MediaDurationChanged:
             p_java_event->arg1 = p_ev->u.media_duration_changed.new_duration;
             break;
-        case libvlc_MediaStateChanged:
-            p_java_event->arg1 = p_ev->u.media_state_changed.new_state;
         case libvlc_MediaParsedChanged:
             p_java_event->arg1 = p_ev->u.media_parsed_changed.new_status;
     }
@@ -369,17 +366,6 @@ Java_org_videolan_libvlc_Media_nativeGetMrl(JNIEnv *env, jobject thiz)
     }
 
     return jmrl;
-}
-
-jint
-Java_org_videolan_libvlc_Media_nativeGetState(JNIEnv *env, jobject thiz)
-{
-    vlcjni_object *p_obj = VLCJniObject_getInstance(env, thiz);
-
-    if (!p_obj)
-        return libvlc_Error;
-
-    return libvlc_media_get_state(p_obj->u.p_m);
 }
 
 jstring

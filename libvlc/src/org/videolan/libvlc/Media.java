@@ -111,7 +111,6 @@ public class Media extends VLCObject<IMedia.Event> implements IMedia {
     private final String mNativeMetas[] = new String[Meta.MAX];
     private Track mNativeTracks[] = null;
     private long mDuration = -1;
-    private int mState = -1;
     private int mType = -1;
     private boolean mCodecOptionSet = false;
     private boolean mFileCachingSet = false;
@@ -202,9 +201,6 @@ public class Media extends VLCObject<IMedia.Event> implements IMedia {
         case Event.ParsedChanged:
             postParse();
             return new Event(eventType, arg1);
-        case Event.StateChanged:
-            mState = -1;
-            break;
         }
         return new Event(eventType);
     }
@@ -230,25 +226,6 @@ public class Media extends VLCObject<IMedia.Event> implements IMedia {
         synchronized (this) {
             mDuration = duration;
             return mDuration;
-        }
-    }
-
-    /**
-     * Get the state of the media.
-     *
-     * @see State
-     */
-    public int getState() {
-        synchronized (this) {
-            if (mState != -1)
-                return mState;
-            if (isReleased())
-                return State.Error;
-        }
-        final int state = nativeGetState();
-        synchronized (this) {
-            mState = state;
-            return mState;
         }
     }
 
@@ -280,7 +257,6 @@ public class Media extends VLCObject<IMedia.Event> implements IMedia {
         mParseStatus |= PARSE_STATUS_PARSED;
         mNativeTracks = null;
         mDuration = -1;
-        mState = -1;
         mType = -1;
     }
 
@@ -597,7 +573,6 @@ public class Media extends VLCObject<IMedia.Event> implements IMedia {
     private native boolean nativeParseAsync(int flags, int timeout);
     private native boolean nativeParse(int flags);
     private native String nativeGetMrl();
-    private native int nativeGetState();
     private native String nativeGetMeta(int id);
     private native Track[] nativeGetTracks();
     private native long nativeGetDuration();

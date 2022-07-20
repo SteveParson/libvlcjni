@@ -38,11 +38,6 @@ public class StubMedia extends StubVLCObject<IMedia.Event> implements IMedia {
     }
 
     @Override
-    public int getState() {
-        return 0;
-    }
-
-    @Override
     public IMediaList subItems() {
         return new StubMediaList();
     }
