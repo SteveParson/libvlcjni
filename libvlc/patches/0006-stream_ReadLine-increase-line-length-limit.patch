@@ -1,0 +1,34 @@
+From 2b8ae3a54db6cafbb2eed5e5611e3c92463b5ba5 Mon Sep 17 00:00:00 2001
+Message-Id: <2b8ae3a54db6cafbb2eed5e5611e3c92463b5ba5.1658330620.git.thomas@gllm.fr>
+In-Reply-To: <ff83b5af4c82650154ad217923c4f3971c1a6125.1658330620.git.thomas@gllm.fr>
+References: <ff83b5af4c82650154ad217923c4f3971c1a6125.1658330620.git.thomas@gllm.fr>
+From: Pierre Ynard <linkfanel@yahoo.fr>
+Date: Mon, 20 Jul 2020 13:11:34 +0200
+Subject: [PATCH 6/7] stream_ReadLine: increase line length limit
+
+Very long lines are occasionally encountered in text web resources such
+as HTML, JSON or other API data. This bumps the hardcoded limit from
+200 kB to 4 MB, which should be sufficient to support more than most of
+them, but still reasonable to prevent any issue.
+
+Fixes #24957
+---
+ src/input/stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/input/stream.c b/src/input/stream.c
+index e44f8dd2b2..5fadd22b82 100644
+--- a/src/input/stream.c
++++ b/src/input/stream.c
+@@ -191,7 +191,7 @@ stream_t *(vlc_stream_NewMRL)(vlc_object_t* parent, const char* mrl )
+  * \return A pointer to the allocated output string. You need to free this when you are done.
+  */
+ #define STREAM_PROBE_LINE 2048
+-#define STREAM_LINE_MAX (2048*100)
++#define STREAM_LINE_MAX (2048*2048)
+ char *vlc_stream_ReadLine( stream_t *s )
+ {
+     stream_priv_t *priv = stream_priv(s);
+-- 
+2.35.1
+

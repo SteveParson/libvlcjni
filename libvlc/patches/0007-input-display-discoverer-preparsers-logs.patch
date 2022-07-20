@@ -1,0 +1,27 @@
+From 8468914eb39119c0e763945d07e6fbc7ba5c7ce1 Mon Sep 17 00:00:00 2001
+Message-Id: <8468914eb39119c0e763945d07e6fbc7ba5c7ce1.1658330620.git.thomas@gllm.fr>
+In-Reply-To: <ff83b5af4c82650154ad217923c4f3971c1a6125.1658330620.git.thomas@gllm.fr>
+References: <ff83b5af4c82650154ad217923c4f3971c1a6125.1658330620.git.thomas@gllm.fr>
+From: Thomas Guillem <thomas@gllm.fr>
+Date: Thu, 3 Dec 2020 09:56:05 +0100
+Subject: [PATCH 7/7] input: display discoverer/preparsers logs
+
+---
+ src/input/input.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/input/input.c b/src/input/input.c
+index bead2daaa5..eb8eeb3977 100644
+--- a/src/input/input.c
++++ b/src/input/input.c
+@@ -297,7 +297,6 @@ input_thread_t *input_Create( vlc_object_t *p_parent,
+     if( priv->type == INPUT_TYPE_PREPARSING
+      || priv->type == INPUT_TYPE_THUMBNAILING )
+     {
+-        p_input->obj.logger = NULL;
+         p_input->obj.no_interact = true;
+     }
+     else
+-- 
+2.35.1
+
