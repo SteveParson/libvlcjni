@@ -109,7 +109,6 @@ public class Media extends VLCObject<IMedia.Event> implements IMedia {
     private MediaList mSubItems = null;
     private int mParseStatus = PARSE_STATUS_INIT;
     private final String mNativeMetas[] = new String[Meta.MAX];
-    private Track mNativeTracks[] = null;
     private long mDuration = -1;
     private int mType = -1;
     private boolean mCodecOptionSet = false;
@@ -255,7 +254,6 @@ public class Media extends VLCObject<IMedia.Event> implements IMedia {
             return;
         mParseStatus &= ~PARSE_STATUS_PARSING;
         mParseStatus |= PARSE_STATUS_PARSED;
-        mNativeTracks = null;
         mDuration = -1;
         mType = -1;
     }
@@ -352,41 +350,54 @@ public class Media extends VLCObject<IMedia.Event> implements IMedia {
         }
     }
 
-    private Track[] getTracks() {
+    /**
+     * Get the list of tracks for a given type
+     *
+     * @param type type defined by {@link Media.Track.Type}
+     * @return a track array or null. Each tracks can be casted to {@link
+     * Media.VideoTrack}, {@link Media.AudioTrack}, {@link
+     * Media.SubtitleTrack}, or {@link Media.UnknownTrack} depending on {@link
+     * Media.type}
+     */
+    public Track[] getTracks(int type) {
         synchronized (this) {
-            if (mNativeTracks != null)
-                return mNativeTracks;
             if (isReleased())
                 return null;
         }
-        final Track[] tracks = nativeGetTracks();
+        return nativeGetTracks(type);
+    }
+
+    /**
+     * Get the list of tracks for all types
+     */
+    public Track[] getTracks() {
         synchronized (this) {
-            mNativeTracks = tracks;
-            return mNativeTracks;
+            if (isReleased())
+                return null;
         }
-    }
 
-    /**
-     * Get the Track count.
-     */
-    public int getTrackCount() {
-        final Track[] tracks = getTracks();
-        return tracks != null ? tracks.length : 0;
-    }
+        Track[][] allTracksArray = new Track[4][];
+        int allTracksCount = 0;
 
-    /**
-     * Get a Track
-     * The Track can be casted to {@link AudioTrack}, {@link VideoTrack} or {@link SubtitleTrack} in function of the {@link Track.Type}.
-     *
-     * @param idx index of the track
-     * @return Track or null if not idx is not valid
-     * @see #getTrackCount()
-     */
-    public Track getTrack(int idx) {
-        final Track[] tracks = getTracks();
-        if (tracks == null || idx < 0 || idx >= tracks.length)
+        for (int i = 0; i < 4; ++i) {
+            allTracksArray[i] = nativeGetTracks(i - 1);
+            allTracksCount += allTracksArray[i] != null ? allTracksArray[i].length : 0;
+        }
+
+        if (allTracksCount == 0)
             return null;
-        return tracks[idx];
+
+        Track[] allTracks = new Track[allTracksCount];
+        allTracksCount = 0;
+        for (int i = 0; i < 4; ++i) {
+            if (allTracksArray[i] != null)
+            {
+                System.arraycopy(allTracksArray[i], 0, allTracks, allTracksCount, allTracksArray[i].length);
+                allTracksCount += allTracksArray[i].length;
+            }
+        }
+
+        return allTracks;
     }
 
     /**
@@ -574,7 +585,7 @@ public class Media extends VLCObject<IMedia.Event> implements IMedia {
     private native boolean nativeParse(int flags);
     private native String nativeGetMrl();
     private native String nativeGetMeta(int id);
-    private native Track[] nativeGetTracks();
+    private native Track[] nativeGetTracks(int type);
     private native long nativeGetDuration();
     private native int nativeGetType();
     private native void nativeAddOption(String option);

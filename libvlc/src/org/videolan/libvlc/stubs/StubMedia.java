@@ -72,13 +72,12 @@ public class StubMedia extends StubVLCObject<IMedia.Event> implements IMedia {
         return mType;
     }
 
-    @Override
-    public int getTrackCount() {
-        return 0;
+    public Track[] getTracks(int type) {
+        return null;
     }
 
     @Override
-    public Track getTrack(int idx) {
+    public Track[] getTracks() {
         return null;
     }
 

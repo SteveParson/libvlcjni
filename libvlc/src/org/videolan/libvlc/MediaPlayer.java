@@ -1115,13 +1115,8 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     public IMedia.VideoTrack getCurrentVideoTrack() {
         if (getVideoTrack() == -1)
             return null;
-        final int trackCount = mMedia.getTrackCount();
-        for (int i = 0; i < trackCount; ++i) {
-            final IMedia.Track  track = mMedia.getTrack(i);
-            if (track.type == IMedia.Track.Type.Video)
-                return (IMedia.VideoTrack) track;
-        }
-        return null;
+        final IMedia.Track[] tracks = mMedia.getTracks(IMedia.Track.Type.Video);
+        return tracks != null ? (IMedia.VideoTrack) tracks[0] : null;
     }
 
     /**

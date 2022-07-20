@@ -354,9 +354,9 @@ public interface IMedia extends IVLCObject<IMedia.Event> {
 
     int getType();
 
-    int getTrackCount();
+    Track[] getTracks(int type);
 
-    Track getTrack(int idx);
+    Track[] getTracks();
 
     String getMeta(int id);
 

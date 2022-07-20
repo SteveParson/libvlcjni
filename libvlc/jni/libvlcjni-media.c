@@ -499,7 +499,7 @@ media_track_to_object(JNIEnv *env, libvlc_media_track_t *p_tracks)
 }
 
 jobject
-Java_org_videolan_libvlc_Media_nativeGetTracks(JNIEnv *env, jobject thiz)
+Java_org_videolan_libvlc_Media_nativeGetTracks(JNIEnv *env, jobject thiz, jint type)
 {
     vlcjni_object *p_obj = VLCJniObject_getInstance(env, thiz);
     libvlc_media_track_t **pp_tracks = NULL;
@@ -509,25 +509,30 @@ Java_org_videolan_libvlc_Media_nativeGetTracks(JNIEnv *env, jobject thiz)
     if (!p_obj)
         return NULL;
 
-    i_nb_tracks = libvlc_media_tracks_get(p_obj->u.p_m, &pp_tracks);
-    if (!i_nb_tracks)
+    libvlc_media_tracklist_t *tracklist =
+        libvlc_media_get_tracklist(p_obj->u.p_m, type);
+    if (tracklist == NULL)
         return NULL;
+
+    i_nb_tracks = libvlc_media_tracklist_count(tracklist);
+    if (i_nb_tracks == 0)
+        goto error;
 
     array = (*env)->NewObjectArray(env, i_nb_tracks, fields.Media.Track.clazz,
                                    NULL);
-    if (!array)
+    if (array == NULL)
         goto error;
 
     for (int i = 0; i < i_nb_tracks; ++i)
     {
-        jobject jtrack = media_track_to_object(env, pp_tracks[i]);
+        libvlc_media_track_t *track = libvlc_media_tracklist_at(tracklist, i);
+        jobject jtrack = media_track_to_object(env, track);
 
         (*env)->SetObjectArrayElement(env, array, i, jtrack);
     }
 
 error:
-    if (pp_tracks)
-        libvlc_media_tracks_release(pp_tracks, i_nb_tracks);
+    libvlc_media_tracklist_delete(tracklist);
     return array;
 }
 
@@ -544,7 +549,7 @@ Java_org_videolan_libvlc_Media_nativeParseAsync(JNIEnv *env, jobject thiz,
     p_obj->p_sys->b_parsing_async = true;
     pthread_mutex_unlock(&p_obj->p_sys->lock);
 
-    return libvlc_media_parse_with_options(p_obj->u.p_m, flags, timeout) == 0 ? true : false;
+    return libvlc_media_parse_request(p_obj->p_libvlc, p_obj->u.p_m, flags, timeout) == 0 ? true : false;
 }
 
 jboolean
@@ -559,7 +564,7 @@ Java_org_videolan_libvlc_Media_nativeParse(JNIEnv *env, jobject thiz, jint flags
     p_obj->p_sys->b_parsing_sync = true;
     pthread_mutex_unlock(&p_obj->p_sys->lock);
 
-    if (libvlc_media_parse_with_options(p_obj->u.p_m, flags, -1) != 0)
+    if (libvlc_media_parse_request(p_obj->p_libvlc, p_obj->u.p_m, flags, -1) != 0)
         return false;
 
     pthread_mutex_lock(&p_obj->p_sys->lock);
