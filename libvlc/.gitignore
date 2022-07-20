@@ -1,4 +1,6 @@
+assets/
 bin/
+build/
 gen/
 libs/
 obj/
