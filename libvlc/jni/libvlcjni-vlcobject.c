@@ -233,5 +233,5 @@ Java_org_videolan_libvlc_VLCObject_getInstance(JNIEnv *env, jobject thiz)
     vlcjni_object *p_obj = VLCJniObject_getInstance(env, thiz);
     if (!p_obj)
         return 0;
-    return p_obj->u.p_libvlc;
+    return (uintptr_t) (void *) p_obj->u.p_libvlc;
 }

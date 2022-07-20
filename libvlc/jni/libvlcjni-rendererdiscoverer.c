@@ -33,10 +33,10 @@ RendererDiscoverer_event_cb(vlcjni_object *p_obj, const libvlc_event_t *p_ev,
     switch (p_ev->type)
     {
     case libvlc_RendererDiscovererItemAdded:
-        p_java_event->arg1 = p_ev->u.renderer_discoverer_item_added.item;
+        p_java_event->arg1 = (uintptr_t) (void *) p_ev->u.renderer_discoverer_item_added.item;
         break;
     case libvlc_RendererDiscovererItemDeleted:
-        p_java_event->arg1 = p_ev->u.renderer_discoverer_item_deleted.item;
+        p_java_event->arg1 = (uintptr_t) (void *) p_ev->u.renderer_discoverer_item_deleted.item;
         break;
     }
     p_java_event->type = p_ev->type;
