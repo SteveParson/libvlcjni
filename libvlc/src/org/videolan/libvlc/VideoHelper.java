@@ -137,7 +137,7 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
                 break;
             case SURFACE_FIT_SCREEN:
             case SURFACE_FILL: {
-                IMedia.VideoTrack vtrack = mMediaPlayer.getCurrentVideoTrack();
+                IMedia.VideoTrack vtrack = (IMedia.VideoTrack) mMediaPlayer.getSelectedTrack(Media.Track.Type.Video);
                 if (vtrack == null)
                     return;
                 final boolean videoSwapped = vtrack.orientation == IMedia.VideoTrack.Orientation.LeftBottom

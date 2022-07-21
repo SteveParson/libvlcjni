@@ -181,8 +181,6 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
               "org/videolan/libvlc/MediaPlayer$Title", true);
     GET_CLASS(fields.MediaPlayer.Chapter.clazz,
               "org/videolan/libvlc/MediaPlayer$Chapter", true);
-    GET_CLASS(fields.MediaPlayer.TrackDescription.clazz,
-              "org/videolan/libvlc/MediaPlayer$TrackDescription", true);
     GET_CLASS(fields.MediaPlayer.Equalizer.clazz,
               "org/videolan/libvlc/MediaPlayer$Equalizer", true);
     GET_CLASS(fields.MediaDiscoverer.clazz,
@@ -264,12 +262,6 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
            fields.MediaPlayer.clazz,
            "createChapterFromNative",
            "(JJLjava/lang/String;)Lorg/videolan/libvlc/MediaPlayer$Chapter;");
-
-    GET_ID(GetStaticMethodID,
-           fields.MediaPlayer.createTrackDescriptionFromNativeID,
-           fields.MediaPlayer.clazz,
-           "createTrackDescriptionFromNative",
-           "(ILjava/lang/String;)Lorg/videolan/libvlc/MediaPlayer$TrackDescription;");
 
     GET_ID(GetStaticMethodID,
            fields.MediaDiscoverer.createDescriptionFromNativeID,
@@ -359,7 +351,6 @@ void JNI_OnUnload(JavaVM* vm, void* reserved)
     (*env)->DeleteGlobalRef(env, fields.MediaPlayer.clazz);
     (*env)->DeleteGlobalRef(env, fields.MediaPlayer.Title.clazz);
     (*env)->DeleteGlobalRef(env, fields.MediaPlayer.Chapter.clazz);
-    (*env)->DeleteGlobalRef(env, fields.MediaPlayer.TrackDescription.clazz);
     (*env)->DeleteGlobalRef(env, fields.MediaPlayer.Equalizer.clazz);
     (*env)->DeleteGlobalRef(env, fields.MediaDiscoverer.clazz);
     (*env)->DeleteGlobalRef(env, fields.MediaDiscoverer.Description.clazz);

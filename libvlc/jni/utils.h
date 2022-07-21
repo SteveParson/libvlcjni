@@ -80,16 +80,12 @@ struct fields {
         } Chapter;
         struct {
             jclass clazz;
-        } TrackDescription;
-        struct {
-            jclass clazz;
             jfieldID mInstanceID;
         } Equalizer;
 
         jclass clazz;
         jmethodID createTitleFromNativeID;
         jmethodID createChapterFromNativeID;
-        jmethodID createTrackDescriptionFromNativeID;
     } MediaPlayer;
     struct {
         struct {

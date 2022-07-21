@@ -244,21 +244,6 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
         return new Chapter(timeOffset, duration, name);
     }
 
-    public static class TrackDescription {
-        public final int id;
-        public final String name;
-
-        private TrackDescription(int id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-    }
-
-    @SuppressWarnings("unused") /* Used from JNI */
-    private static TrackDescription createTrackDescriptionFromNative(int id, String name) {
-        return new TrackDescription(id, name);
-    }
-
     public static class Equalizer {
         @SuppressWarnings("unused") /* Used from JNI */
         private long mInstance;
@@ -1053,39 +1038,86 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     }
 
     /**
-     * Get the number of available video tracks.
-     */
-    public int getVideoTracksCount() {
-        return nativeGetVideoTracksCount();
-    }
-
-    /**
-     * Get the list of available video tracks.
-     */
-    public TrackDescription[] getVideoTracks() {
-        return nativeGetVideoTracks();
-    }
-
-    /**
-     * Get the current video track.
+     * Get the list of available tracks for a given type
      *
-     * @return the video track ID or -1 if no active input
+     * @param type type defined by {@link Media.Track.Type}
+     * @return a track array or null. Each tracks can be casted to {@link
+     * Media.VideoTrack}, {@link Media.AudioTrack}, {@link
+     * Media.SubtitleTrack}, or {@link Media.UnknownTrack} depending on {@link
+     * Media.type}
      */
-    public int getVideoTrack() {
-        return nativeGetVideoTrack();
+    public Media.Track[] getTracks(int type) {
+        return nativeGetTracks(type);
     }
 
     /**
-     * Set the video track.
+     * Get the first selected track for a given type
      *
-     * @return true on success.
+     * @param type type defined by {@link Media.Track.Type}
+     * @return a track or null. Can be casted to {@link Media.VideoTrack},
+     * {@link Media.AudioTrack}, {@link Media.SubtitleTrack}, or {@link
+     * Media.UnknownTrack} depending on {@link Media.type}
      */
-    public boolean setVideoTrack(int index) {
-        /* Don't activate a video track is surfaces are not ready */
-        if (index == -1 || (mWindow.areViewsAttached() && !mWindow.areSurfacesWaiting())) {
-            return nativeSetVideoTrack(index);
-        } else
-            return false;
+    public Media.Track getSelectedTrack(int type) {
+        return nativeGetSelectedTrack(type);
+    }
+
+    /**
+     * Get a track from its id
+     *
+     * This function can be used to get the last updated information of a track.
+     *
+     * @param id id from {@link Media.Track.id}
+     */
+    public Media.Track getTrackFromID(String id) {
+            return nativeGetTrackFromID(id);
+    }
+
+    /**
+     * Select a track by its id
+     *
+     * This will unselect the current track of the sane type
+     *
+     * @param id id from {@link Media.Track.id}
+     * @return true if the track was found and selected
+     */
+    public boolean selectTrack(String id) {
+        return nativeSelectTrack(id);
+    }
+
+    /**
+     * Select multiple tracks for one type
+     *
+     * Selecting multiple audio tracks is currently not supported.
+     *
+     * This function can be used pre-select a list of tracks before starting
+     * the player. It has only effect for the current media. It can also be
+     * used when the player is already started.
+ 
+     * 'ids' can contain more than one track id, delimited with ','. "" or any
+     * invalid track id will cause the player to unselect all tracks of that
+     * category. NULL will disable the preference for newer tracks without
+     * unselecting any current tracks.
+
+     * Example:
+     * - (Media.Track.Type.Video, "video/1,video/2") will select these 2 video
+     *   tracks.  If there is only one video track with the id "video/0", no
+     *   tracks will be selected.
+     * - (Media.Track.Type.Text, "${slave_url_md5sum}/spu/0) will select one
+     *   spu added by an input slave with the corresponding url.
+     */
+    public void selectTracks(int type, String ids)
+    {
+        nativeSelectTracks(type, ids);
+    }
+
+    /**
+     * Unselect all tracks for a given type
+     *
+     * @param type type defined by {@link Media.Track.Type}
+     */
+    public void unselectTrackType(int type) {
+        nativeUnselectTrackType(type);
     }
 
     /**
@@ -1095,60 +1127,12 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
      */
     public void setVideoTrackEnabled(boolean enabled) {
         if (!enabled) {
-            setVideoTrack(-1);
-        } else if (!isReleased() && hasMedia() && getVideoTrack() == -1) {
-            final MediaPlayer.TrackDescription tracks[] = getVideoTracks();
-            if (tracks != null) {
-                for (MediaPlayer.TrackDescription track : tracks) {
-                    if (track.id != -1) {
-                        setVideoTrack(track.id);
-                        break;
-                    }
-                }
-            }
+            unselectTrackType(Media.Track.Type.Video);
+        } else if (!isReleased() && hasMedia() && getSelectedTrack(Media.Track.Type.Video) == null) {
+            final Media.Track[] tracks = getTracks(Media.Track.Type.Video);
+            if (tracks != null)
+                selectTrack(tracks[0].id);
         }
-    }
-
-    /**
-     * Get the current video track
-     */
-    public IMedia.VideoTrack getCurrentVideoTrack() {
-        if (getVideoTrack() == -1)
-            return null;
-        final IMedia.Track[] tracks = mMedia.getTracks(IMedia.Track.Type.Video);
-        return tracks != null ? (IMedia.VideoTrack) tracks[0] : null;
-    }
-
-    /**
-     * Get the number of available audio tracks.
-     */
-    public int getAudioTracksCount() {
-        return nativeGetAudioTracksCount();
-    }
-
-    /**
-     * Get the list of available audio tracks.
-     */
-    public TrackDescription[] getAudioTracks() {
-        return nativeGetAudioTracks();
-    }
-
-    /**
-     * Get the current audio track.
-     *
-     * @return the audio track ID or -1 if no active input
-     */
-    public int getAudioTrack() {
-        return nativeGetAudioTrack();
-    }
-
-    /**
-     * Set the audio track.
-     *
-     * @return true on success.
-     */
-    public boolean setAudioTrack(int index) {
-        return nativeSetAudioTrack(index);
     }
 
     /**
@@ -1168,38 +1152,6 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
      */
     public boolean setAudioDelay(long delay) {
         return nativeSetAudioDelay(delay);
-    }
-
-    /**
-     * Get the number of available spu (subtitle) tracks.
-     */
-    public int getSpuTracksCount() {
-        return nativeGetSpuTracksCount();
-    }
-
-    /**
-     * Get the list of available spu (subtitle) tracks.
-     */
-    public TrackDescription[] getSpuTracks() {
-        return nativeGetSpuTracks();
-    }
-
-    /**
-     * Get the current spu (subtitle) track.
-     *
-     * @return the spu (subtitle) track ID or -1 if no active input
-     */
-    public int getSpuTrack() {
-        return nativeGetSpuTrack();
-    }
-
-    /**
-     * Set the spu (subtitle) track.
-     *
-     * @return true on success.
-     */
-    public boolean setSpuTrack(int index) {
-        return nativeSetSpuTrack(index);
     }
 
     /**
@@ -1465,20 +1417,14 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     private native boolean nativeSetAudioOutputDevice(String id);
     private native Title[] nativeGetTitles();
     private native Chapter[] nativeGetChapters(int title);
-    private native int nativeGetVideoTracksCount();
-    private native TrackDescription[] nativeGetVideoTracks();
-    private native int nativeGetVideoTrack();
-    private native boolean nativeSetVideoTrack(int index);
-    private native int nativeGetAudioTracksCount();
-    private native TrackDescription[] nativeGetAudioTracks();
-    private native int nativeGetAudioTrack();
-    private native boolean nativeSetAudioTrack(int index);
+    private native Media.Track[] nativeGetTracks(int type);
+    private native Media.Track nativeGetSelectedTrack(int type);
+    private native Media.Track nativeGetTrackFromID(String id);
+    private native boolean nativeSelectTrack(String id);
+    private native void nativeSelectTracks(int type, String ids);
+    private native void nativeUnselectTrackType(int type);
     private native long nativeGetAudioDelay();
     private native boolean nativeSetAudioDelay(long delay);
-    private native int nativeGetSpuTracksCount();
-    private native TrackDescription[] nativeGetSpuTracks();
-    private native int nativeGetSpuTrack();
-    private native boolean nativeSetSpuTrack(int index);
     private native long nativeGetSpuDelay();
     private native boolean nativeSetSpuDelay(long delay);
     private native boolean nativeAddSlave(int type, String location, boolean select);
