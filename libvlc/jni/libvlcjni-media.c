@@ -390,10 +390,13 @@ jobject
 media_track_to_jobject(JNIEnv *env, libvlc_media_track_t *p_tracks)
 {
     const char *psz_desc;
+    jstring jid = NULL;
     jstring jcodec = NULL;
     jstring joriginalCodec = NULL;
     jstring jlanguage = NULL;
     jstring jdescription = NULL;
+
+    jid = vlcNewStringUTF(env, p_tracks->psz_id);
 
     psz_desc = libvlc_media_get_codec_description(p_tracks->i_type,
                                                   p_tracks->i_codec);
@@ -417,10 +420,10 @@ media_track_to_jobject(JNIEnv *env, libvlc_media_track_t *p_tracks)
         case libvlc_track_audio:
             jobj = (*env)->CallStaticObjectMethod(env, fields.Media.clazz,
                                 fields.Media.createAudioTrackFromNativeID,
+                                jid,
                                 jcodec,
                                 joriginalCodec,
                                 (jint)p_tracks->i_original_fourcc,
-                                (jint)p_tracks->i_id,
                                 (jint)p_tracks->i_profile,
                                 (jint)p_tracks->i_level,
                                 (jint)p_tracks->i_bitrate,
@@ -432,10 +435,10 @@ media_track_to_jobject(JNIEnv *env, libvlc_media_track_t *p_tracks)
         case libvlc_track_video:
             jobj = (*env)->CallStaticObjectMethod(env, fields.Media.clazz,
                                 fields.Media.createVideoTrackFromNativeID,
+                                jid,
                                 jcodec,
                                 joriginalCodec,
                                 (jint)p_tracks->i_original_fourcc,
-                                (jint)p_tracks->i_id,
                                 (jint)p_tracks->i_profile,
                                 (jint)p_tracks->i_level,
                                 (jint)p_tracks->i_bitrate,
@@ -458,10 +461,10 @@ media_track_to_jobject(JNIEnv *env, libvlc_media_track_t *p_tracks)
 
             jobj = (*env)->CallStaticObjectMethod(env, fields.Media.clazz,
                                 fields.Media.createSubtitleTrackFromNativeID,
+                                jid,
                                 jcodec,
                                 joriginalCodec,
                                 (jint)p_tracks->i_original_fourcc,
-                                (jint)p_tracks->i_id,
                                 (jint)p_tracks->i_profile,
                                 (jint)p_tracks->i_level,
                                 (jint)p_tracks->i_bitrate,
@@ -475,10 +478,10 @@ media_track_to_jobject(JNIEnv *env, libvlc_media_track_t *p_tracks)
         case libvlc_track_unknown:
             jobj = (*env)->CallStaticObjectMethod(env, fields.Media.clazz,
                                 fields.Media.createUnknownTrackFromNativeID,
+                                jid,
                                 jcodec,
                                 joriginalCodec,
                                 (jint)p_tracks->i_original_fourcc,
-                                (jint)p_tracks->i_id,
                                 (jint)p_tracks->i_profile,
                                 (jint)p_tracks->i_level,
                                 (jint)p_tracks->i_bitrate,
@@ -487,6 +490,8 @@ media_track_to_jobject(JNIEnv *env, libvlc_media_track_t *p_tracks)
             break;
     }
 
+    if (jid)
+        (*env)->DeleteLocalRef(env, jid);
     if (jcodec)
         (*env)->DeleteLocalRef(env, jcodec);
     if (joriginalCodec)
