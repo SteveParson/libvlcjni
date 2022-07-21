@@ -386,8 +386,8 @@ Java_org_videolan_libvlc_Media_nativeGetMeta(JNIEnv *env, jobject thiz, jint id)
     return jmeta;
 }
 
-static jobject
-media_track_to_object(JNIEnv *env, libvlc_media_track_t *p_tracks)
+jobject
+media_track_to_jobject(JNIEnv *env, libvlc_media_track_t *p_tracks)
 {
     const char *psz_desc;
     jstring jcodec = NULL;
@@ -499,12 +499,32 @@ media_track_to_object(JNIEnv *env, libvlc_media_track_t *p_tracks)
 }
 
 jobject
+tracklist_to_jobjectArray(JNIEnv *env, libvlc_media_tracklist_t *tracklist)
+{
+    size_t track_count = libvlc_media_tracklist_count(tracklist);
+    if (track_count == 0)
+        return NULL;
+
+    jobjectArray array = (*env)->NewObjectArray(env, track_count, fields.Media.Track.clazz,
+                                                NULL);
+    if (array == NULL)
+        return NULL;
+
+    for (size_t i = 0; i < track_count; ++i)
+    {
+        libvlc_media_track_t *track = libvlc_media_tracklist_at(tracklist, i);
+        jobject jtrack = media_track_to_jobject(env, track);
+
+        (*env)->SetObjectArrayElement(env, array, i, jtrack);
+    }
+
+    return array;
+}
+
+jobject
 Java_org_videolan_libvlc_Media_nativeGetTracks(JNIEnv *env, jobject thiz, jint type)
 {
     vlcjni_object *p_obj = VLCJniObject_getInstance(env, thiz);
-    libvlc_media_track_t **pp_tracks = NULL;
-    unsigned int i_nb_tracks = 0;
-    jobjectArray array;
 
     if (!p_obj)
         return NULL;
@@ -514,25 +534,10 @@ Java_org_videolan_libvlc_Media_nativeGetTracks(JNIEnv *env, jobject thiz, jint t
     if (tracklist == NULL)
         return NULL;
 
-    i_nb_tracks = libvlc_media_tracklist_count(tracklist);
-    if (i_nb_tracks == 0)
-        goto error;
+    jobject array = tracklist_to_jobjectArray(env, tracklist);
 
-    array = (*env)->NewObjectArray(env, i_nb_tracks, fields.Media.Track.clazz,
-                                   NULL);
-    if (array == NULL)
-        goto error;
-
-    for (int i = 0; i < i_nb_tracks; ++i)
-    {
-        libvlc_media_track_t *track = libvlc_media_tracklist_at(tracklist, i);
-        jobject jtrack = media_track_to_object(env, track);
-
-        (*env)->SetObjectArrayElement(env, array, i, jtrack);
-    }
-
-error:
     libvlc_media_tracklist_delete(tracklist);
+
     return array;
 }
 

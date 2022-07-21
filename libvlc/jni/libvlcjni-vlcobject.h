@@ -91,6 +91,12 @@ void VLCJniObject_attachEvents(vlcjni_object *p_obj, event_cb pf_event_cb,
                                libvlc_event_manager_t *p_event_manager,
                                const int *p_events);
 
+jobject
+media_track_to_jobject(JNIEnv *env, libvlc_media_track_t *track);
+
+jobject
+tracklist_to_jobjectArray(JNIEnv *env, libvlc_media_tracklist_t *tracklist);
+
 enum vlcjni_exception
 {
     VLCJNI_EX_ILLEGAL_STATE,
