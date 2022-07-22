@@ -130,6 +130,8 @@ public interface IMedia extends IVLCObject<IMedia.Event> {
 
         public final int type;
         public final String id;
+        /** Can be NULL, only valid when the Track is fetch by the MediaPlayer */
+        public final String name;
         public final String codec;
         public final String originalCodec;
         public final int fourcc;
@@ -139,10 +141,11 @@ public interface IMedia extends IVLCObject<IMedia.Event> {
         public final String language;
         public final String description;
 
-        protected Track(int type, String id, String codec, String originalCodec, int fourcc, int profile,
+        protected Track(int type, String id, String name, String codec, String originalCodec, int fourcc, int profile,
                         int level, int bitrate, String language, String description) {
             this.type = type;
             this.id = id;
+            this.name = name;
             this.codec = codec;
             this.originalCodec = originalCodec;
             this.fourcc = fourcc;
@@ -161,10 +164,10 @@ public interface IMedia extends IVLCObject<IMedia.Event> {
         public final int channels;
         public final int rate;
 
-        public AudioTrack(String id, String codec, String originalCodec, int fourcc, int profile,
+        public AudioTrack(String id, String name, String codec, String originalCodec, int fourcc, int profile,
                           int level, int bitrate, String language, String description,
                           int channels, int rate) {
-            super(Type.Audio, id, codec, originalCodec, fourcc, profile, level, bitrate, language, description);
+            super(Type.Audio, id, name, codec, originalCodec, fourcc, profile, level, bitrate, language, description);
             this.channels = channels;
             this.rate = rate;
         }
@@ -227,11 +230,11 @@ public interface IMedia extends IVLCObject<IMedia.Event> {
         public final int orientation;
         public final int projection;
 
-        public VideoTrack(String id, String codec, String originalCodec, int fourcc, int profile,
+        public VideoTrack(String id, String name, String codec, String originalCodec, int fourcc, int profile,
                           int level, int bitrate, String language, String description,
                           int height, int width, int sarNum, int sarDen, int frameRateNum, int frameRateDen,
                           int orientation, int projection) {
-            super(Type.Video, id, codec, originalCodec, fourcc, profile, level, bitrate, language, description);
+            super(Type.Video, id, name, codec, originalCodec, fourcc, profile, level, bitrate, language, description);
             this.height = height;
             this.width = width;
             this.sarNum = sarNum;
@@ -249,10 +252,10 @@ public interface IMedia extends IVLCObject<IMedia.Event> {
     class SubtitleTrack extends Track {
         public final String encoding;
 
-        public SubtitleTrack(String id, String codec, String originalCodec, int fourcc, int profile,
+        public SubtitleTrack(String id, String name, String codec, String originalCodec, int fourcc, int profile,
                              int level, int bitrate, String language, String description,
                              String encoding) {
-            super(Type.Text, id, codec, originalCodec, fourcc, profile, level, bitrate, language, description);
+            super(Type.Text, id, name, codec, originalCodec, fourcc, profile, level, bitrate, language, description);
             this.encoding = encoding;
         }
     }
@@ -261,9 +264,9 @@ public interface IMedia extends IVLCObject<IMedia.Event> {
      * see libvlc_subtitle_track_t
      */
     class UnknownTrack extends Track {
-        public UnknownTrack(String id, String codec, String originalCodec, int fourcc, int profile,
+        public UnknownTrack(String id, String name, String codec, String originalCodec, int fourcc, int profile,
                             int level, int bitrate, String language, String description) {
-            super(Type.Unknown, id, codec, originalCodec, fourcc, profile, level, bitrate, language, description);
+            super(Type.Unknown, id, name, codec, originalCodec, fourcc, profile, level, bitrate, language, description);
         }
     }
 
