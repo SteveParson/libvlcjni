@@ -39,37 +39,37 @@ public class Media extends VLCObject<IMedia.Event> implements IMedia {
     private final static String TAG = "LibVLC/Media";
 
     @SuppressWarnings("unused") /* Used from JNI */
-    private static Track createAudioTrackFromNative(String id, String name, String codec, String originalCodec, int fourcc, int profile,
+    private static Track createAudioTrackFromNative(String id, String name, boolean selected, String codec, String originalCodec, int fourcc, int profile,
             int level, int bitrate, String language, String description,
             int channels, int rate) {
-        return new AudioTrack(id, name, codec, originalCodec, fourcc, profile,
+        return new AudioTrack(id, name, selected, codec, originalCodec, fourcc, profile,
                 level, bitrate, language, description,
                 channels, rate);
     }
 
     @SuppressWarnings("unused") /* Used from JNI */
-    private static Track createVideoTrackFromNative(String id, String name, String codec, String originalCodec, int fourcc, int profile,
+    private static Track createVideoTrackFromNative(String id, String name, boolean selected, String codec, String originalCodec, int fourcc, int profile,
             int level, int bitrate, String language, String description,
             int height, int width, int sarNum, int sarDen, int frameRateNum, int frameRateDen,
             int orientation, int projection) {
-        return new VideoTrack(id, name, codec, originalCodec, fourcc, profile,
+        return new VideoTrack(id, name, selected, codec, originalCodec, fourcc, profile,
                 level, bitrate, language, description,
                 height, width, sarNum, sarDen, frameRateNum, frameRateDen, orientation, projection);
     }
 
     @SuppressWarnings("unused") /* Used from JNI */
-    private static Track createSubtitleTrackFromNative(String id, String name, String codec, String originalCodec, int fourcc, int profile,
+    private static Track createSubtitleTrackFromNative(String id, String name, boolean selected, String codec, String originalCodec, int fourcc, int profile,
             int level, int bitrate, String language, String description,
             String encoding) {
-        return new SubtitleTrack(id, name, codec, originalCodec, fourcc, profile,
+        return new SubtitleTrack(id, name, selected, codec, originalCodec, fourcc, profile,
                 level, bitrate, language, description,
                 encoding);
     }
 
     @SuppressWarnings("unused") /* Used from JNI */
-    private static Track createUnknownTrackFromNative(String id, String name, String codec, String originalCodec, int fourcc, int profile,
+    private static Track createUnknownTrackFromNative(String id, String name, boolean selected, String codec, String originalCodec, int fourcc, int profile,
                                                       int level, int bitrate, String language, String description) {
-        return new UnknownTrack(id, name, codec, originalCodec, fourcc, profile,
+        return new UnknownTrack(id, name, selected, codec, originalCodec, fourcc, profile,
                 level, bitrate, language, description);
     }
 
