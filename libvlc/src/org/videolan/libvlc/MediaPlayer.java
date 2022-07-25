@@ -1040,6 +1040,9 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     /**
      * Get the list of available tracks for a given type
      *
+     * More than one tracks can be selected for one type. In that case,
+     * {@link getSelectedTracks} should be used.
+     *
      * @param type type defined by {@link Media.Track.Type}
      * @return a track array or null. Each tracks can be casted to {@link
      * Media.VideoTrack}, {@link Media.AudioTrack}, {@link
@@ -1047,7 +1050,7 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
      * Media.type}
      */
     public Media.Track[] getTracks(int type) {
-        return nativeGetTracks(type);
+        return nativeGetTracks(type, false);
     }
 
     /**
@@ -1060,6 +1063,19 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
      */
     public Media.Track getSelectedTrack(int type) {
         return nativeGetSelectedTrack(type);
+    }
+
+    /**
+     * Get the list of selected tracks for a given type
+     *
+     * @param type type defined by {@link Media.Track.Type}
+     * @return a track array or null. Each tracks can be casted to {@link
+     * Media.VideoTrack}, {@link Media.AudioTrack}, {@link
+     * Media.SubtitleTrack}, or {@link Media.UnknownTrack} depending on {@link
+     * Media.type}
+     */
+    public Media.Track[] getSelectedTracks(int type) {
+        return nativeGetTracks(type, true);
     }
 
     /**
@@ -1417,7 +1433,7 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     private native boolean nativeSetAudioOutputDevice(String id);
     private native Title[] nativeGetTitles();
     private native Chapter[] nativeGetChapters(int title);
-    private native Media.Track[] nativeGetTracks(int type);
+    private native Media.Track[] nativeGetTracks(int type, boolean selected);
     private native Media.Track nativeGetSelectedTrack(int type);
     private native Media.Track nativeGetTrackFromID(String id);
     private native boolean nativeSelectTrack(String id);

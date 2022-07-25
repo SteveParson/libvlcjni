@@ -734,7 +734,7 @@ error:
 
 jobject
 Java_org_videolan_libvlc_MediaPlayer_nativeGetTracks(JNIEnv *env, jobject thiz,
-                                                     jint type)
+                                                     jint type, jboolean selected)
 {
     vlcjni_object *p_obj = VLCJniObject_getInstance(env, thiz);
 
@@ -742,7 +742,7 @@ Java_org_videolan_libvlc_MediaPlayer_nativeGetTracks(JNIEnv *env, jobject thiz,
         return NULL;
 
     libvlc_media_tracklist_t *tracklist =
-        libvlc_media_player_get_tracklist(p_obj->u.p_mp, type);
+        libvlc_media_player_get_tracklist(p_obj->u.p_mp, type, selected);
     if (tracklist == NULL)
         return NULL;
 
