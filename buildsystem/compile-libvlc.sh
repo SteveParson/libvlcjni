@@ -98,14 +98,10 @@ fi
 # try to detect NDK version
 REL=$(grep -o '^Pkg.Revision.*[0-9]*.*' $ANDROID_NDK/source.properties |cut -d " " -f 3 | cut -d "." -f 1)
 
-if [ "$REL" -eq 21 ]; then
-    if [ "${HAVE_64}" = 1 ]; then
-        ANDROID_API=21
-    else
-        ANDROID_API=17
-    fi
+if [ "$REL" -eq 25 ]; then
+    ANDROID_API=21
 else
-    echo "NDK v21 needed, cf. https://developer.android.com/ndk/downloads/"
+    echo "NDK v25 needed, cf. https://developer.android.com/ndk/downloads/"
     exit 1
 fi
 
@@ -140,7 +136,7 @@ NDK_TOOLCHAIN_DIR=${ANDROID_NDK}/toolchains/llvm/prebuilt/${host_tag}-x86_64
 NDK_TOOLCHAIN_PATH=${NDK_TOOLCHAIN_DIR}/bin
 # Add the NDK toolchain to the PATH, needed both for contribs and for building
 # stub libraries
-CROSS_TOOLS=${NDK_TOOLCHAIN_PATH}/${TARGET_TUPLE}-
+CROSS_TOOLS=${NDK_TOOLCHAIN_PATH}/llvm-
 CROSS_CLANG=${NDK_TOOLCHAIN_PATH}/${CLANG_PREFIX}${ANDROID_API}-clang
 
 export PATH="${NDK_TOOLCHAIN_PATH}:${PATH}"
@@ -486,6 +482,8 @@ else
     echo "AS=${CROSS_TOOLS}as" >> config.mak
     echo "RANLIB=${CROSS_TOOLS}ranlib" >> config.mak
     echo "LD=${CROSS_TOOLS}ld" >> config.mak
+    echo "NM=${CROSS_TOOLS}nm" >> config.mak
+    echo "STRIP=${CROSS_TOOLS}strip" >> config.mak
 
     # fix modplug endianess check (narrowing error)
     export ac_cv_c_bigendian=no
@@ -619,8 +617,8 @@ $entry vlc_entry__$name
 $copyright vlc_entry_copyright__$name
 $license vlc_entry_license__$name
 EOF
-    ${CROSS_TOOLS}objcopy --redefine-syms ${REDEFINED_VLC_MODULES_DIR}/syms $file $outfile
-    avlc_checkfail "objcopy failed"
+    cmd="${CROSS_TOOLS}objcopy --redefine-syms ${REDEFINED_VLC_MODULES_DIR}/syms $file $outfile"
+    ${cmd} || (echo "cmd failed: $cmd" && exit 1)
 
     DEFINITION=$DEFINITION"int vlc_entry__$name (int (*)(void *, void *, int, ...), void *);\n";
     BUILTINS="$BUILTINS vlc_entry__$name,\n";
