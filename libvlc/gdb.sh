@@ -1,6 +1,7 @@
 #!/bin/sh
 
 SCRIPT_PATH=$(dirname $0)
+VLC_ANDROID_PATH="$SCRIPT_PATH/.."
 TMP_PATH="$SCRIPT_PATH"/.gdb
 NDK_GDB_ARGS="--force"
 
@@ -16,7 +17,7 @@ done
 rm -rf "$TMP_PATH"
 mkdir -p "$TMP_PATH"
 
-APP_BUILD="$SCRIPT_PATH/../application/app/build/intermediates"
+APP_BUILD="$VLC_ANDROID_PATH/application/app/build/intermediates"
 ANDROID_MANIFEST="$APP_BUILD/merged_manifests/dev/AndroidManifest.xml"
 ABI=`ls "$APP_BUILD/stripped_native_libs/dev/out/lib" --sort=time | head -n 1`
 
@@ -32,8 +33,8 @@ echo "APP_ABI := $ABI" > "$TMP_PATH"/jni/Application.mk
 DEST=obj/local/$ABI
 mkdir -p "$TMP_PATH/$DEST"
 
-cp -r "$SCRIPT_PATH"/../libvlc/jni/$DEST/*.so "$TMP_PATH/$DEST"
-cp -r "$SCRIPT_PATH"/../medialibrary/jni/$DEST/*.so "$TMP_PATH/$DEST"
+cp -r "$VLC_ANDROID_PATH"/libvlc/jni/$DEST/*.so "$TMP_PATH/$DEST"
+cp -r "$VLC_ANDROID_PATH"/medialibrary/jni/$DEST/*.so "$TMP_PATH/$DEST"
 
 
 cp "$ANDROID_MANIFEST" "$TMP_PATH"
