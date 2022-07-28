@@ -1,7 +1,7 @@
-From 2b8ae3a54db6cafbb2eed5e5611e3c92463b5ba5 Mon Sep 17 00:00:00 2001
-Message-Id: <2b8ae3a54db6cafbb2eed5e5611e3c92463b5ba5.1658330620.git.thomas@gllm.fr>
-In-Reply-To: <ff83b5af4c82650154ad217923c4f3971c1a6125.1658330620.git.thomas@gllm.fr>
-References: <ff83b5af4c82650154ad217923c4f3971c1a6125.1658330620.git.thomas@gllm.fr>
+From 20782fba5508139a517e1e1c993b38ace19e4f75 Mon Sep 17 00:00:00 2001
+Message-Id: <20782fba5508139a517e1e1c993b38ace19e4f75.1659370893.git.thomas@gllm.fr>
+In-Reply-To: <f3915491534a4bc2322f22be58b5bc98d70b796b.1659370893.git.thomas@gllm.fr>
+References: <f3915491534a4bc2322f22be58b5bc98d70b796b.1659370893.git.thomas@gllm.fr>
 From: Pierre Ynard <linkfanel@yahoo.fr>
 Date: Mon, 20 Jul 2020 13:11:34 +0200
 Subject: [PATCH 6/7] stream_ReadLine: increase line length limit

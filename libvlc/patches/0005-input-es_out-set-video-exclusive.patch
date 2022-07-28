@@ -1,7 +1,7 @@
-From 3f6ca401c236e0c19740abd77321dfa237052777 Mon Sep 17 00:00:00 2001
-Message-Id: <3f6ca401c236e0c19740abd77321dfa237052777.1658330620.git.thomas@gllm.fr>
-In-Reply-To: <ff83b5af4c82650154ad217923c4f3971c1a6125.1658330620.git.thomas@gllm.fr>
-References: <ff83b5af4c82650154ad217923c4f3971c1a6125.1658330620.git.thomas@gllm.fr>
+From 9ab9ee842430732a3c7218661b7e8d3f26da7fd8 Mon Sep 17 00:00:00 2001
+Message-Id: <9ab9ee842430732a3c7218661b7e8d3f26da7fd8.1659370893.git.thomas@gllm.fr>
+In-Reply-To: <f3915491534a4bc2322f22be58b5bc98d70b796b.1659370893.git.thomas@gllm.fr>
+References: <f3915491534a4bc2322f22be58b5bc98d70b796b.1659370893.git.thomas@gllm.fr>
 From: Thomas Guillem <thomas@gllm.fr>
 Date: Thu, 2 Jul 2020 15:05:01 +0200
 Subject: [PATCH 5/7] input: es_out: set video exclusive
