@@ -33,7 +33,7 @@ echo "APP_ABI := $ABI" > "$TMP_PATH"/jni/Application.mk
 DEST=obj/local/$ABI
 mkdir -p "$TMP_PATH/$DEST"
 
-cp -r "$VLC_ANDROID_PATH"/libvlc/jni/$DEST/*.so "$TMP_PATH/$DEST"
+cp -r "$VLC_ANDROID_PATH"/libvlcjni/libvlc/jni/$DEST/*.so "$TMP_PATH/$DEST"
 cp -r "$VLC_ANDROID_PATH"/medialibrary/jni/$DEST/*.so "$TMP_PATH/$DEST"
 
 
