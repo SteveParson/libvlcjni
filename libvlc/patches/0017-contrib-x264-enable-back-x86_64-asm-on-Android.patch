@@ -1,0 +1,30 @@
+From 00cb78c440a6f7bcb0f707bc609c48c7fc84e078 Mon Sep 17 00:00:00 2001
+Message-Id: <00cb78c440a6f7bcb0f707bc609c48c7fc84e078.1659372189.git.thomas@gllm.fr>
+In-Reply-To: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+References: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+From: Thomas Guillem <thomas@gllm.fr>
+Date: Mon, 1 Aug 2022 12:58:32 +0200
+Subject: [PATCH 17/19] contrib: x264: enable back x86_64 asm on Android
+
+Since relocation issues are now fixed.
+---
+ contrib/src/x264/rules.mak | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/contrib/src/x264/rules.mak b/contrib/src/x264/rules.mak
+index a9f1f44b5a..bbbdee8600 100644
+--- a/contrib/src/x264/rules.mak
++++ b/contrib/src/x264/rules.mak
+@@ -54,9 +54,6 @@ X264CONF += --cross-prefix="$(subst ar,,$(AR))"
+ ifeq ($(ANDROID_ABI), x86)
+ X264CONF += --disable-asm
+ endif
+-ifeq ($(ANDROID_ABI), x86_64)
+-X264CONF += --disable-asm
+-endif
+ endif
+ endif
+ ifdef HAVE_DARWIN_OS
+-- 
+2.35.1
+

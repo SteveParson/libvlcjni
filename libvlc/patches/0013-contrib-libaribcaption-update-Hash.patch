@@ -1,0 +1,29 @@
+From e98bef48d9d7dcd4ab2cafdfebd81d7c27d8e116 Mon Sep 17 00:00:00 2001
+Message-Id: <e98bef48d9d7dcd4ab2cafdfebd81d7c27d8e116.1659372189.git.thomas@gllm.fr>
+In-Reply-To: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+References: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+From: Thomas Guillem <thomas@gllm.fr>
+Date: Mon, 25 Jul 2022 16:24:33 +0200
+Subject: [PATCH 13/19] contrib: libaribcaption: update Hash
+
+ - Fix Android build with NDK25
+ - Fix va_list reuse
+ - Add aribcc_renderer_set_merge_region_images()
+ - Add aribcc_renderer_try_render()
+---
+ contrib/src/libaribcaption/rules.mak | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/contrib/src/libaribcaption/rules.mak b/contrib/src/libaribcaption/rules.mak
+index c1c8dd5897..8afc4a5330 100644
+--- a/contrib/src/libaribcaption/rules.mak
++++ b/contrib/src/libaribcaption/rules.mak
+@@ -1,4 +1,4 @@
+-LIBARIBCC_HASH := c84612b78181d9369075ec8712683c6b10d9da71
++LIBARIBCC_HASH := fab6e2a857dbda2eabca5c9b53d7a67e5c00c626
+ LIBARIBCC_VERSION := git-$(LIBARIBCC_HASH)
+ LIBARIBCC_GITURL := https://github.com/xqq/libaribcaption.git
+ 
+-- 
+2.35.1
+

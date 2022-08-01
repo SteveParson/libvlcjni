@@ -1,0 +1,32 @@
+From cb7fea0afb1b688b53b9fb49307740e7fc8c50e3 Mon Sep 17 00:00:00 2001
+Message-Id: <cb7fea0afb1b688b53b9fb49307740e7fc8c50e3.1659372189.git.thomas@gllm.fr>
+In-Reply-To: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+References: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+From: Thomas Guillem <thomas@gllm.fr>
+Date: Mon, 1 Aug 2022 13:05:49 +0200
+Subject: [PATCH 18/19] contrib: vpx: enable back i386/x86_64 asm on Android
+
+Since relocation issues are now fixed.
+---
+ contrib/src/vpx/rules.mak | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/contrib/src/vpx/rules.mak b/contrib/src/vpx/rules.mak
+index 846b1e4b92..9c12c052f4 100644
+--- a/contrib/src/vpx/rules.mak
++++ b/contrib/src/vpx/rules.mak
+@@ -136,11 +136,6 @@ endif
+ endif
+ endif
+ 
+-ifneq ($(filter i386 x86_64,$(ARCH)),)
+-# broken text relocations or invalid register for .seh_savexmm with gcc8
+-VPX_CONF += --disable-mmx
+-endif
+-
+ ifdef WITH_OPTIMIZATION
+ VPX_CFLAGS += -DNDEBUG
+ else
+-- 
+2.35.1
+

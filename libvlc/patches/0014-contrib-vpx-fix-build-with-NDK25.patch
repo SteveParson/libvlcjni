@@ -1,0 +1,35 @@
+From 42954db47b5cb378dcff105697339a49d28483ec Mon Sep 17 00:00:00 2001
+Message-Id: <42954db47b5cb378dcff105697339a49d28483ec.1659372189.git.thomas@gllm.fr>
+In-Reply-To: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+References: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+From: Thomas Guillem <thomas@gllm.fr>
+Date: Tue, 26 Jul 2022 16:48:33 +0200
+Subject: [PATCH 14/19] contrib: vpx: fix build with NDK25
+
+Disable neon_asm since it rely on arm-linux-androideabi-as (removed in
+NDK25).
+
+Temporary commit.
+---
+ contrib/src/vpx/rules.mak | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/contrib/src/vpx/rules.mak b/contrib/src/vpx/rules.mak
+index 06ddb8122b..846b1e4b92 100644
+--- a/contrib/src/vpx/rules.mak
++++ b/contrib/src/vpx/rules.mak
+@@ -162,6 +162,11 @@ ifdef HAVE_ANDROID
+ ifneq ($(shell $(VPX_CROSS)gcc -v >/dev/null 2>&1 || echo FAIL),)
+ VPX_HOSTVARS = $(HOSTVARS)
+ endif
++
++# Depends on "arm-linux-androideabi-as" that is removed in NDK25
++ifeq ($(ARCH),arm)
++VPX_CONF += --disable-neon_asm
++endif
+ endif
+ 
+ .vpx: libvpx
+-- 
+2.35.1
+

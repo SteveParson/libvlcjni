@@ -1,0 +1,54 @@
+From 0ce5ae77cf6126933dec13248ee985a11f74b6ed Mon Sep 17 00:00:00 2001
+Message-Id: <0ce5ae77cf6126933dec13248ee985a11f74b6ed.1659372189.git.thomas@gllm.fr>
+In-Reply-To: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+References: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+From: Thomas Guillem <thomas@gllm.fr>
+Date: Fri, 22 Jul 2022 08:25:16 +0200
+Subject: [PATCH 10/19] contrib: libplacebo: fix build with Android NDK25
+
+execinfo.h is present but not necessary the functions (backtrace())
+since it depends on the configured ANDROID_API.
+
+It's not a clean and "upstreamable" patch, but the execinfo code is gone
+upstream, so this patch is only temporary.
+---
+ contrib/src/libplacebo/fix-android-build.patch | 12 ++++++++++++
+ contrib/src/libplacebo/rules.mak               |  3 +++
+ 2 files changed, 15 insertions(+)
+ create mode 100644 contrib/src/libplacebo/fix-android-build.patch
+
+diff --git a/contrib/src/libplacebo/fix-android-build.patch b/contrib/src/libplacebo/fix-android-build.patch
+new file mode 100644
+index 0000000000..fc9a73a7f9
+--- /dev/null
++++ b/contrib/src/libplacebo/fix-android-build.patch
+@@ -0,0 +1,12 @@
++diff -Naur libplacebo/src/meson.build libplacebo.new/src/meson.build
++--- libplacebo/src/meson.build	2022-02-03 16:30:55.000000000 +0100
+++++ libplacebo.new/src/meson.build	2022-07-22 08:22:49.573761162 +0200
++@@ -69,7 +69,7 @@
++ endif
++ 
++ unwind = dependency('libunwind', required: get_option('unwind'))
++-has_execinfo = cc.has_header('execinfo.h')
+++has_execinfo = false
++ conf_internal.set('PL_HAVE_UNWIND', unwind.found())
++ conf_internal.set('PL_HAVE_EXECINFO', has_execinfo)
++ if unwind.found()
+diff --git a/contrib/src/libplacebo/rules.mak b/contrib/src/libplacebo/rules.mak
+index ce57bbbead..70d9e63ec4 100644
+--- a/contrib/src/libplacebo/rules.mak
++++ b/contrib/src/libplacebo/rules.mak
+@@ -37,6 +37,9 @@ libplacebo: $(PLACEBO_ARCHIVE) .sum-libplacebo
+ 	$(UNPACK)
+ 	$(APPLY) $(SRC)/libplacebo/0001-vulkan-blacklist-metal-structs-from-utils_gen.py.patch
+ 	$(APPLY) $(SRC)/libplacebo/0002-pl_thread-use-gettimeofday-for-back-compat.patch
++ifdef HAVE_ANDROID
++	$(APPLY) $(SRC)/libplacebo/fix-android-build.patch
++endif
+ 	$(MOVE)
+ 
+ .libplacebo: libplacebo crossfile.meson
+-- 
+2.35.1
+

@@ -1,0 +1,31 @@
+From ec7582f59be50082e303d3dba4e3313d6cd1346b Mon Sep 17 00:00:00 2001
+Message-Id: <ec7582f59be50082e303d3dba4e3313d6cd1346b.1659372189.git.thomas@gllm.fr>
+In-Reply-To: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+References: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+From: Thomas Guillem <thomas@gllm.fr>
+Date: Fri, 22 Jul 2022 08:43:51 +0200
+Subject: [PATCH 11/19] contrib: gnutls: fix build with Android NDK25
+
+It needs the same patch than appleos. Maybe we should check for
+aarch64 instead.
+---
+ contrib/src/gnutls/rules.mak | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/contrib/src/gnutls/rules.mak b/contrib/src/gnutls/rules.mak
+index aeb370fb3c..7f10e0de71 100644
+--- a/contrib/src/gnutls/rules.mak
++++ b/contrib/src/gnutls/rules.mak
+@@ -41,6 +41,9 @@ gnutls: gnutls-$(GNUTLS_VERSION).tar.xz .sum-gnutls
+ ifdef HAVE_DARWIN_OS
+ 	$(APPLY) $(SRC)/gnutls/gnutls-fix-aarch64-compilation-appleos.patch
+ endif
++ifdef HAVE_ANDROID
++	$(APPLY) $(SRC)/gnutls/gnutls-fix-aarch64-compilation-appleos.patch
++endif
+ 
+ 	$(UPDATE_AUTOCONFIG)
+ 	$(MOVE)
+-- 
+2.35.1
+
