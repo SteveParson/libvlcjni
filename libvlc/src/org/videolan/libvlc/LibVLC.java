@@ -53,34 +53,8 @@ public class LibVLC extends VLCObject<ILibVLC.Event> implements ILibVLC {
         mAppContext = context.getApplicationContext();
         loadLibraries();
 
-        if (options == null)
-            options = new ArrayList<>();
-        boolean setAout = true, setChroma = true;
-        // check if aout/vout options are already set
-        for (String option : options) {
-            if (option.startsWith("--aout="))
-                setAout = false;
-            if (option.startsWith("--android-display-chroma"))
-                setChroma = false;
-            if (!setAout && !setChroma)
-                break;
-        }
-
-        // set aout/vout options if they are not set
-        if (setAout || setChroma) {
-            if (setAout) {
-                final HWDecoderUtil.AudioOutput hwAout = HWDecoderUtil.getAudioOutputFromDevice();
-                if (hwAout == HWDecoderUtil.AudioOutput.OPENSLES)
-                    options.add("--aout=opensles");
-                else
-                    options.add("--aout=android_audiotrack");
-            }
-            if (setChroma) {
-                options.add("--android-display-chroma");
-                options.add("RV16");
-            }
-        }
-        nativeNew(options.toArray(new String[options.size()]), context.getDir("vlc", Context.MODE_PRIVATE).getAbsolutePath());
+        nativeNew(options != null ? options.toArray(new String[options.size()]) : null,
+                  context.getDir("vlc", Context.MODE_PRIVATE).getAbsolutePath());
     }
 
     /**
