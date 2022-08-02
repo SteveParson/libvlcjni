@@ -420,7 +420,6 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     private boolean mPlayRequested = false;
     private boolean mListenAudioPlug = true;
     private int mVoutCount = 0;
-    private boolean mAudioReset = false;
     private String mAudioOutput = "android_audiotrack";
     private String mAudioOutputDevice = null;
 
@@ -739,14 +738,6 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     public void play() {
         synchronized (this) {
             if (!mPlaying) {
-                /* HACK: stop() reset the audio output, so set it again before first play. */
-                if (mAudioReset) {
-                    if (mAudioOutput != null)
-                        nativeSetAudioOutput(mAudioOutput);
-                    if (mAudioOutputDevice != null)
-                        nativeSetAudioOutputDevice(mAudioOutputDevice);
-                    mAudioReset = false;
-                }
                 if (mListenAudioPlug)
                     registerAudioPlug(true);
                 mPlayRequested = true;
@@ -814,7 +805,6 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
         synchronized (this) {
             mPlayRequested = false;
             mPlaying = false;
-            mAudioReset = true;
         }
         nativeStop();
         if (mAfd != null) try {
