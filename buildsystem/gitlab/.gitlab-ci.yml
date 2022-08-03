@@ -122,17 +122,3 @@ publish_libs:
             - $M2_REPO
         expire_in: 2 weeks
 
-release:
-    stage: build
-    rules:
-        - if: '$CI_COMMIT_TAG =~ /^(\d+\.)?(\d+\.)?(\*|\d+)/'
-    script:
-        - ./buildsystem/compile.sh --init
-        - ./gradlew assembleRelease
-    artifacts:
-        name: "${CI_COMMIT_TAG}"
-        paths:
-            - application/app/build/outputs/apk/release/VLC-Android-*.apk
-#            - application/app/build/outputs/mapping/release/mapping.txt
-        expire_in: 2 weeks
-
