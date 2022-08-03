@@ -1,10 +1,10 @@
-From 6ad08617151298c8ccff46e64cf56ee707c71512 Mon Sep 17 00:00:00 2001
-Message-Id: <6ad08617151298c8ccff46e64cf56ee707c71512.1659372189.git.thomas@gllm.fr>
-In-Reply-To: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
-References: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+From 7c27188974301bc271dc75718f844749be8b6990 Mon Sep 17 00:00:00 2001
+Message-Id: <7c27188974301bc271dc75718f844749be8b6990.1659517329.git.thomas@gllm.fr>
+In-Reply-To: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
+References: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
 From: Thomas Guillem <thomas@gllm.fr>
 Date: Wed, 20 Jul 2022 16:44:03 +0200
-Subject: [PATCH 04/19] libvlc: media_player: Add record method
+Subject: [PATCH 4/7] libvlc: media_player: Add record method
 
 ---
  include/vlc/libvlc_events.h       |  9 ++++++++

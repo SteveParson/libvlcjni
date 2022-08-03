@@ -1,10 +1,10 @@
-From 3baa71f083b2a53c025527838c27d86d08c1dd07 Mon Sep 17 00:00:00 2001
-Message-Id: <3baa71f083b2a53c025527838c27d86d08c1dd07.1659372189.git.thomas@gllm.fr>
-In-Reply-To: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
-References: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+From 464dcd6dd872d50106ffc9dae68a90f0846642eb Mon Sep 17 00:00:00 2001
+Message-Id: <464dcd6dd872d50106ffc9dae68a90f0846642eb.1659517329.git.thomas@gllm.fr>
+In-Reply-To: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
+References: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
 From: Thomas Guillem <thomas@gllm.fr>
 Date: Thu, 3 Dec 2020 09:56:05 +0100
-Subject: [PATCH 07/19] input: display discoverer/preparsers logs
+Subject: [PATCH 7/7] input: display discoverer/preparsers logs
 
 ---
  src/input/input.c | 1 -

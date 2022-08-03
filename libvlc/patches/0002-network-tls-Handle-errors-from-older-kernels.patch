@@ -1,10 +1,10 @@
-From ec3335e1f84afb8d4f54ee7748d61f71a5cc3915 Mon Sep 17 00:00:00 2001
-Message-Id: <ec3335e1f84afb8d4f54ee7748d61f71a5cc3915.1659372189.git.thomas@gllm.fr>
-In-Reply-To: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
-References: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+From 15246d91bd07f46642e50d0eb5ef6777670c2e5d Mon Sep 17 00:00:00 2001
+Message-Id: <15246d91bd07f46642e50d0eb5ef6777670c2e5d.1659517329.git.thomas@gllm.fr>
+In-Reply-To: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
+References: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
 From: =?UTF-8?q?Hugo=20Beauz=C3=A9e-Luyssen?= <hugo@beauzee.fr>
 Date: Fri, 29 Mar 2019 10:56:26 +0100
-Subject: [PATCH 02/19] network: tls: Handle errors from older kernels
+Subject: [PATCH 2/7] network: tls: Handle errors from older kernels
 
 If MSG_FASTOPEN is defined, but turns out to be unimplemented by the
 underlying kernel (as is the case on android where the NDK claims to

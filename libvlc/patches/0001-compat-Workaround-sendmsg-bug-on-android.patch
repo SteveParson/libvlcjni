@@ -1,8 +1,8 @@
-From 5b01e96eabd14521cfeb33b5ac11495b77f894cc Mon Sep 17 00:00:00 2001
-Message-Id: <5b01e96eabd14521cfeb33b5ac11495b77f894cc.1659372189.git.thomas@gllm.fr>
+From 74d4a8bf145b38305729f6ab4286a82704732af9 Mon Sep 17 00:00:00 2001
+Message-Id: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
 From: =?UTF-8?q?Hugo=20Beauz=C3=A9e-Luyssen?= <hugo@beauzee.fr>
 Date: Thu, 28 Mar 2019 15:23:48 +0100
-Subject: [PATCH 01/19] compat: Workaround sendmsg bug on android
+Subject: [PATCH 1/7] compat: Workaround sendmsg bug on android
 
 This only happens on 64bits builds, see compat/sendmsg.c comments
 ---
