@@ -20,9 +20,12 @@ stages:
     stage: build
     script: |
         cd .. 
-        [ ! -d "vlc-android" ] && git clone https://code.videolan.org/videolan/vlc-android
+        rm -rf vlc-android
+        git clone https://code.videolan.org/videolan/vlc-android
         cd vlc-android
         ./buildsystem/compile.sh ${EXTRA_BUILD_PARAM} -a ${ARCH}
+    after_script:
+      - rm -rf ../vlc-android
     rules:
         # Explicitely refuse to build anything that would also trigger
         # a medialib build
