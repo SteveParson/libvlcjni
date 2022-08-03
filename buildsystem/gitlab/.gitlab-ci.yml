@@ -21,7 +21,7 @@ stages:
     script: |
         cd .. 
         rm -rf vlc-android
-        git clone https://code.videolan.org/videolan/vlc-android
+        git clone --depth=1 https://code.videolan.org/videolan/vlc-android
         cd vlc-android
         ./buildsystem/compile.sh ${EXTRA_BUILD_PARAM} -a ${ARCH}
     after_script:
