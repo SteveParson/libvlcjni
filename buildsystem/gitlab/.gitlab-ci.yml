@@ -16,19 +16,14 @@ stages:
   - build
   - package
 
-.build-all-base:
+# Rebuilds libvlc JNI
+.build-libvlc-base:
     stage: build
     script: |
         cd .. 
         [ ! -d "vlc-android" ] && git clone https://code.videolan.org/videolan/vlc-android
         cd vlc-android
         ./buildsystem/compile.sh ${EXTRA_BUILD_PARAM} -a ${ARCH}
-    variables:
-        MAKEFLAGS: -j8
-
-# Rebuilds libvlc JNI
-.build-libvlc-base:
-    extends: .build-all-base
     rules:
         # Explicitely refuse to build anything that would also trigger
         # a medialib build
@@ -42,6 +37,7 @@ stages:
       - if: '$CI_PIPELINE_SOURCE == "push"'
     variables:
         EXTRA_BUILD_PARAM: -l
+        MAKEFLAGS: -j8
 
 #################################
 # Template config instantiation #
