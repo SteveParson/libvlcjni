@@ -14,7 +14,6 @@ default:
 
 stages:
   - build
-  - package
 
 # Rebuilds libvlc JNI
 .build-libvlc-base:
@@ -69,56 +68,4 @@ build-libvlc-x86_64:
       - if: '$CI_COMMIT_TAG =~ /^libvlc-.*$/'
     variables:
       M2_REPO: "$CI_PROJECT_DIR/aars/repository"
-
-.build-libs-base:
-    extends: .build-release-libs-base
-    stage: build
-    script:
-      - mkdir -p $M2_REPO
-      - ./buildsystem/compile.sh -l -a ${ARCH} -m2 $M2_REPO release
-    artifacts:
-      expire_in: 1h
-      when: on_success
-      paths:
-        - $CI_PROJECT_DIR/libvlc/jni/libs/*
-        - $CI_PROJECT_DIR/.dbg/*
-
-build-libs-arm64:
-    extends: .build-libs-base
-    variables:
-        ARCH: arm64
-
-build-libs-armv7:
-    extends: .build-libs-base
-    variables:
-        ARCH: arm
-
-build-libs-x86:
-    extends: .build-libs-base
-    variables:
-        ARCH: x86
-
-build-libs-x86_64:
-    extends: .build-libs-base
-    variables:
-        ARCH: x86_64
-
-publish_libs:
-    extends: .build-release-libs-base
-    stage: package
-    needs: 
-      - job: "build-libs-arm64"
-      - job: "build-libs-armv7"
-      - job: "build-libs-x86"
-      - job: "build-libs-x86_64"
-    script:
-        - mkdir -p $M2_REPO
-        - ./buildsystem/compile.sh --init -b
-        - GRADLE_ABI=ALL RELEASE_SIGNING_ENABLED=false ./gradlew -Dmaven.repo.local=$M2_REPO -p libvlc publishToMavenLocal
-    artifacts:
-        name: "${CI_COMMIT_TAG}.dbg"
-        paths:
-            - .dbg/
-            - $M2_REPO
-        expire_in: 2 weeks
 
