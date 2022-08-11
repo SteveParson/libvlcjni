@@ -12,6 +12,7 @@ android {
         compileSdkVersion rootProject.ext.compileSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion rootProject.ext.minSdkVersion
+        resValue "string", "build_libvlc_revision", libvlcRevision()
         resValue "string", "build_vlc_revision", vlcRevision()
         tasks.whenTaskAdded { task ->
             if (task.name.startsWith('merge')) {
@@ -93,10 +94,19 @@ dependencies {
     api "androidx.legacy:legacy-support-v4:$rootProject.ext.androidxLegacyVersion"
 }
 
-def vlcRevision() {
+def libvlcRevision() {
     def vlc = new ByteArrayOutputStream()
     exec {
         commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = vlc
+    }
+    return vlc.toString()
+}
+
+def vlcRevision() {
+    def vlc = new ByteArrayOutputStream()
+    exec {
+        commandLine 'sh', '-c', 'cd ../../vlc  && git rev-parse --short HEAD'
         standardOutput = vlc
     }
     return vlc.toString()
