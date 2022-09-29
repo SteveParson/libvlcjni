@@ -103,7 +103,7 @@ fi
 # try to detect NDK version
 REL=$(grep -o '^Pkg.Revision.*[0-9]*.*' $ANDROID_NDK/source.properties |cut -d " " -f 3 | cut -d "." -f 1)
 
-if [ "$REL" -eq 25 ]; then
+if [ "$REL" = 25 ]; then
     ANDROID_API=21
 else
     echo "NDK v25 needed, cf. https://developer.android.com/ndk/downloads/"
