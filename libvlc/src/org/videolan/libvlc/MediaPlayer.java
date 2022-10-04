@@ -863,7 +863,7 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
         nativeSetAspectRatio(aspect);
     }
 
-    private boolean isAudioTrack() {
+    private boolean isAudioDigitalOutputCapable() {
         return mAudioOutput == null || mAudioOutput.contains("android_audiotrack");
     }
 
@@ -898,7 +898,7 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
         mAudioOutput = aout;
         /* If The user forced an output different than AudioTrack, don't listen to audio
          * plug events and let the user decide */
-        mListenAudioPlug = isAudioTrack();
+        mListenAudioPlug = isAudioDigitalOutputCapable();
         if (!mListenAudioPlug)
             registerAudioPlug(false);
 
@@ -927,7 +927,7 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     public synchronized boolean setAudioDigitalOutputEnabled(boolean enabled) {
         if (enabled == mAudioDigitalOutputEnabled)
             return true;
-        if (!mListenAudioPlug || !isAudioTrack())
+        if (!mListenAudioPlug || !isAudioDigitalOutputCapable())
             return false;
 
         registerAudioPlug(false);
@@ -943,7 +943,7 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
      * @return true on success
      */
     public synchronized boolean forceAudioDigitalEncodings(int []encodings) {
-        if (!isAudioTrack())
+        if (!isAudioDigitalOutputCapable())
             return false;
 
         if (encodings.length == 0)
@@ -962,7 +962,7 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
         mAudioOutputDevice = id;
         if (fromUser) {
             /* The user forced a device, don't listen to audio plug events and let the user decide */
-            mListenAudioPlug = mAudioOutputDevice == null && isAudioTrack();
+            mListenAudioPlug = mAudioOutputDevice == null && isAudioDigitalOutputCapable();
             if (!mListenAudioPlug)
                 registerAudioPlug(false);
         }
