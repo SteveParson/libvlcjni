@@ -33,7 +33,7 @@ public class HWDecoderUtil {
     }
 
     public enum AudioOutput {
-        OPENSLES, AUDIOTRACK, ALL
+        OPENSLES, ALL
     }
 
     private static class DecoderBySOC {
