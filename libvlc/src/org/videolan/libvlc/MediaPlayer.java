@@ -420,7 +420,7 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     private boolean mPlayRequested = false;
     private boolean mListenAudioPlug = true;
     private int mVoutCount = 0;
-    private String mAudioOutput = "android_audiotrack";
+    private String mAudioOutput = null;
     private String mAudioOutputDevice = null;
 
     private boolean mAudioPlugRegistered = false;
@@ -864,7 +864,7 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     }
 
     private boolean isAudioTrack() {
-        return mAudioOutput != null && mAudioOutput.equals("android_audiotrack");
+        return mAudioOutput == null || mAudioOutput.contains("android_audiotrack");
     }
 
     /**
