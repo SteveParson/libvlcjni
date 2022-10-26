@@ -864,7 +864,7 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     }
 
     private boolean isAudioDigitalOutputCapable() {
-        return mAudioOutput == null || mAudioOutput.contains("android_audiotrack");
+        return mAudioOutput == null || mAudioOutput.contains("audiotrack");
     }
 
     /**
