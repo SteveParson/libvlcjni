@@ -1,17 +1,17 @@
-From 585fe2aa2c1ab8ad994e77c4ab114ddada57c707 Mon Sep 17 00:00:00 2001
-Message-Id: <585fe2aa2c1ab8ad994e77c4ab114ddada57c707.1659517329.git.thomas@gllm.fr>
-In-Reply-To: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
-References: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
+From ab586865eef91d953b600c47cb4521fa039ee007 Mon Sep 17 00:00:00 2001
+Message-Id: <ab586865eef91d953b600c47cb4521fa039ee007.1666876576.git.thomas@gllm.fr>
+In-Reply-To: <6a9eb21838d7525666a9a306c005307aaef6afb8.1666876576.git.thomas@gllm.fr>
+References: <6a9eb21838d7525666a9a306c005307aaef6afb8.1666876576.git.thomas@gllm.fr>
 From: Soomin Lee <bubu@mikan.io>
 Date: Mon, 1 Oct 2018 15:37:57 +0200
-Subject: [PATCH 3/7] access_output: file: Add error dialog for write/open
+Subject: [PATCH 3/6] access_output: file: Add error dialog for write/open
 
 ---
  modules/access_output/file.c | 8 ++++++++
  1 file changed, 8 insertions(+)
 
 diff --git a/modules/access_output/file.c b/modules/access_output/file.c
-index d4ec686e55..1e86e20f8b 100644
+index d4ec686e559..1e86e20f8be 100644
 --- a/modules/access_output/file.c
 +++ b/modules/access_output/file.c
 @@ -86,6 +86,9 @@ static ssize_t Write( sout_access_out_t *p_access, block_t *p_buffer )

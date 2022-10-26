@@ -1,10 +1,10 @@
-From 2354021f0135e9b84a459dbb0e5af72de4486fa0 Mon Sep 17 00:00:00 2001
-Message-Id: <2354021f0135e9b84a459dbb0e5af72de4486fa0.1659517329.git.thomas@gllm.fr>
-In-Reply-To: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
-References: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
+From 2d15baf86fe0cea8255e534ff975ff6aebc128eb Mon Sep 17 00:00:00 2001
+Message-Id: <2d15baf86fe0cea8255e534ff975ff6aebc128eb.1666876576.git.thomas@gllm.fr>
+In-Reply-To: <6a9eb21838d7525666a9a306c005307aaef6afb8.1666876576.git.thomas@gllm.fr>
+References: <6a9eb21838d7525666a9a306c005307aaef6afb8.1666876576.git.thomas@gllm.fr>
 From: Thomas Guillem <thomas@gllm.fr>
 Date: Thu, 2 Jul 2020 15:05:01 +0200
-Subject: [PATCH 5/7] input: es_out: set video exclusive
+Subject: [PATCH 4/6] input: es_out: set video exclusive
 
 Since there can be only one video at a time for now (only one Surface is
 supported).
@@ -13,7 +13,7 @@ supported).
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/input/es_out.c b/src/input/es_out.c
-index 1d9fb33ecd..2280936179 100644
+index cf10e4a409b..4967cae4ceb 100644
 --- a/src/input/es_out.c
 +++ b/src/input/es_out.c
 @@ -556,7 +556,7 @@ es_out_t *input_EsOutNew( input_thread_t *p_input, input_source_t *main_source,

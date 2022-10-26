@@ -1,10 +1,10 @@
-From 15246d91bd07f46642e50d0eb5ef6777670c2e5d Mon Sep 17 00:00:00 2001
-Message-Id: <15246d91bd07f46642e50d0eb5ef6777670c2e5d.1659517329.git.thomas@gllm.fr>
-In-Reply-To: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
-References: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
+From 59586d4e6b640a9e43907f06b9c407408d633ff5 Mon Sep 17 00:00:00 2001
+Message-Id: <59586d4e6b640a9e43907f06b9c407408d633ff5.1666876576.git.thomas@gllm.fr>
+In-Reply-To: <6a9eb21838d7525666a9a306c005307aaef6afb8.1666876576.git.thomas@gllm.fr>
+References: <6a9eb21838d7525666a9a306c005307aaef6afb8.1666876576.git.thomas@gllm.fr>
 From: =?UTF-8?q?Hugo=20Beauz=C3=A9e-Luyssen?= <hugo@beauzee.fr>
 Date: Fri, 29 Mar 2019 10:56:26 +0100
-Subject: [PATCH 2/7] network: tls: Handle errors from older kernels
+Subject: [PATCH 2/6] network: tls: Handle errors from older kernels
 
 If MSG_FASTOPEN is defined, but turns out to be unimplemented by the
 underlying kernel (as is the case on android where the NDK claims to
@@ -21,7 +21,7 @@ expected.
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/src/network/stream.c b/src/network/stream.c
-index 0990c6190f..cdb6c5f0ef 100644
+index 0990c6190ff..cdb6c5f0ef7 100644
 --- a/src/network/stream.c
 +++ b/src/network/stream.c
 @@ -385,8 +385,11 @@ static ssize_t vlc_tls_ConnectWrite(vlc_tls_t *tls,

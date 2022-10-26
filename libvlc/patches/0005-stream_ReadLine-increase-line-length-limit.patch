@@ -1,10 +1,10 @@
-From 49df65886cf8d4a7bddc64d557a9c9d13f42d50c Mon Sep 17 00:00:00 2001
-Message-Id: <49df65886cf8d4a7bddc64d557a9c9d13f42d50c.1659517329.git.thomas@gllm.fr>
-In-Reply-To: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
-References: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
+From 4446fecbfd61cc02347b76883603879326657d94 Mon Sep 17 00:00:00 2001
+Message-Id: <4446fecbfd61cc02347b76883603879326657d94.1666876576.git.thomas@gllm.fr>
+In-Reply-To: <6a9eb21838d7525666a9a306c005307aaef6afb8.1666876576.git.thomas@gllm.fr>
+References: <6a9eb21838d7525666a9a306c005307aaef6afb8.1666876576.git.thomas@gllm.fr>
 From: Pierre Ynard <linkfanel@yahoo.fr>
 Date: Mon, 20 Jul 2020 13:11:34 +0200
-Subject: [PATCH 6/7] stream_ReadLine: increase line length limit
+Subject: [PATCH 5/6] stream_ReadLine: increase line length limit
 
 Very long lines are occasionally encountered in text web resources such
 as HTML, JSON or other API data. This bumps the hardcoded limit from
@@ -17,7 +17,7 @@ Fixes #24957
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/input/stream.c b/src/input/stream.c
-index e44f8dd2b2..5fadd22b82 100644
+index e44f8dd2b25..5fadd22b829 100644
 --- a/src/input/stream.c
 +++ b/src/input/stream.c
 @@ -191,7 +191,7 @@ stream_t *(vlc_stream_NewMRL)(vlc_object_t* parent, const char* mrl )

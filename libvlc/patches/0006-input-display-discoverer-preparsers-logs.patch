@@ -1,17 +1,17 @@
-From 464dcd6dd872d50106ffc9dae68a90f0846642eb Mon Sep 17 00:00:00 2001
-Message-Id: <464dcd6dd872d50106ffc9dae68a90f0846642eb.1659517329.git.thomas@gllm.fr>
-In-Reply-To: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
-References: <74d4a8bf145b38305729f6ab4286a82704732af9.1659517329.git.thomas@gllm.fr>
+From 33b4a6d265f8dbac46d99040a891e0fd96860c07 Mon Sep 17 00:00:00 2001
+Message-Id: <33b4a6d265f8dbac46d99040a891e0fd96860c07.1666876576.git.thomas@gllm.fr>
+In-Reply-To: <6a9eb21838d7525666a9a306c005307aaef6afb8.1666876576.git.thomas@gllm.fr>
+References: <6a9eb21838d7525666a9a306c005307aaef6afb8.1666876576.git.thomas@gllm.fr>
 From: Thomas Guillem <thomas@gllm.fr>
 Date: Thu, 3 Dec 2020 09:56:05 +0100
-Subject: [PATCH 7/7] input: display discoverer/preparsers logs
+Subject: [PATCH 6/6] input: display discoverer/preparsers logs
 
 ---
  src/input/input.c | 1 -
  1 file changed, 1 deletion(-)
 
 diff --git a/src/input/input.c b/src/input/input.c
-index bead2daaa5..eb8eeb3977 100644
+index 21e019a6e72..d12de7bf367 100644
 --- a/src/input/input.c
 +++ b/src/input/input.c
 @@ -297,7 +297,6 @@ input_thread_t *input_Create( vlc_object_t *p_parent,
