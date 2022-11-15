@@ -112,8 +112,4 @@ def vlcRevision() {
     return vlc.toString()
 }
 
-mavenPublish {
-    releaseSigningEnabled = false
-}
-
 apply from: '../../buildsystem/publish.gradle'
