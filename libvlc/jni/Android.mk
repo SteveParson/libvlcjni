@@ -18,7 +18,7 @@ LOCAL_SRC_FILES := $(VLC_BUILD_DIR)/lib/.libs/libvlc.a
 LOCAL_STATIC_LIBRARIES := libvlccore
 include $(PREBUILT_STATIC_LIBRARY)
 
-# libvlc static build with all its modules
+# libvlc build with all its modules
 include $(CLEAR_VARS)
 LOCAL_MODULE    := libvlc
 LOCAL_SRC_FILES := $(VLC_BUILD_DIR)/ndk/libvlcjni-modules.c \
