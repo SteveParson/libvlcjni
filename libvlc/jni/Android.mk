@@ -41,6 +41,8 @@ LOCAL_CXXFLAGS := -std=c++11
 LOCAL_STATIC_LIBRARIES := libvlccore libvlccompat libvlc-native
 include $(BUILD_SHARED_LIBRARY)
 
+ifneq ($(VLC_BUILD_JNI),0)
+
 # libvlcjni
 include $(CLEAR_VARS)
 LOCAL_MODULE    := libvlcjni
@@ -56,3 +58,5 @@ LOCAL_LDLIBS := -llog
 LOCAL_SHARED_LIBRARIES := libvlc
 
 include $(BUILD_SHARED_LIBRARY)
+
+endif

@@ -13,6 +13,8 @@ AVLC_MAKE_PREBUILT_CONTRIBS=0
 # Indicates that prebuit contribs should be
 # used instead of building the contribs from source
 AVLC_USE_PREBUILT_CONTRIBS=0
+# JNI build can be disabled for testing/CI purpose
+AVLC_BUILD_JNI=1
 while [ $# -gt 0 ]; do
     case $1 in
         help|--help)
@@ -32,6 +34,9 @@ while [ $# -gt 0 ]; do
             ;;
         --with-prebuilt-contribs)
             AVLC_USE_PREBUILT_CONTRIBS=1
+            ;;
+        --no-jni)
+            AVLC_BUILD_JNI=0
             ;;
     esac
     shift
@@ -350,6 +355,7 @@ VLC_CONFIGURE_ARGS="\
     --disable-vnc \
     --enable-jpeg \
     --enable-smb2 \
+    --enable-chromecast \
 "
 
 ########################
@@ -665,6 +671,7 @@ $NDK_BUILD -C libvlcjni/libvlc \
     VLC_CONTRIB_LDFLAGS="$VLC_CONTRIB_LDFLAGS" \
     VLC_MODULES="$VLC_MODULES" \
     VLC_LDFLAGS="$VLC_LDFLAGS" \
+    VLC_BUILD_JNI="$AVLC_BUILD_JNI" \
     APP_BUILD_SCRIPT=jni/Android.mk \
     APP_PLATFORM=android-${ANDROID_API} \
     APP_ABI=${ANDROID_ABI} \
