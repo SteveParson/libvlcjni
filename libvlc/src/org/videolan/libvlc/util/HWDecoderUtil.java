@@ -160,6 +160,10 @@ public class HWDecoderUtil {
      * (By default, returns ALL, i.e AudioTrack + OpenSles)
      */
     public static AudioOutput getAudioOutputFromDevice() {
+        /* Accept all Audio API after Android P/28 */
+        if (AndroidUtil.isPOrLater)
+            return AudioOutput.ALL;
+
         for (AudioOutputBySOC aoutBySOC : sAudioOutputBySOCList) {
             final String prop = getSystemPropertyCached(aoutBySOC.key);
             if (prop != null) {
