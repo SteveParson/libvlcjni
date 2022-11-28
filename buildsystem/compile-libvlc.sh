@@ -425,8 +425,6 @@ cd $VLC_SRC_DIR/extras/tools
 avlc_checkfail "buildsystem tools: bootstrap failed"
 make $MAKEFLAGS
 avlc_checkfail "buildsystem tools: make failed"
-make $MAKEFLAGS .gas || make $MAKEFLAGS .buildgas
-avlc_checkfail "buildsystem tools: make failed"
 cd ../../..
 
 VLC_CONTRIB="$VLC_SRC_DIR/contrib/$TARGET_TUPLE"
