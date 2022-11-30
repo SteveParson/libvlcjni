@@ -257,6 +257,7 @@ VLC_BOOTSTRAP_ARGS="\
     --disable-mad \
     --disable-medialibrary \
     --disable-mpcdec \
+    --disable-rav1e \
     --disable-samplerate \
     --disable-schroedinger \
     --disable-sdl \
