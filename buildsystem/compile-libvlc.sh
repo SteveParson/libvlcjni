@@ -365,53 +365,53 @@ VLC_CONFIGURE_ARGS="\
 ########################
 
 VLC_MODULE_BLACKLIST="
-    addons.*
-    stats
     access_(bd|shm|imem)
-    oldrc
-    real
-    hotkeys
-    gestures
-    sap
-    dynamicoverlay
-    rss
-    ball
-    audiobargraph_[av]
-    clone
-    mosaic
-    osdmenu
-    puzzle
-    mediadirs
-    t140
-    ripple
-    motion
-    sharpen
-    grain
-    posterize
-    mirror
-    wall
-    scene
-    blendbench
-    psychedelic
+    addons.*
     alphamask
-    netsync
-    audioscrobbler
-    motiondetect
-    motionblur
-    export
-    podcast
-    bluescreen
-    erase
-    stream_filter_record
-    speex_resampler
-    remoteosd
-    magnify
-    gradient
-    dtstofloat32
-    logger
-    visual
-    fb
     aout_file
+    audiobargraph_[av]
+    audioscrobbler
+    ball
+    blendbench
+    bluescreen
+    clone
+    dtstofloat32
+    dynamicoverlay
+    erase
+    export
+    fb
+    gestures
+    gradient
+    grain
+    hotkeys
+    logger
+    magnify
+    mediadirs
+    mirror
+    mosaic
+    motion
+    motionblur
+    motiondetect
+    netsync
+    oldrc
+    osdmenu
+    podcast
+    posterize
+    psychedelic
+    puzzle
+    real
+    remoteosd
+    ripple
+    rss
+    sap
+    scene
+    sharpen
+    speex_resampler
+    stats
+    stream_filter_record
+    t140
+    visual
+    wall
     yuv
     .dummy
 "
