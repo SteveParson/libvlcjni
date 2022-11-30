@@ -295,67 +295,69 @@ VLC_BOOTSTRAP_ARGS="\
 ###########################
 
 VLC_CONFIGURE_ARGS="\
-    --with-pic \
-    --disable-nls \
-    --enable-live555 --enable-realrtsp \
-    --enable-avformat \
-    --enable-swscale \
-    --enable-avcodec \
-    --enable-opus \
-    --enable-opensles \
-    --enable-matroska \
-    --enable-taglib \
-    --enable-dvbpsi \
-    --disable-vlc --disable-shared \
-    --disable-update-check \
-    --disable-vlm \
-    --disable-dbus \
-    --enable-lua \
-    --disable-vcd \
-    --disable-v4l2 \
-    --enable-dvdread \
-    --enable-dvdnav \
-    --enable-bluray \
-    --disable-linsys \
-    --disable-decklink \
-    --disable-libva \
-    --disable-dv1394 \
-    --enable-mod \
-    --disable-sid \
-    --enable-gme \
-    --disable-tremor \
-    --disable-mad \
-    --enable-mpg123 \
-    --disable-dca \
-    --disable-sdl-image \
-    --enable-zvbi \
-    --disable-fluidsynth \
-    --enable-fluidlite \
-    --disable-jack \
-    --disable-pulse \
     --disable-alsa \
-    --disable-samplerate \
-    --disable-xcb \
-    --disable-qt \
-    --disable-skins2 \
-    --disable-mtp \
-    --disable-notify \
-    --enable-libass \
-    --disable-svg \
-    --disable-udev \
-    --enable-libxml2 \
     --disable-caca \
-    --enable-gles2 \
-    --disable-goom \
-    --disable-projectm \
-    --enable-sout \
-    --enable-vorbis \
+    --disable-dbus \
+    --disable-dca \
+    --disable-decklink \
+    --disable-dv1394 \
     --disable-faad \
+    --disable-fluidsynth \
+    --disable-goom \
+    --disable-jack \
+    --disable-libva \
+    --disable-linsys \
+    --disable-mad \
+    --disable-mtp \
+    --disable-nls \
+    --disable-notify \
+    --disable-projectm \
+    --disable-pulse \
+    --disable-qt \
+    --disable-samplerate \
     --disable-schroedinger \
+    --disable-sdl-image \
+    --disable-shared \
+    --disable-sid \
+    --disable-skins2 \
+    --disable-svg \
+    --disable-tremor \
+    --disable-udev \
+    --disable-update-check \
+    --disable-v4l2 \
+    --disable-vcd \
+    --disable-vlc \
+    --disable-vlm \
     --disable-vnc \
-    --enable-jpeg \
-    --enable-smb2 \
+    --disable-xcb \
+    --enable-avcodec \
+    --enable-avformat \
+    --enable-bluray \
     --enable-chromecast \
+    --enable-dvbpsi \
+    --enable-dvdnav \
+    --enable-dvdread \
+    --enable-fluidlite \
+    --enable-gles2 \
+    --enable-gme \
+    --enable-jpeg \
+    --enable-libass \
+    --enable-libxml2 \
+    --enable-live555 \
+    --enable-lua \
+    --enable-matroska \
+    --enable-mod \
+    --enable-mpg123 \
+    --enable-opensles \
+    --enable-opus \
+    --enable-realrtsp \
+    --enable-smb2 \
+    --enable-sout \
+    --enable-swscale \
+    --enable-taglib \
+    --enable-vorbis \
+    --enable-zvbi \
+    --with-pic \
 "
 
 ########################
