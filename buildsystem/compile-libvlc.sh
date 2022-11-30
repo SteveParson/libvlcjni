@@ -243,51 +243,51 @@ avlc_build()
 ###########################
 
 VLC_BOOTSTRAP_ARGS="\
-    --enable-dvdread \
-    --enable-dvdnav \
-    --disable-dca \
-    --disable-goom \
+    --disable-aribb24 \
+    --disable-aribb25 \
+    --disable-caca \
     --disable-chromaprint \
-    --enable-lua \
+    --disable-dca \
+    --disable-faad2 \
+    --disable-fontconfig \
+    --disable-gettext \
+    --disable-goom \
+    --disable-kate \
+    --disable-libmpeg2 \
+    --disable-mad \
+    --disable-medialibrary \
+    --disable-mpcdec \
+    --disable-samplerate \
     --disable-schroedinger \
     --disable-sdl \
     --disable-SDL_image \
-    --disable-fontconfig \
-    --enable-zvbi \
-    --disable-kate \
-    --disable-caca \
-    --disable-gettext \
-    --disable-mpcdec \
-    --enable-upnp \
-    --enable-gme \
-    --disable-tremor \
-    --enable-vorbis \
     --disable-sidplay2 \
-    --disable-samplerate \
-    --disable-faad2 \
+    --disable-srt \
+    --disable-tremor \
+    --disable-vnc \
+    --disable-vncclient \
+    --disable-x265 \
+    --enable-ad-clauses \
+    --enable-dvdnav \
+    --enable-dvdread \
+    --enable-fluidlite \
+    --enable-gme \
     --enable-harfbuzz \
     --enable-iconv \
-    --disable-aribb24 \
-    --disable-aribb25 \
-    --enable-mpg123 \
-    --enable-libdsm \
-    --enable-smb2 \
-    --enable-libarchive \
-    --disable-libmpeg2 \
-    --enable-soxr \
-    --enable-nfs \
-    --enable-microdns \
-    --enable-fluidlite \
-    --disable-mad \
-    --disable-vncclient \
-    --disable-vnc \
     --enable-jpeg \
+    --enable-libarchive \
+    --enable-libdsm \
     --enable-libplacebo \
-    --enable-ad-clauses \
-    --disable-srt \
+    --enable-lua \
+    --enable-microdns \
+    --enable-mpg123 \
+    --enable-nfs \
+    --enable-smb2 \
+    --enable-soxr \
+    --enable-upnp \
+    --enable-vorbis \
     --enable-vpx \
-    --disable-x265 \
-    --disable-medialibrary \
+    --enable-zvbi \
 "
 
 ###########################
