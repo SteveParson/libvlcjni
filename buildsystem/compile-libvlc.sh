@@ -220,12 +220,13 @@ avlc_get_symbol()
 
 avlc_gen_pc_file()
 {
-echo "Generating $1 pkg-config file"
-echo "Name: $1
-Description: $1
-Version: $2
-Libs: -l$1
-Cflags:" > contrib/${TARGET_TUPLE}/lib/pkgconfig/$(echo $1|tr 'A-Z' 'a-z').pc
+echo -n "Generating $2 pkg-config file"
+echo $1/$(echo $2|tr 'A-Z' 'a-z').pc
+echo "Name: $2
+Description: $2
+Version: $3
+Libs: -l$2
+Cflags:" > $1/$(echo $2|tr 'A-Z' 'a-z').pc
 }
 
 avlc_pkgconfig()
@@ -451,9 +452,8 @@ fi
 echo "Building the contribs"
 mkdir -p contrib/contrib-android-${TARGET_TUPLE}
 
-mkdir -p contrib/${TARGET_TUPLE}/lib/pkgconfig
-avlc_gen_pc_file EGL 1.1
-avlc_gen_pc_file GLESv2 2
+avlc_gen_pc_file contrib/${TARGET_TUPLE}/lib/pkgconfig EGL 1.1
+avlc_gen_pc_file contrib/${TARGET_TUPLE}/lib/pkgconfig GLESv2 2
 
 cd contrib/contrib-android-${TARGET_TUPLE}
 
