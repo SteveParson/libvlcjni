@@ -124,6 +124,14 @@ else
 fi
 
 VLC_BUILD_DIR="$(cd $VLC_SRC_DIR/; pwd)/build-android-${TARGET_TUPLE}"
+
+if [ -z $VLC_TARBALLS ]; then
+    VLC_TARBALLS="$(cd $VLC_SRC_DIR/;pwd)/contrib/tarballs"
+fi
+if [ ! -d $VLC_TARBALLS ]; then
+    mkdir -p $VLC_TARBALLS
+fi
+
 VLC_OUT_PATH="$VLC_BUILD_DIR/ndk"
 mkdir -p $VLC_OUT_PATH
 
@@ -475,7 +483,7 @@ if [ "$AVLC_USE_PREBUILT_CONTRIBS" -gt "0" ]; then
         make prebuilt PREBUILT_URL="$VLC_PREBUILT_CONTRIBS_URL"
         avlc_checkfail "Fetching prebuilt contribs from ${VLC_PREBUILT_CONTRIBS_URL} failed"
     fi
-    make .luac
+    make TARBALLS="$VLC_TARBALLS" .luac
 else
     # Some libraries have arm assembly which won't build in thumb mode
     # We append -marm to the CFLAGS of these libs to disable thumb mode
@@ -495,14 +503,14 @@ else
     # fix modplug endianess check (narrowing error)
     export ac_cv_c_bigendian=no
 
-    make $MAKEFLAGS fetch
+    make TARBALLS="$VLC_TARBALLS" $MAKEFLAGS fetch
     avlc_checkfail "contribs: make fetch failed"
 
     # gettext
-    which autopoint >/dev/null || make $MAKEFLAGS .gettext
+    which autopoint >/dev/null || make TARBALLS="$VLC_TARBALLS" $MAKEFLAGS .gettext
     #export the PATH
     # Make
-    make $MAKEFLAGS
+    make TARBALLS="$VLC_TARBALLS" $MAKEFLAGS
     avlc_checkfail "contribs: make failed"
 
     # Make prebuilt contribs package
