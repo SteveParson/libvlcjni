@@ -207,7 +207,7 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    void updateVideoSurfaces() {
+    void updateVideoSurfaces(boolean updatePlayerLayout) {
         if (mMediaPlayer == null || mMediaPlayer.isReleased() || !mMediaPlayer.getVLCVout().areViewsAttached()) return;
         final boolean isPrimary = mDisplayManager == null || mDisplayManager.isPrimary();
         final Activity activity = !isPrimary ? null : AndroidUtil.resolveActivity(mVideoSurfaceFrame.getContext());
@@ -249,7 +249,7 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
             lp.width  = ViewGroup.LayoutParams.MATCH_PARENT;
             lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
             mVideoSurfaceFrame.setLayoutParams(lp);
-            if (mVideoWidth * mVideoHeight == 0) changeMediaPlayerLayout(sw, sh);
+            if (mVideoWidth * mVideoHeight == 0 && updatePlayerLayout) changeMediaPlayerLayout(sw, sh);
             return;
         }
 
@@ -326,18 +326,31 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onNewVideoLayout(IVLCVout vlcVout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen) {
-        mVideoWidth = width;
-        mVideoHeight = height;
-        mVideoVisibleWidth = visibleWidth;
-        mVideoVisibleHeight = visibleHeight;
-        mVideoSarNum = sarNum;
-        mVideoSarDen = sarDen;
-        updateVideoSurfaces();
+        boolean updatePlayerLayout = false;
+        if (width == 0 && height == 0 && visibleWidth == 0 && visibleHeight == 0 && sarNum == 0 && sarDen == 0) {
+            mVideoWidth = mVideoHeight = mVideoVisibleWidth = mVideoVisibleHeight = 0;
+            mVideoSarNum = mVideoSarDen = 0;
+        } else {
+            if (width != 0 && height != 0) {
+                mVideoWidth = width;
+                mVideoHeight = height;
+                updatePlayerLayout = true;
+            }
+            if (visibleWidth != 0 && visibleHeight != 0) {
+                mVideoVisibleWidth = visibleWidth;
+                mVideoVisibleHeight = visibleHeight;
+            }
+            if (sarNum != 0 && sarDen != 0) {
+                mVideoSarNum = sarNum;
+                mVideoSarDen = sarDen;
+            }
+        }
+        updateVideoSurfaces(updatePlayerLayout);
     }
 
     void setVideoScale(MediaPlayer.ScaleType type) {
         mCurrentScaleType = type;
-        updateVideoSurfaces();
+        updateVideoSurfaces(true);
     }
 
     MediaPlayer.ScaleType getVideoScale() {
