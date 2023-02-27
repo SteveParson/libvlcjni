@@ -58,8 +58,8 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
                 ViewStub stub = mVideoSurfaceFrame.findViewById(R.id.surface_stub);
                 mVideoSurface = stub != null ? (SurfaceView) stub.inflate() : (SurfaceView) mVideoSurfaceFrame.findViewById(R.id.surface_video);
                 if (subtitles) {
-                    stub = mVideoSurfaceFrame.findViewById(R.id.subtitles_surface_stub);
-                    mSubtitlesSurface = stub != null ? (SurfaceView) stub.inflate() : (SurfaceView) mVideoSurfaceFrame.findViewById(R.id.surface_subtitles);
+                    stub = surfaceFrame.findViewById(R.id.subtitles_surface_stub);
+                    mSubtitlesSurface = stub != null ? (SurfaceView) stub.inflate() : (SurfaceView) surfaceFrame.findViewById(R.id.surface_subtitles);
                     mSubtitlesSurface.setZOrderMediaOverlay(true);
                     mSubtitlesSurface.getHolder().setFormat(PixelFormat.TRANSLUCENT);
                 }
@@ -101,7 +101,7 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
                 private final Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        if (mVideoSurfaceFrame != null && mOnLayoutChangeListener != null) updateVideoSurfaces();
+                        if (mVideoSurfaceFrame != null && mOnLayoutChangeListener != null) updateVideoSurfaces(true);
                     }
                 };
                 @Override
@@ -237,19 +237,19 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
         if (videoView == null)
             videoView = mVideoTexture;
 
+        if (updatePlayerLayout)
+            changeMediaPlayerLayout(sw, sh);
+
         ViewGroup.LayoutParams lp = videoView.getLayoutParams();
         if (mVideoWidth * mVideoHeight == 0 || (AndroidUtil.isNougatOrLater && activity != null && activity.isInPictureInPictureMode())) {
             /* Case of OpenGL vouts: handles the placement of the video using MediaPlayer API */
             lp.width  = ViewGroup.LayoutParams.MATCH_PARENT;
             lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
             videoView.setLayoutParams(lp);
-            if (mSubtitlesSurface != null)
-                mSubtitlesSurface.setLayoutParams(lp);
             lp = mVideoSurfaceFrame.getLayoutParams();
             lp.width  = ViewGroup.LayoutParams.MATCH_PARENT;
             lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
             mVideoSurfaceFrame.setLayoutParams(lp);
-            if (mVideoWidth * mVideoHeight == 0 && updatePlayerLayout) changeMediaPlayerLayout(sw, sh);
             return;
         }
 
@@ -316,11 +316,8 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
         lp.width  = (int) Math.ceil(dw * mVideoWidth / mVideoVisibleWidth);
         lp.height = (int) Math.ceil(dh * mVideoHeight / mVideoVisibleHeight);
         videoView.setLayoutParams(lp);
-        if (mSubtitlesSurface != null) mSubtitlesSurface.setLayoutParams(lp);
 
         videoView.invalidate();
-        if (mSubtitlesSurface != null) mSubtitlesSurface.invalidate();
-
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
