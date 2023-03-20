@@ -67,7 +67,7 @@ done
 # Fetch VLC source #
 ####################
 
-VLC_TESTED_HASH=0f92f19cfcccd3e248e38c21b466a73fb901428c
+VLC_TESTED_HASH=7d70397c7d976677bcf9989c99f636e7cfd383c9
 VLC_REPOSITORY=https://code.videolan.org/videolan/vlc.git
 VLC_BRANCH=master
 if [ ! -d "vlc" ]; then
