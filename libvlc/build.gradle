@@ -105,4 +105,4 @@ def vlcRevision() {
     return vlc.toString()
 }
 
-apply from: '../../buildsystem/publish.gradle'
+apply from: '../buildsystem/publish.gradle'
