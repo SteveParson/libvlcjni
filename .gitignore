@@ -1,0 +1,13 @@
+# Local configuration
+local.properties
+env.sh
+
+#Android Studio
+.idea
+*.iml
+
+#gradle
+gradlew.bat
+gradlew
+gradle*/
+.gradle/
