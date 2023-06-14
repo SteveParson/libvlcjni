@@ -29,13 +29,6 @@ android {
         main {
             jniLibs.srcDirs = [ 'jni/libs' ]
             jniLibs.srcDirs += "$vlcSrcDirs"
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            resources.srcDirs = ['src']
-            aidl.srcDirs = ['src']
-            renderscript.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets' ]
         }
     }
 
