@@ -22,11 +22,15 @@ android {
                 task.dependsOn luaModuleCopy
             }
         }
-
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     sourceSets {
         main {
+            jniLibs.srcDirs = [ 'jni/libs' ]
+            jniLibs.srcDirs += "$vlcSrcDirs"
+        }
+        androidTest {
             jniLibs.srcDirs = [ 'jni/libs' ]
             jniLibs.srcDirs += "$vlcSrcDirs"
         }
@@ -85,6 +89,10 @@ clean {
 dependencies {
     api "androidx.annotation:annotation:$rootProject.ext.androidxAnnotationVersion"
     api "androidx.legacy:legacy-support-v4:$rootProject.ext.androidxLegacyVersion"
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
 def libvlcRevision() {
