@@ -7,6 +7,7 @@ ext {
     library_version = "$rootProject.ext.libvlcVersion"
 }
 android {
+    namespace 'org.videolan'
 
     defaultConfig {
         compileSdkVersion rootProject.ext.compileSdkVersion
