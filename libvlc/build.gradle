@@ -114,4 +114,4 @@ def vlcRevision() {
     return vlc.toString()
 }
 
-apply from: '../buildsystem/publish.gradle'
+if (binding.hasVariable("$rootProject.ext.publishScriptPath")) apply from: "$rootProject.ext.publishScriptPath"
