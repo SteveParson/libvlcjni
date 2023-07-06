@@ -1,6 +1,8 @@
 #! /bin/sh
 set -e
 
+LIBVLCJNI_SRC_DIR="$(cd "$(dirname "$0")"; pwd -P)/.."
+PATCHES_DIR=$LIBVLCJNI_SRC_DIR/libvlc/patches
 #############
 # FUNCTIONS #
 #############
@@ -78,7 +80,7 @@ if [ ! -d "vlc" ]; then
     git reset --hard ${VLC_TESTED_HASH} || fail "VLC sources: VLC_TESTED_HASH ${VLC_TESTED_HASH} not found"
     diagnostic "VLC sources: applying custom patches"
     # Keep Message-Id inside commits description to track them afterwards
-    git am --message-id ../libvlcjni/libvlc/patches/*.patch || fail "VLC sources: cannot apply custom patches"
+    git am --message-id $PATCHES_DIR/*.patch || fail "VLC sources: cannot apply custom patches"
     cd ..
 else
     diagnostic "VLC source: found sources, leaving untouched"
@@ -88,7 +90,7 @@ if [ "$BYPASS_VLC_SRC_CHECKS" = 1 ]; then
 elif [ $RESET -eq 1 ]; then
     cd vlc
     git reset --hard ${VLC_TESTED_HASH} || fail "VLC sources: VLC_TESTED_HASH ${VLC_TESTED_HASH} not found"
-    for patch_file in ../libvlcjni/libvlc/patches/*.patch; do
+    for patch_file in $PATCHES_DIR/*.patch; do
         git am --message-id $patch_file
         check_patch_is_applied "$patch_file"
     done
@@ -99,7 +101,7 @@ else
     cd vlc
     git cat-file -e ${VLC_TESTED_HASH} 2> /dev/null || \
         fail "Error: Your vlc checkout does not contain the latest tested commit: ${VLC_TESTED_HASH}"
-    for patch_file in ../libvlcjni/libvlc/patches/*.patch; do
+    for patch_file in $PATCHES_DIR/*.patch; do
         check_patch_is_applied "$patch_file"
     done
     cd ..
