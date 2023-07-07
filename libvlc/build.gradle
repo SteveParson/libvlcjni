@@ -114,4 +114,4 @@ def vlcRevision() {
     return vlc.toString()
 }
 
-if (rootProject.hasProperty('publishScriptPath')) apply from: "$rootProject.ext.publishScriptPath"
+apply from: "../publish.gradle"
