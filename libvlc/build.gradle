@@ -60,24 +60,24 @@ android {
 
     task hrtfsCopy(type: Copy) {
         project.logger.lifecycle('hrtfsCopy')
-        from '../../vlc/share/hrtfs'
+        from '../vlc/share/hrtfs'
         into 'assets/hrtfs'
     }
 
     task luaPlaylistCopy(type: Copy) {
-        from '../../vlc/share/lua/playlist'
+        from '../vlc/share/lua/playlist'
         into 'assets/lua/playlist'
         exclude '**/*.txt'
     }
 
     task luaModuleCopy(type: Copy) {
-        from '../../vlc/share/lua/modules'
+        from '../vlc/share/lua/modules'
         into 'assets/lua/modules'
         exclude '**/*.txt'
     }
 
     task luaMetaCopy(type: Copy) {
-        from '../../vlc/share/lua/meta'
+        from '../vlc/share/lua/meta'
         into 'assets/lua/meta'
         exclude '**/*.txt'
     }
@@ -108,7 +108,7 @@ def libvlcRevision() {
 def vlcRevision() {
     def vlc = new ByteArrayOutputStream()
     exec {
-        commandLine 'sh', '-c', 'cd ../../vlc  && git rev-parse --short HEAD'
+        commandLine 'sh', '-c', 'cd ../vlc  && git rev-parse --short HEAD'
         standardOutput = vlc
     }
     return vlc.toString()
