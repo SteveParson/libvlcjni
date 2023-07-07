@@ -19,13 +19,9 @@ stages:
 .build-libvlc-base:
     stage: build
     script: |
-        cd .. 
-        rm -rf vlc-android
-        git clone --depth=1 https://code.videolan.org/videolan/vlc-android
-        cd vlc-android
-        ./buildsystem/compile.sh ${EXTRA_BUILD_PARAM} -a ${ARCH}
-    after_script:
-      - rm -rf ../vlc-android
+        rm -rf vlc
+        ./buildsystem/get-vlc.sh
+        ./buildsystem/compile-libvlc.sh -a ${ARCH}
     rules:
         # Explicitely refuse to build anything that would also trigger
         # a medialib build
@@ -38,7 +34,6 @@ stages:
           - libvlc/**/*
       - if: '$CI_PIPELINE_SOURCE == "push"'
     variables:
-        EXTRA_BUILD_PARAM: -l
         MAKEFLAGS: -j8
 
 #################################
