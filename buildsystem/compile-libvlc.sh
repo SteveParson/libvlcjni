@@ -113,11 +113,18 @@ fi
 ############
 # VLC PATH #
 ############
-SRC_DIR=$PWD
-if [ -f $SRC_DIR/src/libvlc.h ];then
-    VLC_SRC_DIR="$SRC_DIR"
-elif [ -d $SRC_DIR/vlc ];then
-    VLC_SRC_DIR=$SRC_DIR/vlc
+LIBVLCJNI_SRC_DIR="$(cd "$(dirname "$0")"; pwd -P)/.."
+# Fix path if the script is sourced from vlc-android
+if [ -d $LIBVLCJNI_SRC_DIR/libvlcjni ];then
+    LIBVLCJNI_SRC_DIR=$LIBVLCJNI_SRC_DIR/libvlcjni
+fi
+
+if [ -f $LIBVLCJNI_SRC_DIR/src/libvlc.h ];then
+    VLC_SRC_DIR="$LIBVLCJNI_SRC_DIR"
+elif [ -f $PWD/src/libvlc.h ];then
+    VLC_SRC_DIR="$PWD"
+elif [ -d $LIBVLCJNI_SRC_DIR/vlc ];then
+    VLC_SRC_DIR=$LIBVLCJNI_SRC_DIR/vlc
 else
     echo "Could not find vlc sources"
     exit 1
@@ -432,24 +439,21 @@ VLC_MODULE_BLACKLIST="
 
 export PATH="$VLC_SRC_DIR/extras/tools/build/bin:$PATH"
 echo "Building tools"
-cd $VLC_SRC_DIR/extras/tools
-./bootstrap
+(cd $VLC_SRC_DIR/extras/tools && ./bootstrap)
 avlc_checkfail "buildsystem tools: bootstrap failed"
-make $MAKEFLAGS
+make -C $VLC_SRC_DIR/extras/tools $MAKEFLAGS
 avlc_checkfail "buildsystem tools: make failed"
-cd ../../..
 
 VLC_CONTRIB="$VLC_SRC_DIR/contrib/$TARGET_TUPLE"
 
-cd $VLC_SRC_DIR
 
 #############
 # BOOTSTRAP #
 #############
 
-if [ ! -f configure ]; then
+if [ ! -f $VLC_SRC_DIR/configure ]; then
     echo "Bootstraping"
-    ./bootstrap
+    (cd $VLC_SRC_DIR && ./bootstrap)
     avlc_checkfail "vlc: bootstrap failed"
 fi
 
@@ -458,71 +462,72 @@ fi
 ############
 
 echo "Building the contribs"
-mkdir -p contrib/contrib-android-${TARGET_TUPLE}
 
-avlc_gen_pc_file contrib/${TARGET_TUPLE}/lib/pkgconfig EGL 1.1
-avlc_gen_pc_file contrib/${TARGET_TUPLE}/lib/pkgconfig GLESv2 2
+VLC_CONTRIB_DIR=$VLC_SRC_DIR/contrib/contrib-android-${TARGET_TUPLE}
+VLC_CONTRIB_OUT_DIR=$VLC_SRC_DIR/contrib/${TARGET_TUPLE}
 
-cd contrib/contrib-android-${TARGET_TUPLE}
+mkdir -p $VLC_CONTRIB_OUT_DIR/lib/pkgconfig
+avlc_gen_pc_file $VLC_CONTRIB_OUT_DIR/lib/pkgconfig EGL 1.1
+avlc_gen_pc_file $VLC_CONTRIB_OUT_DIR/lib/pkgconfig GLESv2 2
+
+mkdir -p $VLC_CONTRIB_DIR/lib/pkgconfig
 
 # TODO: VLC 4.0 won't rm config.mak after each call to bootstrap. Move it just
 # before ">> config.make" when switching to VLC 4.0
-rm -f config.mak
+rm -f $VLC_CONTRIB_DIR/config.mak
 
 export USE_FFMPEG=1
-ANDROID_ABI=${ANDROID_ABI} ANDROID_API=${ANDROID_API} \
-    ../bootstrap --host=${TARGET_TUPLE} ${VLC_BOOTSTRAP_ARGS}
+(cd $VLC_CONTRIB_DIR && ANDROID_ABI=${ANDROID_ABI} ANDROID_API=${ANDROID_API} \
+    ../bootstrap --host=${TARGET_TUPLE} ${VLC_BOOTSTRAP_ARGS})
 avlc_checkfail "contribs: bootstrap failed"
 
 if [ "$AVLC_USE_PREBUILT_CONTRIBS" -gt "0" ]; then
     # Fetch prebuilt contribs
     if [ -z "$VLC_PREBUILT_CONTRIBS_URL" ]; then
-        make prebuilt
+        make -C $VLC_CONTRIB_DIR prebuilt
         avlc_checkfail "Fetching prebuilt contribs failed"
     else
-        make prebuilt PREBUILT_URL="$VLC_PREBUILT_CONTRIBS_URL"
+        make -C $VLC_CONTRIB_DIR prebuilt PREBUILT_URL="$VLC_PREBUILT_CONTRIBS_URL"
         avlc_checkfail "Fetching prebuilt contribs from ${VLC_PREBUILT_CONTRIBS_URL} failed"
     fi
-    make TARBALLS="$VLC_TARBALLS" .luac
+    make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" .luac
 else
     # Some libraries have arm assembly which won't build in thumb mode
     # We append -marm to the CFLAGS of these libs to disable thumb mode
-    [ ${ANDROID_ABI} = "armeabi-v7a" ] && echo "NOTHUMB := -marm" >> config.mak
+    [ ${ANDROID_ABI} = "armeabi-v7a" ] && echo "NOTHUMB := -marm" >> $VLC_CONTRIB_DIR/config.mak
 
-    echo "EXTRA_CFLAGS=${VLC_CFLAGS}" >> config.mak
-    echo "EXTRA_CXXFLAGS=${VLC_CXXFLAGS}" >> config.mak
-    echo "CC=${CROSS_CLANG}" >> config.mak
-    echo "CXX=${CROSS_CLANG}++" >> config.mak
-    echo "AR=${CROSS_TOOLS}ar" >> config.mak
-    echo "AS=${CROSS_TOOLS}as" >> config.mak
-    echo "RANLIB=${CROSS_TOOLS}ranlib" >> config.mak
-    echo "LD=${CROSS_TOOLS}ld" >> config.mak
-    echo "NM=${CROSS_TOOLS}nm" >> config.mak
-    echo "STRIP=${CROSS_TOOLS}strip" >> config.mak
+    echo "EXTRA_CFLAGS=${VLC_CFLAGS}" >> $VLC_CONTRIB_DIR/config.mak
+    echo "EXTRA_CXXFLAGS=${VLC_CXXFLAGS}" >> $VLC_CONTRIB_DIR/config.mak
+    echo "CC=${CROSS_CLANG}" >> $VLC_CONTRIB_DIR/config.mak
+    echo "CXX=${CROSS_CLANG}++" >> $VLC_CONTRIB_DIR/config.mak
+    echo "AR=${CROSS_TOOLS}ar" >> $VLC_CONTRIB_DIR/config.mak
+    echo "AS=${CROSS_TOOLS}as" >> $VLC_CONTRIB_DIR/config.mak
+    echo "RANLIB=${CROSS_TOOLS}ranlib" >> $VLC_CONTRIB_DIR/config.mak
+    echo "LD=${CROSS_TOOLS}ld" >> $VLC_CONTRIB_DIR/config.mak
+    echo "NM=${CROSS_TOOLS}nm" >> $VLC_CONTRIB_DIR/config.mak
+    echo "STRIP=${CROSS_TOOLS}strip" >> $VLC_CONTRIB_DIR/config.mak
 
     # fix modplug endianess check (narrowing error)
     export ac_cv_c_bigendian=no
 
-    make TARBALLS="$VLC_TARBALLS" $MAKEFLAGS fetch
+    make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" $MAKEFLAGS fetch
     avlc_checkfail "contribs: make fetch failed"
 
     # gettext
-    which autopoint >/dev/null || make TARBALLS="$VLC_TARBALLS" $MAKEFLAGS .gettext
+    which autopoint >/dev/null || make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" $MAKEFLAGS .gettext
     #export the PATH
     # Make
-    make TARBALLS="$VLC_TARBALLS" $MAKEFLAGS
+    make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" $MAKEFLAGS
     avlc_checkfail "contribs: make failed"
 
     # Make prebuilt contribs package
     if [ "$AVLC_MAKE_PREBUILT_CONTRIBS" -gt "0" ]; then
-        make package
+        make -C $VLC_CONTRIB_DIR package
         avlc_checkfail "Creating prebuilt contribs package failed"
     fi
 fi
 
-cd ../../
-
-mkdir -p $VLC_BUILD_DIR && cd $VLC_BUILD_DIR
+mkdir -p $VLC_BUILD_DIR
 
 #############
 # CONFIGURE #
@@ -546,12 +551,13 @@ export ac_cv_header_search_h=no
 export ac_cv_func_tdestroy=no
 export ac_cv_func_tfind=no
 
-if [ ! -e ./config.h -o "$AVLC_RELEASE" = 1 ]; then
+if [ ! -e $VLC_BUILD_DIR/config.h -o "$AVLC_RELEASE" = 1 ]; then
     VLC_CONFIGURE_DEBUG=""
     if [ ! "$AVLC_RELEASE" = 1 ]; then
         VLC_CONFIGURE_DEBUG="--enable-debug --disable-branch-protection"
     fi
 
+    (cd $VLC_BUILD_DIR && \
     CFLAGS="${VLC_CFLAGS}" \
     CXXFLAGS="${VLC_CFLAGS} ${VLC_CXXFLAGS}" \
     CC="${CROSS_CLANG}" \
@@ -567,7 +573,8 @@ if [ ! -e ./config.h -o "$AVLC_RELEASE" = 1 ]; then
     sh ../configure --host=$TARGET_TUPLE --build=x86_64-unknown-linux \
         --with-contrib=${VLC_SRC_DIR}/contrib/${TARGET_TUPLE} \
         --prefix=${VLC_BUILD_DIR}/install/ \
-        ${EXTRA_PARAMS} ${VLC_CONFIGURE_ARGS} ${VLC_CONFIGURE_DEBUG}
+        ${EXTRA_PARAMS} ${VLC_CONFIGURE_ARGS} ${VLC_CONFIGURE_DEBUG} \
+    )
     avlc_checkfail "vlc: configure failed"
 fi
 
@@ -576,12 +583,10 @@ fi
 ############
 
 echo "Building"
-make $MAKEFLAGS
+make -C $VLC_BUILD_DIR $MAKEFLAGS
 avlc_checkfail "vlc: make failed"
-make install
+make -C $VLC_BUILD_DIR install
 avlc_checkfail "vlc: make install failed"
-
-cd $SRC_DIR
 
 ##################
 # libVLC modules #
@@ -671,7 +676,7 @@ echo -e "ndk-build vlc"
 
 touch $VLC_OUT_PATH/dummy.cpp
 
-$NDK_BUILD -C libvlcjni/libvlc \
+$NDK_BUILD -C $LIBVLCJNI_SRC_DIR/libvlc \
     APP_STL="c++_shared" \
     APP_CPPFLAGS="-frtti -fexceptions" \
     VLC_SRC_DIR="$VLC_SRC_DIR" \
