@@ -706,6 +706,16 @@ $NDK_BUILD -C $LIBVLCJNI_SRC_DIR/libvlc \
     NDK_DEBUG=${NDK_DEBUG}
 avlc_checkfail "ndk-build libvlc failed"
 
+libvlc_pc_dir="$LIBVLCJNI_SRC_DIR/libvlc/jni/pkgconfig/${ANDROID_ABI}/"
+mkdir -p "${libvlc_pc_dir}"
+
+PC_PREFIX="$(cd $LIBVLCJNI_SRC_DIR/libvlc/jni/; pwd -P)" \
+PC_LIBDIR="$(cd $LIBVLCJNI_SRC_DIR/libvlc/jni/libs/${ANDROID_ABI}; pwd -P)" \
+PC_INCLUDEDIR="$(cd $VLC_SRC_DIR/include/; pwd -P)" \
+PC_CFLAGS="-I\${includedir}" \
+PC_LIBS="-L\${libdir}" \
+avlc_gen_pc_file "${libvlc_pc_dir}" libvlc 4.0.0
+
 # Remove gdbserver to avoid conflict with libvlcjni.so debug options
 rm -f $VLC_OUT_PATH/libs/${ANDROID_ABI}/gdb*
 
