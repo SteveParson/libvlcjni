@@ -235,13 +235,13 @@ avlc_get_symbol()
 
 avlc_gen_pc_file()
 {
-echo -n "Generating $2 pkg-config file"
-echo $1/$(echo $2|tr 'A-Z' 'a-z').pc
-echo "Name: $2
-Description: $2
-Version: $3
-Libs: -l$2
-Cflags:" > $1/$(echo $2|tr 'A-Z' 'a-z').pc
+    echo -n "Generating $2 pkg-config file"
+    echo $1/$(echo $2|tr 'A-Z' 'a-z').pc
+    echo "Name: $2
+    Description: $2
+    Version: $3
+    Libs: -l$2
+    Cflags:" > $1/$(echo $2|tr 'A-Z' 'a-z').pc
 }
 
 avlc_pkgconfig()
