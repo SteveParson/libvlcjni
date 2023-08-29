@@ -251,8 +251,8 @@ avlc_gen_pc_file()
     echo "Name: $2" >&3
     echo "Description: $2" >&3
     echo "Version: $3" >&3
-    echo "Libs: -l$2" >&3
-    echo "Cflags:" >&3
+    echo "Libs: ${PC_LIBS} -l$2" >&3
+    echo "Cflags: ${PC_CFLAGS}" >&3
     exec 3>&-
 }
 
