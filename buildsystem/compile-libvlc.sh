@@ -235,7 +235,7 @@ avlc_get_symbol()
 
 avlc_gen_pc_file()
 {
-    echo -n "Generating $2 pkg-config file"
+    echo -n "Generating $2 pkg-config file: "
     echo $1/$(echo $2|tr 'A-Z' 'a-z').pc
 
     exec 3<> $1/$(echo $2|tr 'A-Z' 'a-z').pc
