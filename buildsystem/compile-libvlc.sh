@@ -239,6 +239,15 @@ avlc_gen_pc_file()
     echo $1/$(echo $2|tr 'A-Z' 'a-z').pc
 
     exec 3<> $1/$(echo $2|tr 'A-Z' 'a-z').pc
+
+    [ ! -z "${PC_PREFIX}" ] &&
+        echo "prefix=${PC_PREFIX}" >&3
+    [ ! -z "${PC_LIBDIR}" ] &&
+        echo "libdir=${PC_LIBDIR}" >&3
+    [ ! -z "${PC_INCLUDEDIR}" ] &&
+        echo "includedir=${PC_INCLUDEDIR}" >&3
+    echo "" >&3
+
     echo "Name: $2" >&3
     echo "Description: $2" >&3
     echo "Version: $3" >&3
