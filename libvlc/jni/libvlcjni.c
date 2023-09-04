@@ -142,15 +142,6 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
     } \
 } while (0)
 
-    jclass Version_clazz;
-    jfieldID SDK_INT_fieldID;
-
-    GET_CLASS(Version_clazz, "android/os/Build$VERSION", false);
-    GET_ID(GetStaticFieldID, SDK_INT_fieldID, Version_clazz, "SDK_INT", "I");
-    fields.SDK_INT = (*env)->GetStaticIntField(env, Version_clazz,
-                                               SDK_INT_fieldID);
-    (*env)->DeleteLocalRef(env, Version_clazz);
-
     GET_CLASS(fields.IllegalStateException.clazz,
               "java/lang/IllegalStateException", true);
     GET_CLASS(fields.IllegalArgumentException.clazz,

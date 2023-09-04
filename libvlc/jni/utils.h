@@ -29,7 +29,6 @@
 #include "log.h"
 
 struct fields {
-    jint SDK_INT;
     struct {
         jclass clazz;
     } IllegalStateException;
