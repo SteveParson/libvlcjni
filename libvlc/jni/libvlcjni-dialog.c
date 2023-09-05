@@ -52,8 +52,8 @@ display_error_cb(void *p_data, const char *psz_title, const char *psz_text)
     jstring title = vlcNewStringUTF(env, psz_title);
     jstring text = vlcNewStringUTF(env, psz_text);
 
-    (*env)->CallStaticVoidMethod(env, fields.Dialog.clazz,
-        fields.Dialog.displayErrorFromNativeID, title, text);
+    (*env)->CallStaticVoidMethod(env, fields.Dialog_clazz,
+        fields.Dialog_displayErrorFromNative, title, text);
 
     (*env)->DeleteLocalRef(env, title);
     (*env)->DeleteLocalRef(env, text);
@@ -73,8 +73,8 @@ display_login_cb(void *p_data, libvlc_dialog_id *p_id, const char *psz_title,
     jstring text = vlcNewStringUTF(env, psz_text);
     jstring default_username = vlcNewStringUTF(env, psz_default_username);
 
-    jdialog = (*env)->CallStaticObjectMethod(env, fields.Dialog.clazz,
-        fields.Dialog.displayLoginFromNativeID,
+    jdialog = (*env)->CallStaticObjectMethod(env, fields.Dialog_clazz,
+        fields.Dialog_displayLoginFromNative,
         (jlong)(intptr_t) p_id, title, text, default_username, b_ask_store);
     dialog_set_context(env, p_id, jdialog);
 
@@ -100,8 +100,8 @@ display_question_cb(void *p_data, libvlc_dialog_id *p_id, const char *psz_title,
     jstring action1 =  psz_action1 ? vlcNewStringUTF(env, psz_action1) : NULL;
     jstring action2 =  psz_action2 ? vlcNewStringUTF(env, psz_action2) : NULL;
 
-    jdialog = (*env)->CallStaticObjectMethod(env, fields.Dialog.clazz,
-        fields.Dialog.displayQuestionFromNativeID,
+    jdialog = (*env)->CallStaticObjectMethod(env, fields.Dialog_clazz,
+        fields.Dialog_displayQuestionFromNative,
         (jlong)(intptr_t) p_id, title, text, i_type, cancel, action1, action2);
     dialog_set_context(env, p_id, jdialog);
 
@@ -128,8 +128,8 @@ display_progress_cb(void *p_data, libvlc_dialog_id *p_id, const char *psz_title,
     jstring text = vlcNewStringUTF(env, psz_text);
     jstring cancel = vlcNewStringUTF(env, psz_cancel);
 
-    jdialog = (*env)->CallStaticObjectMethod(env, fields.Dialog.clazz,
-        fields.Dialog.displayProgressFromNativeID,
+    jdialog = (*env)->CallStaticObjectMethod(env, fields.Dialog_clazz,
+        fields.Dialog_displayProgressFromNative,
         (jlong)(intptr_t) p_id, title, text, b_indeterminate, f_position, cancel);
     dialog_set_context(env, p_id, jdialog);
 
@@ -149,8 +149,8 @@ cancel_cb(void *p_data, libvlc_dialog_id *p_id)
     if (!(env = jni_get_env(THREAD_NAME)))
         return;
 
-    (*env)->CallStaticVoidMethod(env, fields.Dialog.clazz,
-        fields.Dialog.cancelFromNativeID, jdialog);
+    (*env)->CallStaticVoidMethod(env, fields.Dialog_clazz,
+        fields.Dialog_cancelFromNative, jdialog);
 }
 
 static void
@@ -167,8 +167,8 @@ update_progress_cb(void *p_data, libvlc_dialog_id *p_id, float f_position,
 
     jstring text = vlcNewStringUTF(env, psz_text);
 
-    (*env)->CallStaticVoidMethod(env, fields.Dialog.clazz,
-        fields.Dialog.updateProgressFromNativeID, jdialog, f_position, text);
+    (*env)->CallStaticVoidMethod(env, fields.Dialog_clazz,
+        fields.Dialog_updateProgressFromNative, jdialog, f_position, text);
 
     (*env)->DeleteLocalRef(env, text);
 }

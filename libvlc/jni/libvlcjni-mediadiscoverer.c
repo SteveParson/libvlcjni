@@ -100,8 +100,8 @@ service_to_object(JNIEnv *env, libvlc_media_discoverer_description_t *p_service)
     jname = vlcNewStringUTF(env, p_service->psz_name);
     jlongName = vlcNewStringUTF(env, p_service->psz_longname);
 
-    jobject jobj = (*env)->CallStaticObjectMethod(env, fields.MediaDiscoverer.clazz,
-                        fields.MediaDiscoverer.createDescriptionFromNativeID,
+    jobject jobj = (*env)->CallStaticObjectMethod(env, fields.MediaDiscoverer_clazz,
+                        fields.MediaDiscoverer_createDescriptionFromNative,
                         jname, jlongName, p_service->i_cat);
 
     (*env)->DeleteLocalRef(env, jname);
@@ -129,7 +129,7 @@ Java_org_videolan_libvlc_MediaDiscoverer_nativeList(JNIEnv *env, jobject thiz,
         return NULL;
 
     array = (*env)->NewObjectArray(env, i_nb_services,
-                                   fields.MediaDiscoverer.Description.clazz,
+                                   fields.MediaDiscoverer_Description_clazz,
                                    NULL);
     if (!array)
         goto error;

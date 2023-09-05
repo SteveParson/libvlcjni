@@ -42,7 +42,7 @@ static vlcjni_object *
 VLCJniObject_getInstanceInternal(JNIEnv *env, jobject thiz)
 {
     return (vlcjni_object*)(intptr_t) (*env)->GetLongField(env, thiz,
-                                                fields.VLCObject.mInstanceID);
+                                                fields.VLCObject_mInstance);
 }
 
 vlcjni_object *
@@ -60,7 +60,7 @@ static void
 VLCJniObject_setInstance(JNIEnv *env, jobject thiz, vlcjni_object *p_obj)
 {
     (*env)->SetLongField(env, thiz,
-                         fields.VLCObject.mInstanceID,
+                         fields.VLCObject_mInstance,
                          (jlong)(intptr_t)p_obj);
 }
 
@@ -177,7 +177,7 @@ VLCJniObject_eventCallback(const libvlc_event_t *ev, void *data)
 
     if (p_obj->p_owner->weak)
         (*env)->CallVoidMethod(env, p_obj->p_owner->weak,
-                               fields.VLCObject.dispatchEventFromNativeID,
+                               fields.VLCObject_dispatchEventFromNative,
                                jevent.type, jevent.arg1, jevent.arg2,
                                jevent.argf1, string);
     if (string)

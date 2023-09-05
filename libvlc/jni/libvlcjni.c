@@ -117,20 +117,17 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
     p_std_logger = std_logger_Open("VLC-std");
 #endif
 
-#define GET_CLASS(clazz, str, b_globlal) do { \
-    (clazz) = (*env)->FindClass(env, (str)); \
-    if (!(clazz)) { \
+#define GET_CLASS(clazz, str) do { \
+    jclass local_class = (*env)->FindClass(env, (str)); \
+    if (!local_class) { \
         LOGE("FindClass(%s) failed", (str)); \
         return -1; \
     } \
-    if (b_globlal) { \
-        jclass local_class = (clazz); \
-        (clazz) = (jclass) (*env)->NewGlobalRef(env, (clazz)); \
-        (*env)->DeleteLocalRef(env, local_class); \
-        if (!(clazz)) { \
-            LOGE("NewGlobalRef(%s) failed", (str)); \
-            return -1; \
-        } \
+    (clazz) = (jclass) (*env)->NewGlobalRef(env, local_class); \
+    (*env)->DeleteLocalRef(env, local_class); \
+    if (!(clazz)) { \
+        LOGE("NewGlobalRef(%s) failed", (str)); \
+        return -1; \
     } \
 } while (0)
 
@@ -142,178 +139,16 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
     } \
 } while (0)
 
-    GET_CLASS(fields.IllegalStateException.clazz,
-              "java/lang/IllegalStateException", true);
-    GET_CLASS(fields.IllegalArgumentException.clazz,
-              "java/lang/IllegalArgumentException", true);
-    GET_CLASS(fields.RuntimeException.clazz,
-              "java/lang/RuntimeException", true);
-    GET_CLASS(fields.OutOfMemoryError.clazz,
-              "java/lang/OutOfMemoryError", true);
-    GET_CLASS(fields.String.clazz,
-              "java/lang/String", true);
-    GET_CLASS(fields.FileDescriptor.clazz,
-              "java/io/FileDescriptor", true);
-    GET_ID(GetFieldID,
-           fields.FileDescriptor.descriptorID,
-           fields.FileDescriptor.clazz,
-           "descriptor", "I");
-    GET_CLASS(fields.VLCObject.clazz,
-              "org/videolan/libvlc/VLCObject", true);
-    GET_CLASS(fields.Media.clazz,
-              "org/videolan/libvlc/Media", true);
-    GET_CLASS(fields.Media.Track.clazz,
-              "org/videolan/libvlc/interfaces/IMedia$Track", true);
-    GET_CLASS(fields.Media.Slave.clazz,
-              "org/videolan/libvlc/interfaces/IMedia$Slave", true);
-    GET_CLASS(fields.MediaPlayer.clazz,
-              "org/videolan/libvlc/MediaPlayer", true);
-    GET_CLASS(fields.MediaPlayer.Title.clazz,
-              "org/videolan/libvlc/MediaPlayer$Title", true);
-    GET_CLASS(fields.MediaPlayer.Chapter.clazz,
-              "org/videolan/libvlc/MediaPlayer$Chapter", true);
-    GET_CLASS(fields.MediaPlayer.Equalizer.clazz,
-              "org/videolan/libvlc/MediaPlayer$Equalizer", true);
-    GET_CLASS(fields.MediaDiscoverer.clazz,
-              "org/videolan/libvlc/MediaDiscoverer", true);
-    GET_CLASS(fields.MediaDiscoverer.Description.clazz,
-              "org/videolan/libvlc/MediaDiscoverer$Description", true);
-    GET_CLASS(fields.RendererDiscoverer.clazz,
-              "org/videolan/libvlc/RendererDiscoverer", true);
-    GET_CLASS(fields.RendererDiscoverer.Description.clazz,
-              "org/videolan/libvlc/RendererDiscoverer$Description", true);
-    GET_CLASS(fields.Dialog.clazz,
-              "org/videolan/libvlc/Dialog", true);
-
-    GET_ID(GetFieldID,
-           fields.VLCObject.mInstanceID,
-           fields.VLCObject.clazz,
-           "mInstance", "J");
-
-    GET_ID(GetFieldID,
-           fields.MediaPlayer.Equalizer.mInstanceID,
-           fields.MediaPlayer.Equalizer.clazz,
-           "mInstance", "J");
-
-    GET_ID(GetMethodID,
-           fields.VLCObject.dispatchEventFromNativeID,
-           fields.VLCObject.clazz,
-           "dispatchEventFromNative", "(IJJFLjava/lang/String;)V");
-
-    GET_ID(GetStaticMethodID,
-           fields.Media.createAudioTrackFromNativeID,
-           fields.Media.clazz,
-           "createAudioTrackFromNative",
-           "(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;IIIILjava/lang/String;Ljava/lang/String;II)"
-           "Lorg/videolan/libvlc/interfaces/IMedia$Track;");
-
-    GET_ID(GetStaticMethodID,
-           fields.Media.createVideoTrackFromNativeID,
-           fields.Media.clazz,
-           "createVideoTrackFromNative",
-           "(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;IIIILjava/lang/String;Ljava/lang/String;IIIIIIII)"
-           "Lorg/videolan/libvlc/interfaces/IMedia$Track;");
-
-    GET_ID(GetStaticMethodID,
-           fields.Media.createSubtitleTrackFromNativeID,
-           fields.Media.clazz,
-           "createSubtitleTrackFromNative",
-           "(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;IIIILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)"
-           "Lorg/videolan/libvlc/interfaces/IMedia$Track;");
-
-    GET_ID(GetStaticMethodID,
-           fields.Media.createUnknownTrackFromNativeID,
-           fields.Media.clazz,
-           "createUnknownTrackFromNative",
-           "(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;IIIILjava/lang/String;Ljava/lang/String;)"
-           "Lorg/videolan/libvlc/interfaces/IMedia$Track;");
-
-    GET_ID(GetStaticMethodID,
-           fields.Media.createSlaveFromNativeID,
-           fields.Media.clazz,
-           "createSlaveFromNative",
-           "(IILjava/lang/String;)"
-           "Lorg/videolan/libvlc/interfaces/IMedia$Slave;");
-
-    GET_ID(GetStaticMethodID,
-           fields.Media.createStatsFromNativeID,
-           fields.Media.clazz,
-           "createStatsFromNative",
-           "(IFIFIIIIIIIIIIF)"
-           "Lorg/videolan/libvlc/interfaces/IMedia$Stats;");
-
-    GET_ID(GetStaticMethodID,
-           fields.MediaPlayer.createTitleFromNativeID,
-           fields.MediaPlayer.clazz,
-           "createTitleFromNative",
-           "(JLjava/lang/String;I)Lorg/videolan/libvlc/MediaPlayer$Title;");
-
-    GET_ID(GetStaticMethodID,
-           fields.MediaPlayer.createChapterFromNativeID,
-           fields.MediaPlayer.clazz,
-           "createChapterFromNative",
-           "(JJLjava/lang/String;)Lorg/videolan/libvlc/MediaPlayer$Chapter;");
-
-    GET_ID(GetStaticMethodID,
-           fields.MediaDiscoverer.createDescriptionFromNativeID,
-           fields.MediaDiscoverer.clazz,
-           "createDescriptionFromNative",
-           "(Ljava/lang/String;Ljava/lang/String;I)"
-           "Lorg/videolan/libvlc/MediaDiscoverer$Description;");
-
-    GET_ID(GetStaticMethodID,
-           fields.RendererDiscoverer.createDescriptionFromNativeID,
-           fields.RendererDiscoverer.clazz,
-           "createDescriptionFromNative",
-           "(Ljava/lang/String;Ljava/lang/String;)"
-           "Lorg/videolan/libvlc/RendererDiscoverer$Description;");
-
-    GET_ID(GetStaticMethodID,
-           fields.RendererDiscoverer.createItemFromNativeID,
-           fields.RendererDiscoverer.clazz,
-           "createItemFromNative",
-           "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IJ)"
-           "Lorg/videolan/libvlc/RendererItem;");
-
-    GET_ID(GetStaticMethodID,
-           fields.Dialog.displayErrorFromNativeID,
-           fields.Dialog.clazz,
-           "displayErrorFromNative",
-           "(Ljava/lang/String;Ljava/lang/String;)V");
-
-    GET_ID(GetStaticMethodID,
-           fields.Dialog.displayLoginFromNativeID,
-           fields.Dialog.clazz,
-           "displayLoginFromNative",
-           "(JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)"
-           "Lorg/videolan/libvlc/Dialog;");
-
-    GET_ID(GetStaticMethodID,
-           fields.Dialog.displayQuestionFromNativeID,
-           fields.Dialog.clazz,
-           "displayQuestionFromNative",
-           "(JLjava/lang/String;Ljava/lang/String;ILjava/lang/String;"
-           "Ljava/lang/String;Ljava/lang/String;)"
-           "Lorg/videolan/libvlc/Dialog;");
-
-    GET_ID(GetStaticMethodID,
-           fields.Dialog.displayProgressFromNativeID,
-           fields.Dialog.clazz,
-           "displayProgressFromNative",
-           "(JLjava/lang/String;Ljava/lang/String;ZFLjava/lang/String;)"
-           "Lorg/videolan/libvlc/Dialog;");
-
-    GET_ID(GetStaticMethodID,
-           fields.Dialog.cancelFromNativeID,
-           fields.Dialog.clazz,
-           "cancelFromNative",
-           "(Lorg/videolan/libvlc/Dialog;)V");
-
-    GET_ID(GetStaticMethodID,
-           fields.Dialog.updateProgressFromNativeID,
-           fields.Dialog.clazz,
-           "updateProgressFromNative",
-           "(Lorg/videolan/libvlc/Dialog;FLjava/lang/String;)V");
+#define CLAZZ(name, fullname) \
+    GET_CLASS(fields.name##_clazz, fullname);
+#define FIELD(clazz, name, args) \
+    GET_ID(GetFieldID, fields.clazz##_##name, fields.clazz##_clazz, #name, args);
+#define METHOD(clazz, name, get_type, args) \
+    GET_ID(get_type, fields.clazz##_##name, fields.clazz##_clazz, #name, args);
+#include "jni_bindings.h"
+#undef CLAZZ
+#undef FIELD
+#undef METHOD
 
 #undef GET_CLASS
 #undef GET_ID
@@ -329,25 +164,14 @@ void JNI_OnUnload(JavaVM* vm, void* reserved)
     if ((*vm)->GetEnv(vm, (void**) &env, VLC_JNI_VERSION) != JNI_OK)
         return;
 
-    (*env)->DeleteGlobalRef(env, fields.IllegalStateException.clazz);
-    (*env)->DeleteGlobalRef(env, fields.IllegalArgumentException.clazz);
-    (*env)->DeleteGlobalRef(env, fields.RuntimeException.clazz);
-    (*env)->DeleteGlobalRef(env, fields.OutOfMemoryError.clazz);
-    (*env)->DeleteGlobalRef(env, fields.String.clazz);
-    (*env)->DeleteGlobalRef(env, fields.FileDescriptor.clazz);
-    (*env)->DeleteGlobalRef(env, fields.VLCObject.clazz);
-    (*env)->DeleteGlobalRef(env, fields.Media.clazz);
-    (*env)->DeleteGlobalRef(env, fields.Media.Track.clazz);
-    (*env)->DeleteGlobalRef(env, fields.Media.Slave.clazz);
-    (*env)->DeleteGlobalRef(env, fields.MediaPlayer.clazz);
-    (*env)->DeleteGlobalRef(env, fields.MediaPlayer.Title.clazz);
-    (*env)->DeleteGlobalRef(env, fields.MediaPlayer.Chapter.clazz);
-    (*env)->DeleteGlobalRef(env, fields.MediaPlayer.Equalizer.clazz);
-    (*env)->DeleteGlobalRef(env, fields.MediaDiscoverer.clazz);
-    (*env)->DeleteGlobalRef(env, fields.MediaDiscoverer.Description.clazz);
-    (*env)->DeleteGlobalRef(env, fields.RendererDiscoverer.clazz);
-    (*env)->DeleteGlobalRef(env, fields.RendererDiscoverer.Description.clazz);
-    (*env)->DeleteGlobalRef(env, fields.Dialog.clazz);
+#define CLAZZ(name, fullname) \
+    (*env)->DeleteGlobalRef(env, fields.name##_clazz);
+#define FIELD(clazz, name, args)
+#define METHOD(clazz, name, get_type, args)
+#include "jni_bindings.h"
+#undef CLAZZ
+#undef FIELD
+#undef METHOD
 
     pthread_key_delete(jni_env_key);
 

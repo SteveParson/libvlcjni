@@ -28,88 +28,15 @@
 #define LOG_TAG "VLC/JNI/VLCObject"
 #include "log.h"
 
+
 struct fields {
-    struct {
-        jclass clazz;
-    } IllegalStateException;
-    struct {
-        jclass clazz;
-    } IllegalArgumentException;
-    struct {
-        jclass clazz;
-    } RuntimeException;
-    struct {
-        jclass clazz;
-    } OutOfMemoryError;
-    struct {
-        jclass clazz;
-    } String;
-    struct {
-        jclass clazz;
-        jfieldID descriptorID;
-    } FileDescriptor;
-    struct {
-        jclass clazz;
-        jfieldID mInstanceID;
-        jmethodID dispatchEventFromNativeID;
-    } VLCObject;
-    struct {
-        struct {
-            jclass clazz;
-        } Track;
-
-        struct {
-            jclass clazz;
-        } Slave;
-
-        jclass clazz;
-        jmethodID createAudioTrackFromNativeID;
-        jmethodID createVideoTrackFromNativeID;
-        jmethodID createSubtitleTrackFromNativeID;
-        jmethodID createUnknownTrackFromNativeID;
-        jmethodID createSlaveFromNativeID;
-        jmethodID createStatsFromNativeID;
-    } Media;
-    struct {
-        struct {
-            jclass clazz;
-        } Title;
-        struct {
-            jclass clazz;
-        } Chapter;
-        struct {
-            jclass clazz;
-            jfieldID mInstanceID;
-        } Equalizer;
-
-        jclass clazz;
-        jmethodID createTitleFromNativeID;
-        jmethodID createChapterFromNativeID;
-    } MediaPlayer;
-    struct {
-        struct {
-            jclass clazz;
-        } Description;
-        jclass clazz;
-        jmethodID createDescriptionFromNativeID;
-    } MediaDiscoverer;
-    struct {
-        struct {
-            jclass clazz;
-        } Description;
-        jclass clazz;
-        jmethodID createDescriptionFromNativeID;
-        jmethodID createItemFromNativeID;
-    } RendererDiscoverer;
-    struct {
-        jclass clazz;
-        jmethodID displayErrorFromNativeID;
-        jmethodID displayLoginFromNativeID;
-        jmethodID displayQuestionFromNativeID;
-        jmethodID displayProgressFromNativeID;
-        jmethodID cancelFromNativeID;
-        jmethodID updateProgressFromNativeID;
-    } Dialog;
+#define CLAZZ(name, fullname) jclass name##_clazz;
+#define FIELD(clazz, name, args) jfieldID clazz##_##name;
+#define METHOD(clazz, name, get_type, args) jmethodID clazz##_##name;
+#include "jni_bindings.h"
+#undef CLAZZ
+#undef FIELD
+#undef METHOD
 };
 
 static inline jstring vlcNewStringUTF(JNIEnv* env, const char* psz_string)

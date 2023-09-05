@@ -126,8 +126,8 @@ service_to_object(JNIEnv *env, libvlc_rd_description_t *p_service)
     jname = vlcNewStringUTF(env, p_service->psz_name);
     jlongName = vlcNewStringUTF(env, p_service->psz_longname);
 
-    jobject jobj = (*env)->CallStaticObjectMethod(env, fields.RendererDiscoverer.clazz,
-                        fields.RendererDiscoverer.createDescriptionFromNativeID,
+    jobject jobj = (*env)->CallStaticObjectMethod(env, fields.RendererDiscoverer_clazz,
+                        fields.RendererDiscoverer_createDescriptionFromNative,
                         jname, jlongName);
 
     (*env)->DeleteLocalRef(env, jname);
@@ -149,8 +149,8 @@ item_to_object(JNIEnv *env, libvlc_renderer_item_t *p_item)
     jIconUri = vlcNewStringUTF(env, libvlc_renderer_item_icon_uri(p_item));
     jFlags = libvlc_renderer_item_flags(p_item);
 
-    jobject jobj = (*env)->CallStaticObjectMethod(env, fields.RendererDiscoverer.clazz,
-                        fields.RendererDiscoverer.createItemFromNativeID,
+    jobject jobj = (*env)->CallStaticObjectMethod(env, fields.RendererDiscoverer_clazz,
+                        fields.RendererDiscoverer_createItemFromNative,
                         jname, jType, jIconUri, jFlags, (jlong) p_item);
 
     (*env)->DeleteLocalRef(env, jname);
@@ -178,7 +178,7 @@ Java_org_videolan_libvlc_RendererDiscoverer_nativeList(JNIEnv *env, jobject thiz
         return NULL;
 
     array = (*env)->NewObjectArray(env, i_nb_services,
-                                   fields.RendererDiscoverer.Description.clazz,
+                                   fields.RendererDiscoverer_Description_clazz,
                                    NULL);
     if (!array)
         goto error;

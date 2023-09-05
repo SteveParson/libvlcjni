@@ -72,7 +72,7 @@ Equalizer_getInstance(JNIEnv *env, jobject thiz)
 {
     intptr_t i_ptr = (intptr_t)
         (*env)->GetLongField(env, thiz,
-                             fields.MediaPlayer.Equalizer.mInstanceID);
+                             fields.MediaPlayer_Equalizer_mInstance);
     if (!i_ptr)
         throw_Exception(env, VLCJNI_EX_ILLEGAL_STATE,
                         "can't get Equalizer instance");
@@ -83,7 +83,7 @@ static void
 VLCJniObject_setInstance(JNIEnv *env, jobject thiz, libvlc_equalizer_t *p_eq)
 {
     (*env)->SetLongField(env, thiz,
-                         fields.MediaPlayer.Equalizer.mInstanceID,
+                         fields.MediaPlayer_Equalizer_mInstance,
                          (jlong)(intptr_t)p_eq);
 }
 
@@ -621,8 +621,8 @@ mediaplayer_title_to_object(JNIEnv *env, libvlc_title_description_t *p_title)
     if (p_title->psz_name)
         jname = vlcNewStringUTF(env, p_title->psz_name);
 
-    jobject jobj = (*env)->CallStaticObjectMethod(env, fields.MediaPlayer.clazz,
-                        fields.MediaPlayer.createTitleFromNativeID,
+    jobject jobj = (*env)->CallStaticObjectMethod(env, fields.MediaPlayer_clazz,
+                        fields.MediaPlayer_createTitleFromNative,
                         p_title->i_duration,
                         jname,
                         p_title->i_flags);
@@ -649,7 +649,7 @@ Java_org_videolan_libvlc_MediaPlayer_nativeGetTitles(JNIEnv *env, jobject thiz)
         return NULL;
 
     array = (*env)->NewObjectArray(env, i_nb_titles,
-                                   fields.MediaPlayer.Title.clazz, NULL);
+                                   fields.MediaPlayer_Title_clazz, NULL);
     if (!array)
         goto error;
 
@@ -679,8 +679,8 @@ mediaplayer_chapter_to_object(JNIEnv *env,
     if (p_chapter->psz_name)
         jname = vlcNewStringUTF(env, p_chapter->psz_name);
 
-    jobject jobj = (*env)->CallStaticObjectMethod(env, fields.MediaPlayer.clazz,
-                        fields.MediaPlayer.createChapterFromNativeID,
+    jobject jobj = (*env)->CallStaticObjectMethod(env, fields.MediaPlayer_clazz,
+                        fields.MediaPlayer_createChapterFromNative,
                         p_chapter->i_time_offset,
                         p_chapter->i_duration,
                         jname);
@@ -710,7 +710,7 @@ Java_org_videolan_libvlc_MediaPlayer_nativeGetChapters(JNIEnv *env,
         return NULL;
 
     array = (*env)->NewObjectArray(env, i_nb_chapters,
-                                   fields.MediaPlayer.Chapter.clazz, NULL);
+                                   fields.MediaPlayer_Chapter_clazz, NULL);
     if (!array)
         goto error;
 

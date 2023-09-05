@@ -119,17 +119,17 @@ static inline void throw_Exception(JNIEnv *env, enum vlcjni_exception type,
     switch (type)
     {
         case VLCJNI_EX_ILLEGAL_STATE:
-            clazz = fields.IllegalStateException.clazz;
+            clazz = fields.IllegalStateException_clazz;
             break;
         case VLCJNI_EX_RUNTIME:
-            clazz = fields.RuntimeException.clazz;
+            clazz = fields.RuntimeException_clazz;
             break;
         case VLCJNI_EX_OUT_OF_MEMORY:
-            clazz = fields.OutOfMemoryError.clazz;
+            clazz = fields.OutOfMemoryError_clazz;
             break;
         case VLCJNI_EX_ILLEGAL_ARGUMENT:
         default:
-            clazz = fields.IllegalArgumentException.clazz;
+            clazz = fields.IllegalArgumentException_clazz;
             break;
     }
     (*env)->ThrowNew(env, clazz, error ? error : fmt);

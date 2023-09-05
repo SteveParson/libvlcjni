@@ -178,7 +178,7 @@ Java_org_videolan_libvlc_Media_nativeNewFromLocation(JNIEnv *env, jobject thiz,
 static int
 FDObject_getInt(JNIEnv *env, jobject jfd)
 {
-    int fd = (*env)->GetIntField(env, jfd, fields.FileDescriptor.descriptorID);
+    int fd = (*env)->GetIntField(env, jfd, fields.FileDescriptor_descriptor);
 
     if ((*env)->ExceptionOccurred(env))
     {
@@ -422,8 +422,8 @@ media_track_to_jobject(JNIEnv *env, libvlc_media_track_t *p_tracks)
     switch (p_tracks->i_type)
     {
         case libvlc_track_audio:
-            jobj = (*env)->CallStaticObjectMethod(env, fields.Media.clazz,
-                                fields.Media.createAudioTrackFromNativeID,
+            jobj = (*env)->CallStaticObjectMethod(env, fields.Media_clazz,
+                                fields.Media_createAudioTrackFromNative,
                                 jid,
                                 jname,
                                 p_tracks->selected,
@@ -439,8 +439,8 @@ media_track_to_jobject(JNIEnv *env, libvlc_media_track_t *p_tracks)
                                 (jint)p_tracks->audio->i_rate);
             break;
         case libvlc_track_video:
-            jobj = (*env)->CallStaticObjectMethod(env, fields.Media.clazz,
-                                fields.Media.createVideoTrackFromNativeID,
+            jobj = (*env)->CallStaticObjectMethod(env, fields.Media_clazz,
+                                fields.Media_createVideoTrackFromNative,
                                 jid,
                                 jname,
                                 p_tracks->selected,
@@ -467,8 +467,8 @@ media_track_to_jobject(JNIEnv *env, libvlc_media_track_t *p_tracks)
             if (p_tracks->subtitle->psz_encoding)
                 jencoding = vlcNewStringUTF(env, p_tracks->subtitle->psz_encoding);
 
-            jobj = (*env)->CallStaticObjectMethod(env, fields.Media.clazz,
-                                fields.Media.createSubtitleTrackFromNativeID,
+            jobj = (*env)->CallStaticObjectMethod(env, fields.Media_clazz,
+                                fields.Media_createSubtitleTrackFromNative,
                                 jid,
                                 jname,
                                 p_tracks->selected,
@@ -486,8 +486,8 @@ media_track_to_jobject(JNIEnv *env, libvlc_media_track_t *p_tracks)
             break;
         }
         case libvlc_track_unknown:
-            jobj = (*env)->CallStaticObjectMethod(env, fields.Media.clazz,
-                                fields.Media.createUnknownTrackFromNativeID,
+            jobj = (*env)->CallStaticObjectMethod(env, fields.Media_clazz,
+                                fields.Media_createUnknownTrackFromNative,
                                 jid,
                                 jname,
                                 p_tracks->selected,
@@ -524,7 +524,7 @@ tracklist_to_jobjectArray(JNIEnv *env, libvlc_media_tracklist_t *tracklist)
     if (track_count == 0)
         return NULL;
 
-    jobjectArray array = (*env)->NewObjectArray(env, track_count, fields.Media.Track.clazz,
+    jobjectArray array = (*env)->NewObjectArray(env, track_count, fields.Media_Track_clazz,
                                                 NULL);
     if (array == NULL)
         return NULL;
@@ -697,7 +697,7 @@ Java_org_videolan_libvlc_Media_nativeGetSlaves(JNIEnv *env, jobject thiz)
     if (i_slaves == 0)
         return NULL;
 
-    array = (*env)->NewObjectArray(env, i_slaves, fields.Media.Slave.clazz, NULL);
+    array = (*env)->NewObjectArray(env, i_slaves, fields.Media_Slave_clazz, NULL);
     if (array == NULL)
         goto error;
 
@@ -707,8 +707,8 @@ Java_org_videolan_libvlc_Media_nativeGetSlaves(JNIEnv *env, jobject thiz)
         jstring juri = vlcNewStringUTF(env, p_slave->psz_uri);
 
         jobject jslave =
-            (*env)->CallStaticObjectMethod(env, fields.Media.clazz,
-                                           fields.Media.createSlaveFromNativeID,
+            (*env)->CallStaticObjectMethod(env, fields.Media_clazz,
+                                           fields.Media_createSlaveFromNative,
                                            p_slave->i_type, p_slave->i_priority,
                                            juri);
         (*env)->SetObjectArrayElement(env, array, i, jslave);
@@ -732,8 +732,8 @@ Java_org_videolan_libvlc_Media_nativeGetStats(JNIEnv *env, jobject thiz)
     if (i_stats == 0)
         return NULL;
 
-    return (*env)->CallStaticObjectMethod(env, fields.Media.clazz,
-                                          fields.Media.createStatsFromNativeID,
+    return (*env)->CallStaticObjectMethod(env, fields.Media_clazz,
+                                          fields.Media_createStatsFromNative,
                                           stats.i_read_bytes,
                                           stats.f_input_bitrate,
                                           stats.i_demux_read_bytes,
