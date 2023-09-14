@@ -101,7 +101,7 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
                 private final Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        if (mVideoSurfaceFrame != null && mOnLayoutChangeListener != null) updateVideoSurfaces(true);
+                        if (mVideoSurfaceFrame != null && mOnLayoutChangeListener != null) updateVideoSurfaces();
                     }
                 };
                 @Override
@@ -207,7 +207,7 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    void updateVideoSurfaces(boolean updatePlayerLayout) {
+    void updateVideoSurfaces() {
         if (mMediaPlayer == null || mMediaPlayer.isReleased() || !mMediaPlayer.getVLCVout().areViewsAttached()) return;
         final boolean isPrimary = mDisplayManager == null || mDisplayManager.isPrimary();
         final Activity activity = !isPrimary ? null : AndroidUtil.resolveActivity(mVideoSurfaceFrame.getContext());
@@ -237,11 +237,9 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
         if (videoView == null)
             videoView = mVideoTexture;
 
-        if (updatePlayerLayout)
-            changeMediaPlayerLayout(sw, sh);
-
         ViewGroup.LayoutParams lp = videoView.getLayoutParams();
         if (mVideoWidth * mVideoHeight == 0 || (AndroidUtil.isNougatOrLater && activity != null && activity.isInPictureInPictureMode())) {
+            changeMediaPlayerLayout(sw, sh);
             /* Case of OpenGL vouts: handles the placement of the video using MediaPlayer API */
             lp.width  = ViewGroup.LayoutParams.MATCH_PARENT;
             lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -323,7 +321,6 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onNewVideoLayout(IVLCVout vlcVout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen) {
-        boolean updatePlayerLayout = false;
         if (width == 0 && height == 0 && visibleWidth == 0 && visibleHeight == 0 && sarNum == 0 && sarDen == 0) {
             mVideoWidth = mVideoHeight = mVideoVisibleWidth = mVideoVisibleHeight = 0;
             mVideoSarNum = mVideoSarDen = 0;
@@ -331,7 +328,6 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
             if (width != 0 && height != 0) {
                 mVideoWidth = width;
                 mVideoHeight = height;
-                updatePlayerLayout = true;
             }
             if (visibleWidth != 0 && visibleHeight != 0) {
                 mVideoVisibleWidth = visibleWidth;
@@ -342,12 +338,12 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
                 mVideoSarDen = sarDen;
             }
         }
-        updateVideoSurfaces(updatePlayerLayout);
+        updateVideoSurfaces();
     }
 
     void setVideoScale(MediaPlayer.ScaleType type) {
         mCurrentScaleType = type;
-        updateVideoSurfaces(true);
+        updateVideoSurfaces();
     }
 
     MediaPlayer.ScaleType getVideoScale() {
