@@ -180,15 +180,15 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
                 mMediaPlayer.setScale(0);
                 break;
             case SURFACE_221_1:
-                mMediaPlayer.setAspectRatio("2.21:1");
+                mMediaPlayer.setAspectRatio("221:100");
                 mMediaPlayer.setScale(0);
                 break;
             case SURFACE_235_1:
-                mMediaPlayer.setAspectRatio("2.35:1");
+                mMediaPlayer.setAspectRatio("235:100");
                 mMediaPlayer.setScale(0);
                 break;
             case SURFACE_239_1:
-                mMediaPlayer.setAspectRatio("2.39:1");
+                mMediaPlayer.setAspectRatio("239:100");
                 mMediaPlayer.setScale(0);
                 break;
             case SURFACE_5_4:
