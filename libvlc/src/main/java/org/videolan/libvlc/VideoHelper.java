@@ -26,6 +26,9 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
 
     private MediaPlayer.ScaleType mCurrentScaleType = MediaPlayer.ScaleType.SURFACE_BEST_FIT;
 
+    private float mCustomScale;
+    private boolean mCurrentScaleCustom = false;
+
     private int mVideoHeight = 0;
     private int mVideoWidth = 0;
     private int mVideoVisibleHeight = 0;
@@ -129,6 +132,13 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
 
     private void changeMediaPlayerLayout(int displayW, int displayH) {
         if (mMediaPlayer.isReleased()) return;
+
+        if (mCurrentScaleCustom) {
+            mMediaPlayer.setAspectRatio(null);
+            mMediaPlayer.setNativeScale(mCustomScale);
+            return;
+        }
+
         /* Change the video placement using the MediaPlayer API */
         switch (mCurrentScaleType) {
             case SURFACE_BEST_FIT:
@@ -281,7 +291,14 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
         // compute the display aspect ratio
         double dar = dw / dh;
 
-        switch (mCurrentScaleType) {
+        MediaPlayer.ScaleType scaleType = mCurrentScaleType;
+        if (mCurrentScaleCustom) {
+            dh *= mCustomScale;
+            dw *= mCustomScale;
+            scaleType = MediaPlayer.ScaleType.SURFACE_BEST_FIT;
+        }
+
+        switch (scaleType) {
             case SURFACE_BEST_FIT:
                 if (dar < ar)
                     dh = dw / ar;
@@ -341,6 +358,13 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
 
     void setVideoScale(MediaPlayer.ScaleType type) {
         mCurrentScaleType = type;
+        mCurrentScaleCustom = false;
+        updateVideoSurfaces();
+    }
+
+    void setCustomScale(float scale) {
+        mCustomScale = scale;
+        mCurrentScaleCustom = true;
         updateVideoSurfaces();
     }
 
