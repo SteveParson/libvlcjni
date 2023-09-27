@@ -133,7 +133,7 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
         switch (mCurrentScaleType) {
             case SURFACE_BEST_FIT:
                 mMediaPlayer.setAspectRatio(null);
-                mMediaPlayer.setScale(0);
+                mMediaPlayer.setNativeScale(0);
                 break;
             case SURFACE_FIT_SCREEN:
             case SURFACE_FILL: {
@@ -162,10 +162,10 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
                         scale = displayW / (float) videoW; /* horizontal */
                     else
                         scale = displayH / (float) videoH; /* vertical */
-                    mMediaPlayer.setScale(scale);
+                    mMediaPlayer.setNativeScale(scale);
                     mMediaPlayer.setAspectRatio(null);
                 } else {
-                    mMediaPlayer.setScale(0);
+                    mMediaPlayer.setNativeScale(0);
                     mMediaPlayer.setAspectRatio(!videoSwapped ? ""+displayW+":"+displayH
                             : ""+displayH+":"+displayW);
                 }
@@ -173,35 +173,35 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
             }
             case SURFACE_16_9:
                 mMediaPlayer.setAspectRatio("16:9");
-                mMediaPlayer.setScale(0);
+                mMediaPlayer.setNativeScale(0);
                 break;
             case SURFACE_16_10:
                 mMediaPlayer.setAspectRatio("16:10");
-                mMediaPlayer.setScale(0);
+                mMediaPlayer.setNativeScale(0);
                 break;
             case SURFACE_221_1:
                 mMediaPlayer.setAspectRatio("221:100");
-                mMediaPlayer.setScale(0);
+                mMediaPlayer.setNativeScale(0);
                 break;
             case SURFACE_235_1:
                 mMediaPlayer.setAspectRatio("235:100");
-                mMediaPlayer.setScale(0);
+                mMediaPlayer.setNativeScale(0);
                 break;
             case SURFACE_239_1:
                 mMediaPlayer.setAspectRatio("239:100");
-                mMediaPlayer.setScale(0);
+                mMediaPlayer.setNativeScale(0);
                 break;
             case SURFACE_5_4:
                 mMediaPlayer.setAspectRatio("5:4");
-                mMediaPlayer.setScale(0);
+                mMediaPlayer.setNativeScale(0);
                 break;
             case SURFACE_4_3:
                 mMediaPlayer.setAspectRatio("4:3");
-                mMediaPlayer.setScale(0);
+                mMediaPlayer.setNativeScale(0);
                 break;
             case SURFACE_ORIGINAL:
                 mMediaPlayer.setAspectRatio(null);
-                mMediaPlayer.setScale(1);
+                mMediaPlayer.setNativeScale(1);
                 break;
         }
     }
@@ -253,7 +253,7 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
         if (lp.width == lp.height && lp.width == ViewGroup.LayoutParams.MATCH_PARENT) {
             /* We handle the placement of the video using Android View LayoutParams */
             mMediaPlayer.setAspectRatio(null);
-            mMediaPlayer.setScale(0);
+            mMediaPlayer.setNativeScale(0);
         }
 
         double dw = sw, dh = sh;

@@ -839,7 +839,7 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
      *
      * @param scale the scaling factor, or zero
      */
-    public void setScale(float scale) {
+    public void setNativeScale(float scale) {
         nativeSetScale(scale);
     }
 
