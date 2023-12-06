@@ -63,7 +63,7 @@ METHOD(Media, createSlaveFromNative, GetStaticMethodID,
     "(IILjava/lang/String;)"
     "Lorg/videolan/libvlc/interfaces/IMedia$Slave;")
 METHOD(Media, createStatsFromNative, GetStaticMethodID,
-    "(IFIFIIIIIIIIIIF)"
+    "(JFJFJJJJJJJJJJF)"
     "Lorg/videolan/libvlc/interfaces/IMedia$Stats;")
 
 METHOD(MediaPlayer, createTitleFromNative, GetStaticMethodID,

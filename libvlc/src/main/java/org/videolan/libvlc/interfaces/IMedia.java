@@ -304,27 +304,27 @@ public interface IMedia extends IVLCObject<IMedia.Event> {
      */
     class Stats {
 
-        public final int readBytes;
+        public final long readBytes;
         public final float inputBitrate;
-        public final int demuxReadBytes;
+        public final long demuxReadBytes;
         public final float demuxBitrate;
-        public final int demuxCorrupted;
-        public final int demuxDiscontinuity;
-        public final int decodedVideo;
-        public final int decodedAudio;
-        public final int displayedPictures;
-        public final int lostPictures;
-        public final int playedAbuffers;
-        public final int lostAbuffers;
-        public final int sentPackets;
-        public final int sentBytes;
+        public final long demuxCorrupted;
+        public final long demuxDiscontinuity;
+        public final long decodedVideo;
+        public final long decodedAudio;
+        public final long displayedPictures;
+        public final long lostPictures;
+        public final long playedAbuffers;
+        public final long lostAbuffers;
+        public final long sentPackets;
+        public final long sentBytes;
         public final float sendBitrate;
 
-        public Stats(int readBytes, float inputBitrate, int demuxReadBytes,
-                     float demuxBitrate, int demuxCorrupted,
-                     int demuxDiscontinuity, int decodedVideo, int decodedAudio,
-                     int displayedPictures, int lostPictures, int playedAbuffers,
-                     int lostAbuffers, int sentPackets, int sentBytes,
+        public Stats(long readBytes, float inputBitrate, long demuxReadBytes,
+                     float demuxBitrate, long demuxCorrupted,
+                     long demuxDiscontinuity, long decodedVideo, long decodedAudio,
+                     long displayedPictures, long lostPictures, long playedAbuffers,
+                     long lostAbuffers, long sentPackets, long sentBytes,
                      float sendBitrate) {
             this.readBytes = readBytes;
             this.inputBitrate = inputBitrate;
