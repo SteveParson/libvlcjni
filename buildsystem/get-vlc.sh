@@ -26,7 +26,7 @@ check_patch_is_applied()
 {
     patch_file=$1
     diagnostic "Checking presence of patch $1"
-    message_id=$(grep -E '^Message-Id: [^ ]+' "$patch_file" | sed 's/^Message-Id: \([^\ ]+\)/\1/')
+    message_id=$(grep -E '^Message-Id: [^ ]+' "$patch_file" | sed 's/^Message-Id: \([^\ ]\+\)/\1/')
     if [ -z "$message_id" ]; then
         diagnostic "Error: patch $patch_file does not contain a Message-Id."
         diagnostic "Please consider generating your patch files with the 'git format-patch --thread ...' option."
