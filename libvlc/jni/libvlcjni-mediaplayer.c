@@ -658,7 +658,10 @@ Java_org_videolan_libvlc_MediaPlayer_nativeGetTitles(JNIEnv *env, jobject thiz)
         jobject jtitle = mediaplayer_title_to_object(env, pp_titles[i]);
 
         if (jtitle)
+        {
             (*env)->SetObjectArrayElement(env, array, i, jtitle);
+            (*env)->DeleteLocalRef(env, jtitle);
+        }
     }
 
 error:
@@ -719,7 +722,10 @@ Java_org_videolan_libvlc_MediaPlayer_nativeGetChapters(JNIEnv *env,
         jobject jchapter = mediaplayer_chapter_to_object(env, pp_chapters[i]);
 
         if (jchapter)
+        {
             (*env)->SetObjectArrayElement(env, array, i, jchapter);
+            (*env)->DeleteLocalRef(env, jchapter);
+        }
     }
 
 error:

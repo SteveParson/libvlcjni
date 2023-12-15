@@ -535,6 +535,7 @@ tracklist_to_jobjectArray(JNIEnv *env, libvlc_media_tracklist_t *tracklist)
         jobject jtrack = media_track_to_jobject(env, track);
 
         (*env)->SetObjectArrayElement(env, array, i, jtrack);
+        (*env)->DeleteLocalRef(env, jtrack);
     }
 
     return array;
@@ -712,6 +713,7 @@ Java_org_videolan_libvlc_Media_nativeGetSlaves(JNIEnv *env, jobject thiz)
                                            p_slave->i_type, p_slave->i_priority,
                                            juri);
         (*env)->SetObjectArrayElement(env, array, i, jslave);
+        (*env)->DeleteLocalRef(env, jslave);
         (*env)->DeleteLocalRef(env, juri);
     }
 

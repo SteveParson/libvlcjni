@@ -139,6 +139,7 @@ Java_org_videolan_libvlc_MediaDiscoverer_nativeList(JNIEnv *env, jobject thiz,
         jobject jservice = service_to_object(env, pp_services[i]);
 
         (*env)->SetObjectArrayElement(env, array, i, jservice);
+        (*env)->DeleteLocalRef(env, jservice);
     }
 
 error:
