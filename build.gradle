@@ -22,7 +22,7 @@ allprojects {
 }
 
 ext {
-    libvlcVersion = '4.0.0-eap14'
+    libvlcVersion = '4.0.0-eap15'
     minSdkVersion = 17
     targetSdkVersion = 30
     compileSdkVersion = 31
