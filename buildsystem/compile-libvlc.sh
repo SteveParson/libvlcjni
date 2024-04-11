@@ -487,7 +487,6 @@ mkdir -p $VLC_CONTRIB_DIR/lib/pkgconfig
 # before ">> config.make" when switching to VLC 4.0
 rm -f $VLC_CONTRIB_DIR/config.mak
 
-export USE_FFMPEG=1
 (cd $VLC_CONTRIB_DIR && ANDROID_ABI=${ANDROID_ABI} ANDROID_API=${ANDROID_API} \
     ../bootstrap --host=${TARGET_TUPLE} ${VLC_CONTRIB_ARGS})
 avlc_checkfail "contribs: bootstrap failed"
