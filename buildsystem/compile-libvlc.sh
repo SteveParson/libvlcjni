@@ -521,9 +521,6 @@ else
     echo "NM=${CROSS_TOOLS}nm" >> $VLC_CONTRIB_DIR/config.mak
     echo "STRIP=${CROSS_TOOLS}strip" >> $VLC_CONTRIB_DIR/config.mak
 
-    # fix modplug endianess check (narrowing error)
-    export ac_cv_c_bigendian=no
-
     # list packages to be built
     make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" list
 
