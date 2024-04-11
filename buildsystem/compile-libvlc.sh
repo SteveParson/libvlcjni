@@ -711,7 +711,7 @@ $NDK_BUILD -C $LIBVLCJNI_SRC_DIR/libvlc \
     NDK_DEBUG=${NDK_DEBUG}
 avlc_checkfail "ndk-build libvlc failed"
 
-libvlc_pc_dir="$LIBVLCJNI_SRC_DIR/libvlc/jni/pkgconfig/${ANDROID_ABI}/"
+libvlc_pc_dir="$LIBVLCJNI_SRC_DIR/libvlc/jni/pkgconfig/${ANDROID_ABI}"
 mkdir -p "${libvlc_pc_dir}"
 
 PC_PREFIX="$(cd $LIBVLCJNI_SRC_DIR/libvlc/jni/; pwd -P)" \
