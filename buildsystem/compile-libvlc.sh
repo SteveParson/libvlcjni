@@ -502,6 +502,8 @@ if [ "$AVLC_USE_PREBUILT_CONTRIBS" -gt "0" ]; then
         make -C $VLC_CONTRIB_DIR prebuilt PREBUILT_URL="$VLC_PREBUILT_CONTRIBS_URL"
         avlc_checkfail "Fetching prebuilt contribs from ${VLC_PREBUILT_CONTRIBS_URL} failed"
     fi
+    # list packages to be built
+    make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" list
     # build native tools
     make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" tools
 else
@@ -522,6 +524,9 @@ else
 
     # fix modplug endianess check (narrowing error)
     export ac_cv_c_bigendian=no
+
+    # list packages to be built
+    make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" list
 
     make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" $MAKEFLAGS fetch
     avlc_checkfail "contribs: make fetch failed"
