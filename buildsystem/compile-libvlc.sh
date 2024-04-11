@@ -260,7 +260,7 @@ avlc_build()
 # VLC BOOTSTRAP ARGUMENTS #
 ###########################
 
-VLC_BOOTSTRAP_ARGS="\
+VLC_CONTRIB_ARGS="\
     --enable-dvdread \
     --enable-dvdnav \
     --disable-dca \
@@ -485,7 +485,7 @@ fi
 
 export USE_FFMPEG=1
 (cd $VLC_CONTRIB_DIR && ANDROID_ABI=${ANDROID_ABI} ANDROID_API=${ANDROID_API} \
-    ../bootstrap --host=${TARGET_TUPLE} ${VLC_BOOTSTRAP_ARGS})
+    ../bootstrap --host=${TARGET_TUPLE} ${VLC_CONTRIB_ARGS})
 avlc_checkfail "contribs: bootstrap failed"
 
 if [ "$AVLC_USE_PREBUILT_CONTRIBS" -gt "0" ]; then
