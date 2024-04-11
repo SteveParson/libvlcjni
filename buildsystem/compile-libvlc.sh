@@ -276,7 +276,6 @@ VLC_BOOTSTRAP_ARGS="\
     --enable-zvbi \
     --disable-kate \
     --disable-caca \
-    --disable-gettext \
     --disable-mpcdec \
     --enable-upnp \
     --enable-gme \
@@ -478,6 +477,14 @@ mkdir -p $VLC_CONTRIB_DIR/lib/pkgconfig
 # before ">> config.make" when switching to VLC 4.0
 rm -f $VLC_CONTRIB_DIR/config.mak
 
+# gettext
+which autopoint >/dev/null
+if [ ! $? -eq 0 ];then
+    VLC_CONTRIB_ARGS="$VLC_CONTRIB_ARGS --enable-gettext"
+else
+    VLC_CONTRIB_ARGS="$VLC_CONTRIB_ARGS --disable-gettext"
+fi
+
 export USE_FFMPEG=1
 (cd $VLC_CONTRIB_DIR && ANDROID_ABI=${ANDROID_ABI} ANDROID_API=${ANDROID_API} \
     ../bootstrap --host=${TARGET_TUPLE} ${VLC_BOOTSTRAP_ARGS})
@@ -518,8 +525,6 @@ else
     make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" $MAKEFLAGS fetch
     avlc_checkfail "contribs: make fetch failed"
 
-    # gettext
-    which autopoint >/dev/null || make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" $MAKEFLAGS .gettext
     #export the PATH
     # Make
     make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" $MAKEFLAGS
