@@ -302,7 +302,6 @@ VLC_CONTRIB_ARGS="\
     --enable-fluidlite \
     --enable-gme \
     --enable-harfbuzz \
-    --enable-iconv \
     --enable-jpeg \
     --enable-libarchive \
     --enable-libdsm \
