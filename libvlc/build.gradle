@@ -111,7 +111,8 @@ def libvlcRevision() {
 def vlcRevision() {
     def vlc = new ByteArrayOutputStream()
     exec {
-        commandLine 'sh', '-c', 'cd ../vlc  && git rev-parse --short HEAD'
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        workingDir '../vlc'
         standardOutput = vlc
     }
     return vlc.toString()
