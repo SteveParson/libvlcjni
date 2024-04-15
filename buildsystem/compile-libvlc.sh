@@ -83,13 +83,11 @@ elif [ "${ANDROID_ABI}" = "x86_64" ] ; then
 elif [ "${ANDROID_ABI}" = "arm64-v8a" ] ; then
     TARGET_TUPLE="aarch64-linux-android"
     CLANG_PREFIX=${TARGET_TUPLE}
-    HAVE_ARM=1
     HAVE_64=1
     PLATFORM_SHORT_ARCH="arm64"
 elif [ "${ANDROID_ABI}" = "armeabi-v7a" ] ; then
     TARGET_TUPLE="arm-linux-androideabi"
     CLANG_PREFIX="armv7a-linux-androideabi"
-    HAVE_ARM=1
     PLATFORM_SHORT_ARCH="arm"
 else
     echo "Please pass the ANDROID ABI to the correct architecture, using
