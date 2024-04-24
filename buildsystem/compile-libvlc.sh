@@ -525,7 +525,7 @@ else
 
     #export the PATH
     # Make
-    make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" $MAKEFLAGS
+    make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" $MAKEFLAGS -k || make -C $VLC_CONTRIB_DIR TARBALLS="$VLC_TARBALLS" $MAKEFLAGS -j1
     avlc_checkfail "contribs: make failed"
 
     # Make prebuilt contribs package
