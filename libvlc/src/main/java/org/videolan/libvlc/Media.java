@@ -29,7 +29,6 @@ import org.videolan.libvlc.interfaces.ILibVLC;
 import org.videolan.libvlc.interfaces.IMedia;
 import org.videolan.libvlc.interfaces.IMediaList;
 import org.videolan.libvlc.util.AndroidUtil;
-import org.videolan.libvlc.util.HWDecoderUtil;
 import org.videolan.libvlc.util.VLCUtil;
 
 import java.io.FileDescriptor;
@@ -447,45 +446,7 @@ public class Media extends VLCObject<IMedia.Event> implements IMedia {
      * @param force force hw acceleration even for unknown devices
      */
     public void setHWDecoderEnabled(boolean enabled, boolean force) {
-
-        if (LibVLC.majorVersion() == 3) {
-            HWDecoderUtil.Decoder decoder = enabled ?
-                    HWDecoderUtil.getDecoderFromDevice() :
-                    HWDecoderUtil.Decoder.NONE;
-
-            /* Unknown device but the user asked for hardware acceleration */
-            if (decoder == HWDecoderUtil.Decoder.UNKNOWN && force)
-                decoder = HWDecoderUtil.Decoder.ALL;
-
-            if (decoder == HWDecoderUtil.Decoder.NONE || decoder == HWDecoderUtil.Decoder.UNKNOWN) {
-                addOption(":codec=all");
-                return;
-            }
-
-            /*
-             * Set higher caching values if using iomx decoding, since some omx
-             * decoders have a very high latency, and if the preroll data isn't
-             * enough to make the decoder output a frame, the playback timing gets
-             * started too soon, and every decoded frame appears to be too late.
-             * On Nexus One, the decoder latency seems to be 25 input packets
-             * for 320x170 H.264, a few packets less on higher resolutions.
-             * On Nexus S, the decoder latency seems to be about 7 packets.
-             */
-            if (!mFileCachingSet)
-                addOption(":file-caching=1500");
-            if (!mNetworkCachingSet)
-                addOption(":network-caching=1500");
-
-            final StringBuilder sb = new StringBuilder(":codec=");
-            if (decoder == HWDecoderUtil.Decoder.MEDIACODEC || decoder == HWDecoderUtil.Decoder.ALL)
-                sb.append(getMediaCodecModule()).append(",");
-            if (force && (decoder == HWDecoderUtil.Decoder.OMX || decoder == HWDecoderUtil.Decoder.ALL))
-                sb.append("iomx,");
-            sb.append("all");
-
-            addOption(sb.toString());
-        }
-        else if (!enabled) /* LibVLC >= 4.0 */
+        if (!enabled) /* LibVLC >= 4.0 */
             addOption(":no-hw-dec");
     }
 

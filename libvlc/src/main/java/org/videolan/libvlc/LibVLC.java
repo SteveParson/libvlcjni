@@ -27,9 +27,7 @@ import androidx.annotation.Nullable;
 
 import org.videolan.libvlc.interfaces.AbstractVLCEvent;
 import org.videolan.libvlc.interfaces.ILibVLC;
-import org.videolan.libvlc.util.HWDecoderUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused, JniMissingFunction")
