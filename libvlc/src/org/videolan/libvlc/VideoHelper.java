@@ -323,7 +323,6 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
 
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onNewVideoLayout(IVLCVout vlcVout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen) {
         mVideoWidth = width;
