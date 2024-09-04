@@ -116,7 +116,6 @@ public class VideoView extends SurfaceView
     public void setOnErrorListener(OnErrorListener l) {
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void setOnInfoListener(OnInfoListener l) {
     }
 

@@ -318,7 +318,6 @@ class VideoHelper implements IVLCVout.OnNewVideoLayoutListener {
         videoView.invalidate();
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onNewVideoLayout(IVLCVout vlcVout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen) {
         if (width == 0 && height == 0 && visibleWidth == 0 && visibleHeight == 0 && sarNum == 0 && sarDen == 0) {
