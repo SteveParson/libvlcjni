@@ -10,7 +10,6 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import org.videolan.R;
 import org.videolan.libvlc.MediaPlayer;
@@ -37,7 +36,6 @@ public class VLCVideoLayout extends FrameLayout {
         setupLayout(context);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public VLCVideoLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         setupLayout(context);
