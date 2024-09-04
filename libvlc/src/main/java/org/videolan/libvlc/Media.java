@@ -436,7 +436,7 @@ public class Media extends VLCObject<IMedia.Event> implements IMedia {
 
 
     private static String getMediaCodecModule() {
-        return AndroidUtil.isLolliPopOrLater ? "mediacodec_ndk" : "mediacodec_jni";
+        return "mediacodec_ndk";
     }
 
     /**
