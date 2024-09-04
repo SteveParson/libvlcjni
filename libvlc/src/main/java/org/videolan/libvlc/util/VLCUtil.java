@@ -296,7 +296,6 @@ public class VLCUtil {
         boolean att_fpu;
     }
 
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     private static File searchLibrary(ApplicationInfo applicationInfo) {
         // Search for library path
         String[] libraryPaths;
