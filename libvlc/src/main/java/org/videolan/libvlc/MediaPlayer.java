@@ -512,7 +512,7 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     }
 
     private final BroadcastReceiver mAudioPlugReceiver =
-            AndroidUtil.isLolliPopOrLater && !AndroidUtil.isMarshMallowOrLater ? createAudioPlugReceiver() : null;
+            !AndroidUtil.isMarshMallowOrLater ? createAudioPlugReceiver() : null;
 
     private void registerAudioPlugV21(boolean register) {
         if (register) {
