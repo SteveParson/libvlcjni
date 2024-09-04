@@ -36,8 +36,6 @@ stages:
         changes:
           - libvlc/**/*
       - if: '$CI_PIPELINE_SOURCE == "push"'
-    variables:
-        MAKEFLAGS: -j8
 
 #################################
 # Template config instantiation #
