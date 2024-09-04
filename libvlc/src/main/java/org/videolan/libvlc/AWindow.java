@@ -93,7 +93,6 @@ public class AWindow implements IVLCVout {
             setSurface(mSurfaceHolder.getSurface());
         }
 
-        @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         private void attachTextureView() {
             mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
 
@@ -123,7 +122,6 @@ public class AWindow implements IVLCVout {
                 throw new IllegalStateException();
         }
 
-        @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         private void releaseTextureView() {
             if (mTextureView != null)
                 mTextureView.setSurfaceTextureListener(null);
@@ -167,7 +165,6 @@ public class AWindow implements IVLCVout {
             }
         };
 
-        @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         private TextureView.SurfaceTextureListener createSurfaceTextureListener() {
             return new TextureView.SurfaceTextureListener() {
                 @Override
@@ -289,7 +286,6 @@ public class AWindow implements IVLCVout {
     }
 
     @Override
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public void setVideoSurface(SurfaceTexture videoSurfaceTexture) {
         setSurface(ID_VIDEO, new Surface(videoSurfaceTexture), null);
     }
@@ -312,7 +308,6 @@ public class AWindow implements IVLCVout {
     }
 
     @Override
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public void setSubtitlesSurface(SurfaceTexture subtitlesSurfaceTexture) {
         setSurface(ID_SUBTITLES, new Surface(subtitlesSurfaceTexture), null);
     }
