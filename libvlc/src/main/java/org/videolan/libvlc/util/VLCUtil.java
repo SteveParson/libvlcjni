@@ -20,7 +20,6 @@
 
 package org.videolan.libvlc.util;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.net.Uri;
@@ -49,7 +48,6 @@ public class VLCUtil {
         return errorMsg;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static String[] getABIList21() {
         final String[] abis = Build.SUPPORTED_ABIS;
         if (abis == null || abis.length == 0)

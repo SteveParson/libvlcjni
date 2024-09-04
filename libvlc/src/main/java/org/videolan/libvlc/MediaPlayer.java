@@ -494,7 +494,6 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
         return encodingFlags;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private BroadcastReceiver createAudioPlugReceiver() {
         return new BroadcastReceiver() {
             @Override
@@ -515,7 +514,6 @@ public class MediaPlayer extends VLCObject<MediaPlayer.Event> {
     private final BroadcastReceiver mAudioPlugReceiver =
             AndroidUtil.isLolliPopOrLater && !AndroidUtil.isMarshMallowOrLater ? createAudioPlugReceiver() : null;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void registerAudioPlugV21(boolean register) {
         if (register) {
             final IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_HDMI_AUDIO_PLUG);

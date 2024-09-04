@@ -22,7 +22,6 @@
 
 package org.videolan.libvlc.media;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.media.MediaFormat;
@@ -68,7 +67,6 @@ public class VideoView extends SurfaceView
         this(context, attrs, defStyleAttr, 0);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public VideoView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -95,7 +93,6 @@ public class VideoView extends SurfaceView
         final IMedia media = new Media(sILibVLC, uri);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void setVideoURI(Uri uri, Map<String, String> headers) {
         setVideoURI(uri);
     }
