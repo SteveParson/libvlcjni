@@ -20,7 +20,6 @@
 
 package org.videolan.libvlc;
 
-import android.annotation.TargetApi;
 import android.graphics.SurfaceTexture;
 import android.os.Build;
 import android.os.Handler;
@@ -571,7 +570,6 @@ public class AWindow implements IVLCVout {
         });
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private static class SurfaceTextureThread
             implements Runnable, SurfaceTexture.OnFrameAvailableListener {
         private SurfaceTexture mSurfaceTexture = null;
