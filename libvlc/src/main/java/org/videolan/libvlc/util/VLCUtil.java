@@ -73,11 +73,7 @@ public class VLCUtil {
         int processors = 0;
 
         /* ABI */
-        String[] abis;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            abis = getABIList21();
-        else
-            abis = getABIList();
+        String[] abis = getABIList21();
 
         for (String abi : abis) {
             if (abi.equals("x86")) {
