@@ -191,7 +191,6 @@ public class VideoView extends SurfaceView
     }
 
     @Override
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public int getAudioSessionId() {
         return 0;
     }
