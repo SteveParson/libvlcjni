@@ -649,6 +649,11 @@ avlc_add_symbol_to_redefine CloseFilter
 avlc_add_symbol_to_redefine Open
 avlc_add_symbol_to_redefine Close
 
+#libvlc_json
+avlc_add_symbol_to_redefine json_read
+avlc_add_symbol_to_redefine json_parse_error
+avlc_add_lib_to_redefine libvlc_json.a
+
 BUILTINS="const void *vlc_static_modules[] = {\n";
 for file in $VLC_MODULES; do
     outfile=${REDEFINED_VLC_MODULES_DIR}/$(basename $file)
