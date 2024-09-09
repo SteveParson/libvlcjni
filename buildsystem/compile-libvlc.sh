@@ -618,33 +618,45 @@ done
 
 VLC_MODULES=$(avlc_find_modules ${VLC_BUILD_DIR}/modules)
 DEFINITION="";
+
+SYMBOLS_TO_REDEFINE=""
+# add a symbol to the SYMBOLS_TO_REDIFINE list
+avlc_add_symbol_to_redefine() {
+    SYMBOLS_TO_REDEFINE="${SYMBOLS_TO_REDEFINE} $1"
+}
+
+# Generic symbols
+avlc_add_symbol_to_redefine AccessOpen
+avlc_add_symbol_to_redefine AccessClose
+avlc_add_symbol_to_redefine StreamOpen
+avlc_add_symbol_to_redefine StreamClose
+avlc_add_symbol_to_redefine OpenDemux
+avlc_add_symbol_to_redefine CloseDemux
+avlc_add_symbol_to_redefine DemuxOpen
+avlc_add_symbol_to_redefine DemuxClose
+avlc_add_symbol_to_redefine OpenFilter
+avlc_add_symbol_to_redefine CloseFilter
+avlc_add_symbol_to_redefine Open
+avlc_add_symbol_to_redefine Close
+
 BUILTINS="const void *vlc_static_modules[] = {\n";
 for file in $VLC_MODULES; do
     outfile=${REDEFINED_VLC_MODULES_DIR}/$(basename $file)
     name=$(echo $file | sed 's/.*\.libs\/lib//' | sed 's/_plugin\.a//');
     symbols=$("${CROSS_TOOLS}nm" -g $file)
 
-    # assure that all modules have differents symbol names
+    # ensure that all modules have differents symbol names
     entry=$(avlc_get_symbol "$symbols" _)
     copyright=$(avlc_get_symbol "$symbols" copyright)
     license=$(avlc_get_symbol "$symbols" license)
     cat <<EOF > ${REDEFINED_VLC_MODULES_DIR}/syms
-AccessOpen AccessOpen__$name
-AccessClose AccessClose__$name
-StreamOpen StreamOpen__$name
-StreamClose StreamClose__$name
-OpenDemux OpenDemux__$name
-CloseDemux CloseDemux__$name
-DemuxOpen DemuxOpen__$name
-DemuxClose DemuxClose__$name
-OpenFilter OpenFilter__$name
-CloseFilter CloseFilter__$name
-Open Open__$name
-Close Close__$name
 $entry vlc_entry__$name
 $copyright vlc_entry_copyright__$name
 $license vlc_entry_license__$name
 EOF
+    for sym in ${SYMBOLS_TO_REDEFINE}; do
+        echo "$sym ${sym}__${name}" >> ${REDEFINED_VLC_MODULES_DIR}/syms
+    done
     cmd="${CROSS_TOOLS}objcopy --redefine-syms ${REDEFINED_VLC_MODULES_DIR}/syms $file $outfile"
     ${cmd} || (echo "cmd failed: $cmd" && exit 1)
 
