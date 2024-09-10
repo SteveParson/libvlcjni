@@ -625,6 +625,16 @@ avlc_add_symbol_to_redefine() {
     SYMBOLS_TO_REDEFINE="${SYMBOLS_TO_REDEFINE} $1"
 }
 
+# find and return the path of $2 inside $1
+avlc_find_lib() {
+    find $1 -name '$2'
+}
+
+# get all global symbols of a library and add them to SYMBOLS_TO_REDIFINE list
+avlc_add_lib_to_redefine() {
+    avlc_add_symbol_to_redefine "$("${CROSS_TOOLS}nm" -g $(avlc_find_lib ${VLC_BUILD_DIR} $1) | grep ' T ' | cut -f3 -d ' ')"
+}
+
 # Generic symbols
 avlc_add_symbol_to_redefine AccessOpen
 avlc_add_symbol_to_redefine AccessClose
