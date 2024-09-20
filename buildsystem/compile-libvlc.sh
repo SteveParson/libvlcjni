@@ -549,13 +549,6 @@ if [ ${ANDROID_API} -lt "26" ]; then
     export ac_cv_header_sys_shm_h=no
 fi
 
-if [ ${ANDROID_API} -lt "21" ] ; then
-    # force uselocale using libandroid_support since it's present in libc++
-    export ac_cv_func_uselocale=yes
-
-    VLC_LDFLAGS="-landroid_support"
-fi
-
 # always use fixups for search.h and tdestroy
 export ac_cv_header_search_h=no
 export ac_cv_func_tdestroy=no
