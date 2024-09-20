@@ -32,7 +32,6 @@ LOCAL_LDLIBS := \
     $(VLC_CONTRIB_LDFLAGS) \
     -ldl -lz -lm -llog \
     -ljpeg \
-    $(VLC_LDFLAGS) \
     -Wl,-Bsymbolic
 LOCAL_CXXFLAGS := -std=c++17
 # This duplicates the libvlc* link flags, but it propagates the dependency
