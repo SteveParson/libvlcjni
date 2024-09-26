@@ -711,14 +711,28 @@ $NDK_BUILD -C $LIBVLCJNI_SRC_DIR/libvlc \
     VLC_CONTRIB="$VLC_CONTRIB" \
     VLC_CONTRIB_LDFLAGS="$VLC_CONTRIB_LDFLAGS" \
     VLC_MODULES="$VLC_MODULES" \
-    VLC_BUILD_JNI="$AVLC_BUILD_JNI" \
-    APP_BUILD_SCRIPT=jni/Android.mk \
+    APP_BUILD_SCRIPT=jni/libvlc.mk \
     APP_PLATFORM=android-${ANDROID_API} \
     APP_ABI=${ANDROID_ABI} \
     NDK_PROJECT_PATH=jni \
     NDK_TOOLCHAIN_VERSION=clang \
     NDK_DEBUG=${NDK_DEBUG}
 avlc_checkfail "ndk-build libvlc failed"
+
+if [ "$AVLC_BUILD_JNI" = "1" ]; then
+    $NDK_BUILD -C $LIBVLCJNI_SRC_DIR/libvlc \
+        APP_STL="c++_shared" \
+        APP_CPPFLAGS="-frtti -fexceptions" \
+        VLC_SRC_DIR="$VLC_SRC_DIR" \
+        VLC_BUILD_DIR="$VLC_BUILD_DIR" \
+        APP_BUILD_SCRIPT=jni/Android.mk \
+        APP_PLATFORM=android-${ANDROID_API} \
+        APP_ABI=${ANDROID_ABI} \
+        NDK_PROJECT_PATH=jni \
+        NDK_TOOLCHAIN_VERSION=clang \
+        NDK_DEBUG=${NDK_DEBUG}
+    avlc_checkfail "ndk-build libvlcjni failed"
+fi
 
 libvlc_pc_dir="$LIBVLCJNI_SRC_DIR/libvlc/jni/pkgconfig/${ANDROID_ABI}"
 mkdir -p "${libvlc_pc_dir}"
