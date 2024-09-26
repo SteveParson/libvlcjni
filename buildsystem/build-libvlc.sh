@@ -13,8 +13,6 @@ AVLC_MAKE_PREBUILT_CONTRIBS=0
 # Indicates that prebuit contribs should be
 # used instead of building the contribs from source
 AVLC_USE_PREBUILT_CONTRIBS=0
-# JNI build can be disabled for testing/CI purpose
-AVLC_BUILD_JNI=1
 while [ $# -gt 0 ]; do
     case $1 in
         help|--help)
@@ -34,9 +32,6 @@ while [ $# -gt 0 ]; do
             ;;
         --with-prebuilt-contribs)
             AVLC_USE_PREBUILT_CONTRIBS=1
-            ;;
-        --no-jni)
-            AVLC_BUILD_JNI=0
             ;;
     esac
     shift
@@ -74,19 +69,15 @@ fi
 if [ "${ANDROID_ABI}" = "x86" ] ; then
     TARGET_TUPLE="i686-linux-android"
     CLANG_PREFIX=${TARGET_TUPLE}
-    PLATFORM_SHORT_ARCH="x86"
 elif [ "${ANDROID_ABI}" = "x86_64" ] ; then
     TARGET_TUPLE="x86_64-linux-android"
     CLANG_PREFIX=${TARGET_TUPLE}
-    PLATFORM_SHORT_ARCH="x86_64"
 elif [ "${ANDROID_ABI}" = "arm64-v8a" ] ; then
     TARGET_TUPLE="aarch64-linux-android"
     CLANG_PREFIX=${TARGET_TUPLE}
-    PLATFORM_SHORT_ARCH="arm64"
 elif [ "${ANDROID_ABI}" = "armeabi-v7a" ] ; then
     TARGET_TUPLE="arm-linux-androideabi"
     CLANG_PREFIX="armv7a-linux-androideabi"
-    PLATFORM_SHORT_ARCH="arm"
 else
     echo "Please pass the ANDROID ABI to the correct architecture, using
                 build-libvlc.sh -a ARCH
