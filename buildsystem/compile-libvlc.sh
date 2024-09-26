@@ -272,6 +272,7 @@ VLC_CONTRIB_ARGS="\
     --disable-caca \
     --disable-chromaprint \
     --disable-dca \
+    --disable-a52 \
     --disable-faad2 \
     --disable-fontconfig \
     --disable-goom \
@@ -319,6 +320,7 @@ VLC_CONFIGURE_ARGS="\
     --disable-caca \
     --disable-dbus \
     --disable-dca \
+    --disable-a52 \
     --disable-decklink \
     --disable-dv1394 \
     --disable-faad \

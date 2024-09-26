@@ -31,7 +31,7 @@ LOCAL_LDLIBS := \
     $(VLC_BUILD_DIR)/compat/.libs/libcompat.a \
     $(VLC_CONTRIB_LDFLAGS) \
     -ldl -lz -lm -llog \
-    -la52 -ljpeg \
+    -ljpeg \
     $(VLC_LDFLAGS) \
     -Wl,-Bsymbolic
 LOCAL_CXXFLAGS := -std=c++17
