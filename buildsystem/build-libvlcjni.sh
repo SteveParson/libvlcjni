@@ -13,8 +13,6 @@ AVLC_MAKE_PREBUILT_CONTRIBS=0
 # Indicates that prebuit contribs should be
 # used instead of building the contribs from source
 AVLC_USE_PREBUILT_CONTRIBS=0
-# JNI build can be disabled for testing/CI purpose
-AVLC_BUILD_JNI=1
 while [ $# -gt 0 ]; do
     case $1 in
         help|--help)
@@ -24,6 +22,7 @@ while [ $# -gt 0 ]; do
             ;;
         a|-a)
             ANDROID_ABI=$2
+            LIBVLC_ARCH="-a $2"
             shift
             ;;
         release|--release)
@@ -37,9 +36,6 @@ while [ $# -gt 0 ]; do
         --with-prebuilt-contribs)
             AVLC_USE_PREBUILT_CONTRIBS=1
             LIBVLC_PREBUILT_CONTRIBS="--with-prebuilt-contribs"
-            ;;
-        --no-jni)
-            AVLC_BUILD_JNI=0
             ;;
     esac
     shift
@@ -105,25 +101,25 @@ REL=$(grep -o '^Pkg.Revision.*[0-9]*.*' $ANDROID_NDK/source.properties |cut -d "
 if [ "$REL" = 26 ]; then
     ANDROID_API=21
 else
-    echo "NDK v26 needed, got $REL, cf. https://developer.android.com/ndk/downloads/"
+    echo "NDK v26 needed, cf. https://developer.android.com/ndk/downloads/"
     exit 1
 fi
 
 ############
 # VLC PATH #
 ############
-LIBVLCJNI_SRC_DIR="$(cd "$(dirname "$0")"; pwd -P)/.."
+LIBVLCJNI_ROOT="$(cd "$(dirname "$0")/.."; pwd -P)"
 # Fix path if the script is sourced from vlc-android
-if [ -d $LIBVLCJNI_SRC_DIR/libvlcjni ];then
-    LIBVLCJNI_SRC_DIR=$LIBVLCJNI_SRC_DIR/libvlcjni
+if [ -d $LIBVLCJNI_ROOT/libvlcjni ];then
+    LIBVLCJNI_ROOT=$LIBVLCJNI_ROOT/libvlcjni
 fi
 
-if [ -f $LIBVLCJNI_SRC_DIR/src/libvlc.h ];then
-    VLC_SRC_DIR="$LIBVLCJNI_SRC_DIR"
+if [ -f $LIBVLCJNI_ROOT/src/libvlc.h ];then
+    VLC_SRC_DIR="$LIBVLCJNI_ROOT"
 elif [ -f $PWD/src/libvlc.h ];then
     VLC_SRC_DIR="$PWD"
-elif [ -d $LIBVLCJNI_SRC_DIR/vlc ];then
-    VLC_SRC_DIR=$LIBVLCJNI_SRC_DIR/vlc
+elif [ -d $LIBVLCJNI_ROOT/vlc ];then
+    VLC_SRC_DIR=$LIBVLCJNI_ROOT/vlc
 else
     echo "Could not find vlc sources"
     exit 1
@@ -265,11 +261,22 @@ avlc_pkgconfig()
 
 avlc_build()
 {
-$LIBVLCJNI_SRC_DIR/buildsystem/build-libvlc.sh -a $ANDROID_ABI $LIBVLC_RELEASE $LIBVLC_PACKAGE_CONTRIBS $LIBVLC_PREBUILT_CONTRIBS
 
-if [ "$AVLC_BUILD_JNI" = "1" ]; then
-    $LIBVLCJNI_SRC_DIR/buildsystem/build-libvlcjni.sh -a $ANDROID_ABI $LIBVLC_RELEASE $LIBVLC_PACKAGE_CONTRIBS $LIBVLC_PREBUILT_CONTRIBS
-fi
+$NDK_BUILD -C $LIBVLCJNI_ROOT/libvlc \
+    APP_STL="c++_shared" \
+    APP_CPPFLAGS="-frtti -fexceptions" \
+    VLC_SRC_DIR="$VLC_SRC_DIR" \
+    VLC_BUILD_DIR="$VLC_BUILD_DIR" \
+    APP_BUILD_SCRIPT=jni/libvlcjni.mk \
+    APP_PLATFORM=android-${ANDROID_API} \
+    APP_ABI=${ANDROID_ABI} \
+    NDK_PROJECT_PATH=jni \
+    NDK_TOOLCHAIN_VERSION=clang \
+    NDK_DEBUG=${NDK_DEBUG}
+avlc_checkfail "ndk-build libvlcjni failed"
+
+# Remove gdbserver to avoid conflict with libvlcjni.so debug options
+rm -f $VLC_OUT_PATH/libs/${ANDROID_ABI}/gdb*
 
 } # avlc_build()
 
