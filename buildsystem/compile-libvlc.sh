@@ -268,7 +268,7 @@ avlc_build()
 $LIBVLCJNI_SRC_DIR/buildsystem/build-libvlc.sh -a $ANDROID_ABI $LIBVLC_RELEASE $LIBVLC_PACKAGE_CONTRIBS $LIBVLC_PREBUILT_CONTRIBS
 
 if [ "$AVLC_BUILD_JNI" = "1" ]; then
-    $LIBVLCJNI_SRC_DIR/buildsystem/build-libvlcjni.sh -a $ANDROID_ABI $LIBVLC_RELEASE $LIBVLC_PACKAGE_CONTRIBS $LIBVLC_PREBUILT_CONTRIBS
+    $LIBVLCJNI_SRC_DIR/buildsystem/build-libvlcjni.sh -a $ANDROID_ABI $LIBVLC_RELEASE
 fi
 
 } # avlc_build()
