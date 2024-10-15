@@ -560,6 +560,7 @@ if [ ! -e $VLC_BUILD_DIR/config.h -o "$AVLC_RELEASE" = 1 ]; then
         VLC_CONFIGURE_DEBUG="--enable-debug --disable-branch-protection"
     fi
 
+    BEFORE_VLC_BUILD_DIR=$(pwd -P)
     cd $VLC_BUILD_DIR
     CFLAGS="${VLC_CFLAGS}" \
     CXXFLAGS="${VLC_CFLAGS} ${VLC_CXXFLAGS}" \
@@ -575,7 +576,7 @@ if [ ! -e $VLC_BUILD_DIR/config.h -o "$AVLC_RELEASE" = 1 ]; then
         --with-contrib=${VLC_SRC_DIR}/contrib/${TARGET_TUPLE} \
         --prefix=${VLC_BUILD_DIR}/install/ \
         ${EXTRA_PARAMS} ${VLC_CONFIGURE_ARGS} ${VLC_CONFIGURE_DEBUG}
-    cd ..
+    cd "$BEFORE_VLC_BUILD_DIR"
     avlc_checkfail "vlc: configure failed"
 fi
 
