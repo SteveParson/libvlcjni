@@ -80,7 +80,7 @@ if [ ! -d "vlc" ]; then
     git reset --hard ${VLC_TESTED_HASH} || fail "VLC sources: VLC_TESTED_HASH ${VLC_TESTED_HASH} not found"
     diagnostic "VLC sources: applying custom patches"
     # Keep Message-Id inside commits description to track them afterwards
-    git am --message-id $PATCHES_DIR/*.patch || fail "VLC sources: cannot apply custom patches"
+    #git am --message-id $PATCHES_DIR/*.patch || fail "VLC sources: cannot apply custom patches"
     cd ..
 else
     diagnostic "VLC source: found sources, leaving untouched"
