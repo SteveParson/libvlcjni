@@ -69,8 +69,8 @@ done
 # Fetch VLC source #
 ####################
 
-VLC_TESTED_HASH=820b6cc17e6fd8611a38ce4d6924ef07cf5a04e6
-VLC_REPOSITORY=https://www.github.com/SteveParson/vlc.git
+VLC_TESTED_HASH=890c249d2347367b50e8796ee0066ab4943e92d3
+VLC_REPOSITORY=https://code.videolan.org/videolan/vlc.git
 VLC_BRANCH=3.0.x
 if [ ! -d "vlc" ]; then
     diagnostic "VLC sources: not found, cloning"
@@ -90,10 +90,10 @@ if [ "$BYPASS_VLC_SRC_CHECKS" = 1 ]; then
 elif [ $RESET -eq 1 ]; then
     cd vlc
     git reset --hard ${VLC_TESTED_HASH} || fail "VLC sources: VLC_TESTED_HASH ${VLC_TESTED_HASH} not found"
-    for patch_file in $PATCHES_DIR/*.patch; do
-        git am --message-id $patch_file
-        check_patch_is_applied "$patch_file"
-    done
+    # for patch_file in $PATCHES_DIR/*.patch; do
+    #     git am --message-id $patch_file
+    #     check_patch_is_applied "$patch_file"
+    # done
     cd ..
 else
     diagnostic "VLC sources: Checking VLC_TESTED_HASH and patches presence"
